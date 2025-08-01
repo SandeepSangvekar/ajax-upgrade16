@@ -1,0 +1,152 @@
+<div class="row">
+    <div class="col-md-6 banner-sec">
+        <a onclick="goBack()"><i class="fa fa-arrow-circle-left" style="margin: 10px 0;"></i> Back </a>
+        <h5 style="margin-bottom: 3%;">
+            Update Engine Hours
+        </h5>
+    </div>
+    <div class="col-md-6 banner-sec mob-date m-mb-1">
+        <div ng-app ng-controller="Ctrl" style="text-align: right; margin-top: 10px;">
+            <b style="margin-bottom: 0px;">
+                {{date | date:'dd.MM.yyyy'}}
+            </b>
+        </div>
+        <div style="text-align: right;">
+            {{date | date:'EEEE'}}
+        </div>
+    </div>
+</div>
+<!-- <a routerLink="add" class="btn btn-sm btn-success mb-2">Add User</a> -->
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Engine Hours</h5>
+                <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6">
+                            <label><span class="required-asterisk">*</span>Pin No</label><br>
+                            <input type="text"  readonly [(ngModel)]="pinno" formControlName="pinno1" class="form-control" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label><span class="required-asterisk">*</span>Hours</label><br>
+                            <input type="text" formControlName="hours" class="form-control" />
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label><span class="required-asterisk">*</span>Minutes</label><br>
+                            <input type="text" formControlName="minutes" class="form-control" />
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label><span class="required-asterisk">*</span>Seconds</label><br>
+                            <input type="text" formControlName="seconds" class="form-control" />
+                        </div>
+
+                    </div>
+                    <br>
+                    <div class="form-group" style="text-align: center;">
+
+                        <button type="submit" class="btn btn-primary">
+                            Save
+                        </button>&nbsp;
+                        <button type="button" #closeButton class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                    </div>
+                </form>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-left: 0; margin-top: 10px;">
+    <div class="col-md-6 m-p-0">
+        <form class="form-inline">
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <input class="form-control form-control-sm ml-3 w-87" type="text" placeholder="Search Vehicle"
+                aria-label="Search" name="search" [(ngModel)]="searchText" autocomplete="off"
+                style="background-color: #d9d9d9; ">
+        </form>
+    </div>
+
+    <!-- <div class="col-md-6 m-p-0 mob-m-1">
+        <form class="form-inline" [formGroup]="formDate" (ngSubmit)="onSubmitDate()" style="float: right;">
+            <label class="mob-footer-hide">From</label> &nbsp;
+            <input type="date" class="form-control m-w-35 m-p-0" [ngModel]="startDate | date:'yyyy-MM-dd'"
+                max="{{startDate}}" formControlName="startDate" style="padding: 0px 10px; margin-right: 15px;">
+            <label>To</label> &nbsp;
+            <input type="date" class="form-control m-w-35 m-p-0" [ngModel]="endDate | date:'yyyy-MM-dd'"
+                min="{{endDate}}" formControlName="endDate" placeholder="Tosasasasas"
+                style="padding: 0px 10px; margin-right: 10px;">
+            <button class="btn btn-primary" type="button" type="submit"
+                style="padding: 6px 7px; float: right; border: none;">GO!</button>
+
+        </form>
+    </div> -->
+</div>
+
+<div class="tableFixHead">
+    <table class="table table-striped table-bordered table-hover" style="margin-top: 10px;">
+        <thead class="thead-dark">
+            <tr class="head">
+                <th style="width: 10%;">#</th>
+                <th style="width: 20%">{{pinNo}}</th>
+                <th style="width: 20%">Engine Hours</th>
+                <th style="width: 20%">Action</th>
+
+            </tr>
+            <tr
+                *ngFor="let u of updateEngHour | filter:searchText | paginate : {itemsPerPage : 50, currentPage : p} let i = index">
+
+                <td>{{50*(p-1)+i+1}}</td>
+                <td>{{ u.pinno }}</td>
+                <td>{{ u.totalEngineHours }}</td>
+                <td>
+                    <button type="button" class="btn btn-success" style="background-color:  #3385ff; padding: 1px 7px;"
+                        data-toggle="modal" data-target="#exampleModal"
+                        (click)="update(u.pinno)">
+                        Update Eng. hour
+                    </button>
+                </td>
+            </tr>
+            <tr *ngIf="!updateEngHour">
+                <td colspan="4" class="text-center">
+                    <span class="spinner-border spinner-border-lg align-center"></span>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-4">
+
+    </div>
+    <div class="col-md-6">
+        <div class="input-group-icon input-group-icon-left mr-3">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+    </div>
+</div>

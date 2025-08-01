@@ -1,0 +1,377 @@
+<div class="layout-style">
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a>
+            <span class="page-heading"> Alert Analytics
+            </span>
+        </div>
+        <div class="col-md-6 mob-date dashdate">
+            <div ng-app ng-controller="Ctrl" style="text-align: right;">
+                <b style="margin-bottom: 0px;">
+                    {{date | date:'dd.MM.yyyy'}}
+                </b>
+            </div>
+            <div style="text-align: right;">
+                {{date | date:'EEEE'}}
+            </div>
+        </div>
+    </div>
+
+    <i data-toggle="modal" data-target="#vehicleLocationModal" id="vehicleLocationModalopen"></i>
+
+    <div class="card">
+        <div class="row mt-1">
+            <div class="col-md-5 m-mb-1">
+                <div class="input-group-icon input-group-icon-left">
+                    <form class="form-inline">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input class="form-control form-control-sm ml-10 w-87" [(ngModel)]="searchText" id="key-search" type="text" name="search" autocomplete="off" placeholder="Search"
+                            style="background-color: #d9d9d9; ">
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 offset-md-1">
+                <form class="form-inline" [formGroup]="form" (ngSubmit)="onSubmit()" style="float: right;">
+                    <label class="mob-footer-hide">From</label> &nbsp;
+                    <input type="date" formControlName="stdate" [ngModel]="lastDate" max="{{todayDate}}"
+                        class="form-control m-w-35" style="padding: 0px 10px; margin-right: 5px;">
+                    <label>To</label>&nbsp;
+                    <input type="date" formControlName="endate" [ngModel]="todayDate" max="{{todayDate}}"
+                        class="form-control m-w-35" placeholder="Tosasasasas"
+                        style="padding: 0px 10px; margin-right: 10px;">
+                    <button class="btn btn-primary" type="button" type="submit"
+                        style="padding: 6px 7px; float: right; border: none;">GO!</button>
+                </form>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-md-4 col-xs-12">
+                <span style="font-weight: 500;">{{ pinNo }}: {{ pinno }}</span>
+            </div>
+            <div class="col-md-4 col-xs-6 m-f-13">
+                Values are in HH:MI:SS &nbsp; 
+            </div>
+            <div class="col-md-4 col-xs-6">
+                <button class="btn btn-primary" type="button" type="submit" style="padding:3px 7px; border: none; float: right;" (click)="showGraph()" data-toggle="modal" data-target="#exampleModal">Show Graph</button>
+            </div>
+        </div>
+        <div class="tableFixHead">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="thead-dark" style="position: sticky;">
+                    <tr>
+                        <th rowspan="2">#</th>
+                        <th rowspan="2">Transaction Date</th>
+			<th rowspan="2" style="z-index: 1;"><i class="far fa-map fa-2x"></i></th>
+                        <th rowspan="2">Engine Hours</th>
+                        <th rowspan="2">Dist.(kms)</th>
+ 			<th rowspan="2">Idle Time</th>
+                        <th rowspan="2">On Time Efficiency</th>
+                        <th rowspan="2">Operational Time</th>
+                        <th rowspan="2">Operational Efficiency</th>
+                        <th colspan="3">Coolant Temp</th>
+                        <th colspan="2">Oil Pressure</th>
+                        <th colspan="2">Hydraulic Oil Filter Choke</th>
+                        <th colspan="3">Fuel</th>
+                        <th colspan="3">Speed</th>
+                        <th colspan="3">Battery</th>
+                       
+                        
+                    </tr>
+                    <tr>
+                        <th>Normal</th>
+                        <th>Warning</th>
+                        <th>Critical</th>
+                        <th>Normal</th>
+                        <th>Critical</th>
+                        <th>Normal</th>
+                        <th>Choke</th>
+                        <th>Normal</th>
+                        <th>Reserve</th>
+                        <th>Empty</th>
+                        <th>Normal</th>
+                        <th>Warning</th>
+                        <th>Critical</th>
+                        <th>Normal</th>
+                        <th>Warning</th>
+                        <th>Critical</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let a of alertDataDocs | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index">
+                        <td>{{itemsPerPage*(p-1)+i+1}}</td>
+			 <td style="padding-left:12px;">{{a.devicePublishTime | date:'dd-MM-yyyy'}}</td>
+			<td>
+                            <a title="Vehicle Map">
+                              <div *ngIf="loading == true && i == mapIconInd" class="loader"></div>
+                              <div [hidden]="loading" (click)="mapDate(pinno,'isMapPath', i, a.devicePublishTime)"><i class="far fa-map fa-2x"></i></div>
+                            </a>
+                        </td>
+                        <td>{{a.totalEngineHours}}</td>
+                        <td>{{a.totalDistance}}</td>
+			<td>{{ a.idleTime }}</td>
+                        <td>{{ a.OnTimeEfficiency }}</td>
+                        <td>{{ a.operationalTime }}</td>
+                        <td>{{ a.operationalEfficiency }}</td>
+                        <td *ngIf="a.coolantTemp.normal != '00:00:00'" class="text-success">{{a.coolantTemp.normal}}
+                        </td>
+                        <td *ngIf="a.coolantTemp.normal == '00:00:00'"> </td>
+                        <td *ngIf="a.coolantTemp.warning != '00:00:00'" class="text-warning">{{a.coolantTemp.warning}}
+                        </td>
+                        <td *ngIf="a.coolantTemp.warning == '00:00:00'"></td>
+                        <td *ngIf="a.coolantTemp.critical != '00:00:00'" class="text-danger">{{a.coolantTemp.critical}}
+                        </td>
+                        <td *ngIf="a.coolantTemp.critical == '00:00:00'"></td>
+                        <td *ngIf="a.oilpressure.normal != '00:00:00'" class="text-success">{{a.oilpressure.normal}}
+                        </td>
+                        <td *ngIf="a.oilpressure.normal == '00:00:00'"></td>
+                        <td *ngIf="a.oilpressure.critical != '00:00:00'" class="text-danger">{{a.oilpressure.critical}}
+                        </td>
+                        <td *ngIf="a.oilpressure.critical == '00:00:00'"></td>
+
+                        <td *ngIf="a.EngineOilFilter.normal != '00:00:00'" class="text-success">
+                            {{a.EngineOilFilter.normal}}</td>
+                        <td *ngIf="a.EngineOilFilter.normal == '00:00:00'"></td>
+                        <td *ngIf="a.EngineOilFilter.critical != '00:00:00'" class="text-danger">
+                            {{a.EngineOilFilter.critical}}</td>
+                        <td *ngIf="a.EngineOilFilter.critical == '00:00:00'"></td>
+
+                        <td *ngIf="a.fuel.normal != '00:00:00'" class="text-success">{{a.fuel.normal}}</td>
+                        <td *ngIf="a.fuel.normal == '00:00:00'"></td>
+
+                        <td *ngIf="a.fuel.warning != '00:00:00'" class="text-warning">{{a.fuel.warning}}</td>
+                        <td *ngIf="a.fuel.warning == '00:00:00'"></td>
+
+                        <td *ngIf="a.fuel.critical != '00:00:00'" class="text-danger">{{a.fuel.critical}}</td>
+                        <td *ngIf="a.fuel.critical == '00:00:00'"></td>
+
+                        <td *ngIf="a.travelSpeed.normal != '00:00:00'" class="text-success">{{a.travelSpeed.normal}}
+                        </td>
+                        <td *ngIf="a.travelSpeed.normal == '00:00:00'"></td>
+
+                        <td *ngIf="a.travelSpeed.warning != '00:00:00'" class="text-warning">{{a.travelSpeed.warning}}
+                        </td>
+                        <td *ngIf="a.travelSpeed.warning == '00:00:00'"></td>
+
+                        <td *ngIf="a.travelSpeed.critical != '00:00:00'" class="text-danger">{{a.travelSpeed.critical}}
+                        </td>
+                        <td *ngIf="a.travelSpeed.critical == '00:00:00'"></td>
+
+                        <td *ngIf="a.battery.normal != '00:00:00'" class="text-success">{{a.battery.normal}}</td>
+                        <td *ngIf="a.battery.normal == '00:00:00'"></td>
+
+                        <td *ngIf="a.battery.warning != '00:00:00'" class="text-warning">{{a.battery.warning}}</td>
+                        <td *ngIf="a.battery.warning == '00:00:00'"></td>
+
+                        <td *ngIf="a.battery.critical != '00:00:00'" class="text-danger">{{a.battery.critical}}</td>
+                        <td *ngIf="a.battery.critical == '00:00:00'"></td>                       
+                        
+                    </tr>
+
+                    <tr *ngIf="alertDataDocs== '' ">
+                        <td colspan="16" class="text-center">
+                            *No data available in the date range !!!
+                        </td>
+                    </tr>
+
+                    <tr *ngIf="!alertDataDocs">
+                        <td colspan="16" class="text-center">
+                            <span class="spinner-border spinner-border-lg align-center"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group-icon input-group-icon-left text-center mt-3">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    [style.display]='showModal? "block":"none"'>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-7">
+                    </div>
+                    <div class="col-md-5">
+                        <ul class="nav nav-pills nav-fill justify-content-end">
+                            <li class="nav-item">
+                                <button class="btn btn-primary" type="button" style="padding:6px 7px;border: none;"
+                                    (click)="showGraph()">All</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="btn btn-primary" type="button" style="padding:6px 7px;border: none;"
+                                    (click)="showcoolantTempGraph()">Coolant Temp</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="btn btn-primary" type="button" style="padding:6px 7px;border: none;"
+                                    (click)="showoilPressureGraph()">Oil Pressure</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="btn btn-primary" type="button" style="padding:6px 7px;border: none;"
+                                    (click)="showFuelGraph()">Fuel</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9" *ngIf="showAllDetails && alertAnalytics.length>0">
+                        <google-chart #chart [title]="title" [type]="type" [columnNames]="columnNames"
+                            [data]="alertAnalytics" [options]="options" [width]="width" [height]="height">
+                        </google-chart>
+                    </div>
+                    <div class="col-md-9" *ngIf="showCoolantTempDetails">
+                        <google-chart #chart [title]="title" [type]="type" [columns]="columns"
+                            [data]="alertCoolantTempAnalytics" [options]="coolantTempOptions" [width]="width"
+                            [height]="height">
+                        </google-chart>
+                    </div>
+                    <div class="col-md-9" *ngIf="showOilPressureDetails">
+                        <google-chart #chart [title]="title" [type]="type" [columns]="columns"
+                            [data]="alertOilPressureAnalytics" [options]="OilPressureOptions" [width]="width"
+                            [height]="height">
+                        </google-chart>
+                    </div>
+                    <div class="col-md-9" *ngIf="showFuelDetails">
+                        <google-chart #chart [title]="title" [type]="type" [columns]="columns"
+                            [data]="alertFuelAnalytics" [options]="fuelOptions" [width]="width" [height]="height">
+                        </google-chart>
+                    </div>
+
+                </div>
+                <div class="row" style="justify-content:flex-start;margin-left: 12%;">
+                    <span class="color-box"></span> <span class="f-12 m-r-15 m-f-8"><b>Total Engine Hours</b></span>
+                    <span class="color-box2"></span> <span class="f-12 m-r-15 m-f-8"><b>Total Distance</b></span>
+                    <span class="color-box3"></span> <span class="f-12 m-r-15 m-f-8"><b>Coolant Temp.</b></span>
+                    <span class="color-box4"></span> <span class="f-12 m-r-15 m-f-8"><b>Oil Pressure</b></span>
+                    <span class="color-box5"></span> <span class="f-12 m-r-15 m-f-8"><b>Fuel</b></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="vehicleLocationModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><span class="m-f-13">Vehicle Path Map(Pin No:
+            {{mappinno}}, Date: {{toDt | date:'dd-MM-yyyy'}})</span></h5>
+        <button type="button" class="close" id="vehicleLocationModalclose" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- animation="BOUNCE" -->
+        <button class="btn btn-primary" (click)="this.viewType= 'terrain'"
+          style="padding: 2px 10px; margin-right: 4px;">Terrain</button>
+        <button class="btn btn-danger" (click)="this.viewType= 'satellite'"
+          style="padding: 2px 10px;">Satellite</button>
+        <!-- &nbsp;&nbsp;
+<input type="checkbox"[(ngModel)]="isChecked"(change)="alldevicesRecords(isChecked)" /> Show  Off Data Also -->
+
+        <agm-map [latitude]='maplat' [longitude]='maplng' [zoom]='12' [fullscreenControl]='true' [mapTypeControl]='true' [streetViewControl]="true" [mapTypeId]="this.viewType">
+          <agm-marker *ngFor='let marker of coordinatedata'
+            [iconUrl]="{url: markerPath, scaledSize: {height: 25,width: 15}}" [latitude]='marker.lat'
+            [longitude]='marker.lng' [opacity]='opacity' [markerDraggable]='true' [agmFitBounds]="true">
+            <agm-info-window>
+              <Strong>{{pinNo}} : {{marker.pinno}}</Strong>
+              <br>
+              <Strong>Device-Model. : {{marker.deviceModel}}</Strong>
+              <br>
+              <strong>Date Time : {{marker.time | date:'dd-MM-yyyy h:mm:ss a':'+0000'}}</strong>
+              <br>
+              <!--
+                <strong>Time : {{marker.time | date:'h:mm:ss a':'+0000'}}</strong>
+                <br>    -->
+              <Strong>Lat : {{marker.lat}}</Strong>
+              <br>
+              <Strong>Lng : {{marker.lng}}</Strong>
+              <br>
+              <Strong>Engine Status : {{marker.engineStatus}}</Strong>
+              <br>
+              <Strong>Distance(kms) : {{marker.rangedistance | number :'1.2-4'}}</Strong>
+              <br>
+              <Strong>Speed : {{marker.travelspeed}}</Strong>
+            </agm-info-window>
+          </agm-marker>
+          <agm-polyline [visible]="true" [strokeWeight]="2" [strokeColor]="'#57eaff'">
+            <agm-polyline-point *ngFor="let coordinate of coordinatedata; let i=index" [latitude]="coordinate.lat"
+              [longitude]="coordinate.lng">
+            </agm-polyline-point>
+          </agm-polyline>
+
+          <agm-marker *ngFor="let coordinate of end_marker; let i=index" animation="BOUNCE"
+            [iconUrl]="{url: endMark, scaledSize: {height: 50,width: 33}}" [latitude]="coordinate.lat"
+            [longitude]="coordinate.lng" [agmFitBounds]="true">
+            <agm-info-window>
+              <strong>Start</strong>
+              <hr>
+              <Strong>{{pinNo}} : {{coordinate.pinno}}</Strong>
+              <br>
+              <Strong>Device-Model. : {{coordinate.deviceModel}}</Strong>
+              <br>
+
+              <strong>Date Time : {{coordinate.time | date:'dd-MM-yyyy h:mm:ss a':'+0000'}}</strong>
+              <br>
+              <!-- 
+	            <strong>Date : {{coordinate.time | date:'dd-MM-yyyy'}}</strong>
+              <br>
+              <strong>Time : {{coordinate.time | date:'h:mm:ss a':'+0000'}}</strong>
+              <br>  -->
+              <Strong>Lat : {{coordinate.lat}}</Strong>
+              <br>
+              <Strong>Lng : {{coordinate.lng}}</Strong>
+              <br>
+              <Strong>Engine Status : {{coordinate.engineStatus}}</Strong>
+            </agm-info-window>
+          </agm-marker>
+
+          <agm-marker *ngFor="let coordinate of start_marker; let i=index" animation="BOUNCE"
+            [iconUrl]="{url: startMarker, scaledSize: {height: 50,width: 34}}" [latitude]="coordinate.lat"
+            [longitude]="coordinate.lng" [agmFitBounds]="true">
+            <agm-info-window>
+              <strong>End</strong>
+              <br>
+              <Strong>{{pinNo}} : {{coordinate.pinno}}</Strong>
+              <br>
+              <Strong>Device-Model. : {{coordinate.deviceModel}}</Strong>
+              <br>
+              <strong>Date Time : {{coordinate.time | date:'dd-MM-yyyy h:mm:ss a':'+0000'}}</strong>
+              <br>
+              <!--  
+              <strong>Time : {{coordinate.time | date:'h:mm:ss a':'+0000'}}</strong>
+              <br>  -->
+              <Strong>Lat : {{coordinate.lat}}</Strong>
+              <br>
+              <Strong>Lng : {{coordinate.lng}}</Strong>
+              <br>
+              <Strong>Engine Status : {{coordinate.engineStatus}}</Strong>
+              <br>
+              <Strong>Distance(kms) : {{coordinate.rangedistance | number :'1.2-4'}}</Strong>
+              <br>
+              <Strong>Speed : {{coordinate.travelspeed}}</Strong>
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

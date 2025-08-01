@@ -1,0 +1,241 @@
+<div class="layout-style">
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Service Master
+            </span>
+        </div>
+        <div class="col-md-6 mob-date dashdate">
+            <div ng-app ng-controller="Ctrl" style="text-align: right; margin-top: 10px;">
+                <b style="margin-bottom: 0px;">
+                    {{date | date:'dd.MM.yyyy'}}
+                </b>
+            </div>
+            <div style="text-align: right;">
+                {{date | date:'EEEE'}}
+            </div>
+        </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Service Master</h5>
+                <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6">
+                            <label><span class="required-asterisk">*</span>Select Model</label><br>
+                            <select (click)="getVariant()" class="form-control" formControlName="deviceModel"
+                                class="form-control" [ngClass]="{ 'is-invalid': submitted && f.deviceModel.errors }">
+                                <option></option>
+                                <option *ngFor="let device of model">{{device.title}}</option>
+                            </select>
+                            <div *ngIf="submitted && f.deviceModel.errors" class="invalid-feedback">
+                                <div *ngIf="f.deviceModel.errors.required">Model is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label><span class="required-asterisk">*</span>Select Variant Code</label><br>
+                            <select class="form-control" formControlName="variant" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.variant.errors }">
+                                <option></option>
+                                <option *ngFor="let device of variant">{{device.title}}</option>
+                            </select>
+                            <div *ngIf="submitted && f.variant.errors" class="invalid-feedback">
+                                <div *ngIf="f.variant.errors.required">Variant is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span>Service Number</label><br>
+                            <input type="text" (keypress)="numberOnly($event)" formControlName="serviceNumber"
+                                class="form-control">
+                            <div *ngIf="submitted && f.serviceNo.errors" class="invalid-feedback">
+                                <div *ngIf="f.serviceNo.errors.required">Service Number is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span>Service Type</label><br>
+                            <select class="form-control" formControlName="serviceType" class="form-control">
+                                <option value="free">Free</option>
+                                <option value="paid">Paid</option>
+                            </select>
+                            <div *ngIf="submitted && f.serviceType.errors" class="invalid-feedback">
+                                <div *ngIf="f.serviceType.errors.required">Service Type is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span>Schedule Service Engine
+                                Hours</label><br>
+                            <input type="text" formControlName="serviceDueAfterSeconds" class="form-control">
+                            <div *ngIf="submitted && f.engineHour.errors" class="invalid-feedback">
+                                <div *ngIf="f.engineHour.errors.required">Engine Hour is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span>Base Hours</label><br>
+                            <input type="text" formControlName="serviceCreateAfterSeconds" class="form-control">
+                            <div *ngIf="submitted && f.baseHour.errors" class="invalid-feedback">
+                                <div *ngIf="f.baseHour.errors.required">Base Hour is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span>Interval in Hours</label><br>
+                            <input type="text" formControlName="intervalSeconds" class="form-control">
+                            <div *ngIf="submitted && f.intervalHour.errors" class="invalid-feedback">
+                                <div *ngIf="f.intervalHour.errors.required">Interval in Hour is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span>Schedule Service in No. of
+                                Days</label><br>
+                            <input type="text" formControlName="serviceDueAfterDays" class="form-control">
+                            <div *ngIf="submitted && f.scheduleService.errors" class="invalid-feedback">
+                                <div *ngIf="f.scheduleService.errors.required">Schedule Service is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span>Base in Days</label><br>
+                            <input type="text" formControlName="serviceCreateAfterDays" class="form-control">
+                            <div *ngIf="submitted && f.baseDay.errors" class="invalid-feedback">
+                                <div *ngIf="f.baseDay.errors.required">Base Day is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span>Interval in Days</label><br>
+                            <input type="text" formControlName="intervalDays" class="form-control">
+                            <div *ngIf="submitted && f.intervalDay.errors" class="invalid-feedback">
+                                <div *ngIf="f.intervalDay.errors.required">Interval Day is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span>Message</label><br>
+                            <input type="text" formControlName="message" class="form-control">
+                            <div *ngIf="submitted && f.message.errors" class="invalid-feedback">
+                                <div *ngIf="f.message.errors.required">Message is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span>Overdue Service Limit</label><br>
+                            <input type="text" (keypress)="numberOnly($event)" formControlName="overdueLimit"
+                                class="form-control">
+                            <div *ngIf="submitted && f.overdue.errors" class="invalid-feedback">
+                                <div *ngIf="f.overdue.errors.required">Overdue is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="form-group" style="text-align: center;">
+                        <button [disabled]="loading" type="submit" class="btn btn-primary" id="closeModel">
+                            Save
+                        </button>&nbsp;
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="row card-top-padding">
+        <div class="col-md-6 col-xs-12">
+            <div class="input-group-icon input-group-icon-left">
+                <form class="form-inline">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input class="form-control form-control-sm ml-3 w-87" id="key-search" type="text" name="search"
+                        [(ngModel)]="searchText" autocomplete="off" placeholder="Search"
+                        style="background-color: #d9d9d9; ">
+                </form>
+            </div>
+            *from date of purchase
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <!-- <input type="checkbox" style="margin-right: 10px;"> Show Inactive Machines -->
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
+                style="background-color:  #3385ff; padding: 2px 10px; float: right;">
+                <i class="fa fa-plus" aria-hidden="true" style="width: 30px; -webkit-text-stroke: 0.05px white;">
+                </i>
+                Service Master
+            </button>
+        </div>
+    </div>
+
+    <div class="tableFixHead">
+        <table class="table table-striped table-bordered table-hover mob-table">
+            <thead class="thead-dark">
+                <tr>
+                    <th rowspan="2" style="width: 3%;">#</th>
+                    <th rowspan="2" style="width: 8%;">Model</th>
+                   <!-- <th rowspan="2" style="width: 8%;">Variant Code</th> -->
+                    <th rowspan="2" style="width: 7%;">Service Number</th>
+                    <th rowspan="2" style="width: 7%;">Type of Service</th>
+                    <th colspan="2" style="text-align: center;">Service Schedule on Completion of</th>
+                    <th colspan="2" style="text-align: center;">Base</th>
+                    <th colspan="2" style="text-align: center;">Interval</th>
+                    <th rowspan="2" style="width: 21%;">Message</th>
+                    <th rowspan="2">Overdue Alert limit</th>
+                </tr>
+                <tr>
+                    <th>Engine Hours</th>
+                    <th>No. of Days*</th>
+                    <th>in Engine Hours</th>
+                    <th>in days</th>
+                    <th>in Engine Hours</th>
+                    <th>in days</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr
+                    *ngFor="let service of services  | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index ">
+                    <td style="width: 3%;">{{itemsPerPage*(p-1)+i+1}}</td>
+                    <td style="width: 8%;">{{service.deviceModel}}</td>
+                   <!-- <td style="width: 8%;">{{service.deviceVariant}}</td> -->
+                    <td style="width: 7%;">{{service.serviceNumber}}</td>
+                    <td style="width: 7%;">{{service.serviceType}}</td>
+                    <td>{{(service.serviceDueAfterSeconds)*(1/3600)}}</td>
+                    <td>{{service.serviceDueAfterDays}}</td>
+                    <td>{{(service.serviceCreateAfterSeconds)*(1/3600)}}</td>
+                    <td>{{service.serviceCreateAfterDays}}</td>
+                    <td>{{(service.intervalSeconds)*(1/3600)}}</td>
+                    <td>{{service.intervalDays}}</td>
+                    <td style="width: 21%;">{{service.message}}</td>
+                    <td>{{service.overdueLimit}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="input-group-icon input-group-icon-left text-center mt-3">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+    </div>
+</div>
+</div>

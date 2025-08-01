@@ -1,0 +1,213 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Location</h5>
+                <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div id="map" style="height: 500px;"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-12">
+                                    <label><span class="required-asterisk">*</span>Location Name</label><br>
+                                    <input type="text" formControlName="fieldName" class="form-control"
+                                        [ngClass]="{ 'is-invalid': submitted && f.fieldName.errors }" />
+                                    <div *ngIf="submitted && f.fieldName.errors" class="invalid-feedback">
+                                        <div *ngIf="f.fieldName.errors.required">Location Name is required</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-12">
+                                    <label><span class="required-asterisk">*</span>Location Type</label><br>
+                                    <select formControlName="location" ngModel="Location" class="form-control"
+                                        [ngClass]="{ 'is-invalid': submitted && f.location.errors }">
+                                        <option value="">Choose</option>
+                                        <option value="Location">Location</option>
+                                        <option value="Geofence">Geofence</option>
+                                    </select>
+                                    <div *ngIf="submitted && f.location.errors" class="invalid-feedback">
+                                        <div *ngIf="f.location.errors.required">Location Type is required</div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-6">
+                                            <label><span class="required-asterisk">*</span>stateCode</label><br>
+                                            <input type="text" formControlName="stateCode" class="form-control"
+                                                placeholder="Like : Maharashra"
+                                                [ngClass]="{ 'is-invalid': submitted && f.stateCode.errors }" />
+                                            <div *ngIf="submitted && f.stateCode.errors" class="invalid-feedback">
+                                                <div *ngIf="f.stateCode.errors.required">Status Code is required</div>
+                                            </div>
+                                        </div> -->
+                            </div>
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-12">
+                                    <label><span class="required-asterisk">*</span>Max Ideal Time(Mnts)</label><br>
+                                    <input type="number" formControlName="maxIdealTime" class="form-control"
+                                        ngModel="100"
+                                        [ngClass]="{ 'is-invalid': submitted && f.maxIdealTime.errors }" />
+                                    <div *ngIf="submitted && f.maxIdealTime.errors" class="invalid-feedback">
+                                        <div *ngIf="f.maxIdealTime.errors.required">Max Ideal Time is required</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="form-group" style="text-align: center;">
+
+                                <button type="submit" class="btn btn-primary" id="closeModel">
+                                    Save
+                                </button>&nbsp;
+                                <button type="button" class="btn btn-secondary" id="addModelClosebtn"
+                                    data-dismiss="modal">Close</button>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-6">
+        <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Location
+        </span>
+    </div>
+    <div class="col-md-6 mob-date dashdate">
+        <div ng-app ng-controller="Ctrl" style="text-align: right; margin-top: 10px;">
+            <b style="margin-bottom: 0px;">
+                {{date | date:'dd.MM.yyyy'}}
+            </b>
+        </div>
+        <div style="text-align: right;">
+            {{date | date:'EEEE'}}
+        </div>
+    </div>
+</div>
+<!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" (click)="clear()">
+    Add
+</button> -->
+<div class="card">
+    <div class="row card-top-padding">
+        <div class="col-md-6 offset-md-6">
+            <button type="button" (click)="clear()" class="btn btn-success m-mb-1" data-toggle="modal"
+                data-target="#exampleModal" style="background-color:  #3385ff; padding: 2px 10px; float: right;">
+                <i class="fa fa-plus" aria-hidden="true" style="width: 30px; -webkit-text-stroke: 0.05px white;">
+                </i>
+                NEW LOCATION
+            </button>
+        </div>
+    </div>
+    <div class="tableFixHead">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th style="width: 5%">#</th>
+                    <th style="width: 15%">Location Name</th>
+                    <th style="width: 10%">MaxIdealTime (Mnts)</th>
+                    <th style="width: 10%">Status</th>
+                    <th style="width: 10%">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    *ngFor="let loc of location|filter:searchText | paginate : {itemsPerPage :itemsPerPage, currentPage : p} let i = index">
+                    <td>{{itemsPerPage *(p-1)+i+1}}</td>
+                    <td>{{loc.fieldName}}</td>
+                    <td>{{loc.maxIdealTime}}</td>
+                    <td>
+                        <span *ngIf="loc.status == 'Active'">{{loc.status}}</span>
+                        <span *ngIf="loc.status != 'Active'">{{loc.status}}</span>
+                    </td>
+                    <td style="white-space: nowrap">
+                        <a class="btn btn-sm btn-info mr-1" (click)="viewPolygon(loc.id)" data-toggle="modal"
+                            data-target="#viewPolygonModal">
+                            <i class="fa fa-eye"></i>
+
+                        </a>
+                        <button (click)="deletePoiRow(loc.id)" class="btn btn-sm btn-danger">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="!location">
+                    <td colspan="5" class="text-center">
+                        <span class="spinner-border spinner-border-lg align-center"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 input-group-icon input-group-icon-left text-center mt-3">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+</div>
+
+<div class="modal fade" id="viewPolygonModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">View Area</h5>
+                <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div id="maparea" style="height: 300px;"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <table>
+                            <tr>
+                                <th>FieldName</th>
+                                <td>{{areaDetails.fieldName}}</td>
+                            </tr>
+                            <!-- <tr>
+                                <th>CompanyID</th>
+                                <td>{{areaDetails.companyID}}</td>
+                            </tr> -->
+                            <tr>
+                                <th>MaxIdealTime</th>
+                                <td>{{areaDetails.maxIdealTime}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <br>
+                <div class="form-group" style="text-align: center;">
+
+                    <button type="submit" class="btn btn-primary" id="closeModel">
+                        Save
+                    </button>&nbsp;
+                    <button type="button" class="btn btn-secondary" id="addModelClosebtn"
+                        data-dismiss="modal">Close</button>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

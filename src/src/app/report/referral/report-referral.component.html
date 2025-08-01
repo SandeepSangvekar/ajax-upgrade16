@@ -1,0 +1,144 @@
+<div class="layout-style">
+    <!-- Modal -->
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Referrals Report
+            </span>
+        </div>
+        <div class="col-md-6 mob-date dashdate">
+            <div ng-app ng-controller="Ctrl" style="text-align: right;">
+                <b style="margin-bottom: 0px;">
+                    {{date | date:'dd.MM.yyyy'}}
+                </b>
+            </div>
+            <div style="text-align: right;">
+                {{date | date:'EEEE'}}
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="row card-top-padding">
+            <div class="col-md-6 col-xs-10">
+                <div class="input-group-icon input-group-icon-left">
+                    <form class="form-inline">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input class="form-control form-control-sm ml-10 w-87" id="key-search" type="text" name="search"
+                            [(ngModel)]="searchText" autocomplete="off" placeholder="Search"
+                            style="background-color: #d9d9d9;">
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-2">
+                <button class="btn btn-success mr-1" title="Download Excel file" (click)="exportAsXLSX()"
+                    style="float:right; font-size: 10px;"><i class="fas fa-file-excel fa-2x"></i>
+                </button>
+            </div>
+        </div>
+        <div class="tableFixHead">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr class="head">
+                        <th style="width:2;">#</th>
+                        <th style="width:5;">Referral Name</th>
+                        <th style="width:5;">Contact No</th>
+                        <th style="width:5;">City</th>
+                        <th style="width:5;">Phone No</th>
+                        <th style="width:5;">Model</th>
+                        <th style="width:5;">Priority</th>
+                        <th style="width:5;">Referred By</th>
+                        <th style="width:5;">Status</th>
+                        <th style="width:5;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let ref of refReport | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index">
+                        <td style="width:2;">{{itemsPerPage*(p-1)+i+1}}</td>
+                        <td style="width:5;">{{ref.prospectName}}</td>
+                        <td style="width:5;">{{ref.contactNo}}</td>
+                        <td style="width:5;">{{ref.city}}</td>
+                        <td style="width:5;">{{ref.contactNo}}</td>
+                        <td style="width:5;">{{ref.model}}</td>
+                        <td style="width:5;">{{ref.priority}}</td>
+                        <td style="width:5;">{{ref.loginName}}</td>
+                        <td style="width:5;">{{ref.status}}</td>
+                        <td style="width:5;"><button type="button" class="btn btn-primary" (click)="rowData(ref)" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group-icon input-group-icon-left text-center mt-3">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" [hidden]="isModelAdd" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" [style.display]='showModal? "block":"none"'>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Referral</h5>
+                <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Referral Name</label><br>
+                                <input type="text" class="form-control" formControlName="referralName"
+                                    placeholder="Referral Name" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="status"><span class="required-asterisk">*</span>status</label>
+                                <select formControlName="referralStatus" class="form-control">
+                                    <option>Pending</option>
+                                    <option>acknowledged</option>
+                                    <option>won</option>
+                                    <option>lost</option>
+                                    <option>abandoned</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="model"><span class="required-asterisk">*</span>Model</label>
+                                <select id="model" formControlName="referralModel" class="form-control">
+                                    <!-- <option selected>--Select Model--</option> -->
+                                    <option *ngFor="let model of modelList" value="{{model.title}}">{{model.title}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="required-asterisk">*</span>Remarks</label><br>
+                                <textarea placeholder="{{refData?.remark}}" formControlName="referralRemark"
+                                    class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.referralRemark.errors }"></textarea>
+                                <div *ngIf="submitted && f.referralRemark.errors" class="invalid-feedback">
+                                    <div *ngIf="f.referralRemark.errors.required">Remark is required</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group" style="text-align: center;">
+                        <button type="submit" class="btn btn-primary" [hidden]="disableButton" id="closeModel">
+                            Save
+                        </button>&nbsp;
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

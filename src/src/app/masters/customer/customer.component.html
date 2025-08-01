@@ -1,0 +1,283 @@
+<div class="row mb-2">
+    <div class="col-md-6">
+        <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Customer
+        </span>
+    </div>
+    <div class="col-md-6 mob-date dashdate">
+        <div ng-app ng-controller="Ctrl" style="text-align: right; margin-top: 10px;">
+            <b style="margin-bottom: 0px;">
+                {{date | date:'dd.MM.yyyy'}}
+            </b>
+        </div>
+        <div style="text-align: right;">
+            {{date | date:'EEEE'}}
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" data-keyboard="false" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    [style.display]='showModal? "block":"none"'>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Customer</h5>
+                <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+
+
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-4">
+                            <label> <span class="required-asterisk">*</span>First Name</label><br>
+                            <input type="text" formControlName="firstName" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+                            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                                <div *ngIf="f.firstName.errors.required">First Name is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label><span class="required-asterisk">*</span>Last Name</label><br>
+                            <input type="text" formControlName="lastName" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+                            <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                                <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label><span class="required-asterisk">*</span>Login Name</label><br>
+                            <input type="text" formControlName="loginName" [pattern]="noSpacePattern"
+                                class="form-control" [ngClass]="{ 'is-invalid': submitted && f.loginName.errors}" />
+                            <div *ngIf="submitted && f.loginName.errors" class="invalid-feedback">
+                                <div *ngIf="f.loginName.errors.required">Login Name is required</div>
+                                <div *ngIf="f.loginName.errors.minlength">Login name must be at least 5 characters long.
+                                </div>
+                                <div *ngIf="f.loginName.errors.pattern">Enter login name with no space</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        
+                        <div class="col-md-4">
+
+                            <label><span class="required-asterisk">*</span>Dealer Code</label><br>
+                            <!-- <div class="row"> -->
+                            <!-- <div class="col-md-8"> -->
+                            <input class="form-control" list="select1" (change)="getState($event)"
+                                placeholder="select dealer code" formControlName="dealerName">
+                            <datalist id="select1" [ngClass]="{ 'is-invalid': submitted && f.dealerName.errors }">
+                                <option *ngFor="let dealer of dealer">{{dealer.name}}</option>
+                            </datalist>
+                            <div *ngIf="submitted && f.dealerName.errors" class="invalid-feedback">
+                                <div *ngIf="f.dealerName.errors.required">Dealer Code is required</div>
+                            </div>
+                            <!-- </div> -->
+                            <!-- <div class="col-md-4"> -->
+                            <!-- <input class="form-control" [hidden]="true" formControlName="dealercode"> -->
+                            <!-- <input class="form-control" [hidden]="true" formControlName="dealer."> -->
+                            <!-- </div> -->
+                            <!-- </div> -->
+                        </div>
+                        <div class="col-md-4">
+                            <label><span class="required-asterisk">*</span>Segmentation</label><br>
+                            <select class="form-control" formControlName="segmentation" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.segmentation.errors }">
+                                <option value="" selected hidden>Select a value</option>
+                                <option>Individual</option>
+                                <option>Contractor</option>
+                                <option>Institutional</option>
+                                <option>Others</option>
+                            </select>
+                            <div *ngIf="submitted && f.segmentation.errors" class="invalid-feedback">
+                                <div *ngIf="f.segmentation.errors.required">Segmentation is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label><span class="required-asterisk">*</span> Email</label><br>
+                            <input type="text" formControlName="email" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                <div *ngIf="f.email.errors.required">Email is required</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6">
+                            <label><span class="required-asterisk">*</span>Mobile No.</label><br>
+                            <input type="text" formControlName="phone" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.phone.errors && f.phone.invalid && f.phone.touched}" />
+                            <div *ngIf="submitted && f.phone.errors && f.phone.invalid && f.phone.touched"
+                                class="invalid-feedback">
+                                <div *ngIf="f.phone.errors.required">Contact Number is required</div>
+                                <div *ngIf="f.phone.errors.pattern">Please, Enter 10 digit Mobile Number.</div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label><span class="required-asterisk">*</span>WhatsApp No.</label>
+                            <div class="d-inline-block ml-2 form-check form-check-inline">  
+                                ( <input class="form-check-input" type="checkbox" formControlName="isWhatsAppNo" (change)="ch($event.target)" [(ngModel)]="phoneType.value">
+                                <label class="form-check-label col-form-label-sm">Same as Mobile No.</label>)
+                            </div>
+                            <br>
+                            <input type="text" formControlName="whatsAppNo" class="form-control" />
+                            <!-- [ngClass]="{ 'is-invalid': submitted && f.whatsAppNo.errors && f.whatsAppNo.invalid && f.whatsAppNo.touched}" -->
+                            <!-- <div *ngIf="submitted && f.phone.errors && f.whatsAppNo.invalid && f.whatsAppNo.touched"
+                                class="invalid-feedback">
+                                <div *ngIf="f.whatsAppNo.errors.required">Contact Number is required</div>
+                                <div *ngIf="f.whatsAppNo.errors.pattern">Please, Enter 10 digit Mobile Number.</div>
+                            </div> -->
+                        </div>
+                        <!-- <div class="col-md-4 align-end">
+                            
+                        </div> -->
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label><span class="required-asterisk">*</span>Address</label><br>
+                            <input type="text" formControlName="address" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.address.errors }" />
+                            <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
+                                <div *ngIf="f.address.errors.required">Address is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label><span class="required-asterisk">*</span> City</label><br>
+                            <input type="text" formControlName="city" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.city.errors }" />
+                            <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                                <div *ngIf="f.city.errors.required">City is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label><span class="required-asterisk">*</span>State</label><br>
+                            <input class="form-control" placeholder="select state" list="select2" formControlName="stateCode">
+                            <datalist id="select2" [ngClass]="{ 'is-invalid': submitted && f.stateCode.errors }">
+                                <option *ngFor="let state of stateData">{{state.name}}</option>
+                            </datalist>
+                            <div *ngIf="submitted && f.stateCode.errors" class="invalid-feedback">
+                                <div *ngIf="f.stateCode.errors.required">State is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="form-group" style="text-align: center;">
+
+                        <button [disabled]="loading" class="btn btn-primary">
+                            <span *ngIf="loading"></span>
+                            Save
+                        </button>&nbsp;
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <a routerLink="add" class="btn btn-sm btn-success mb-2">Add User</a> -->
+<div class="card">
+    <div class="row card-top-padding">
+        <div class="col-md-5 col-xs-12">
+            <div class="input-group-icon input-group-icon-left">
+                <form class="form-inline">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input class="form-control form-control-sm ml-3 w-87 m-mb-1" id="key-search" type="text"
+                        name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="Search"
+                        style="background-color: #d9d9d9; ">
+                </form>
+            </div>
+        </div>
+        <div class="col-md-3 col-xs-12 m-mb-1">
+            <input type="checkbox" [(ngModel)]="isChecked" (change)="inactiveRecords(isChecked)"
+                style="margin-right: 10px;"> Show Inactive
+        </div>
+        <div class="col-md-3 col-xs-8">
+            <button type="button" (click)="addcustomer()" [hidden]="showAddCustomer" class="btn btn-success m-f-left"
+                data-toggle="modal" data-target="#exampleModal"
+                style="background-color:  #3385ff; padding: 2px 10px; float: right;">
+                <i class="fa fa-plus" aria-hidden="true" style="width: 30px; -webkit-text-stroke: 0.05px white;">
+                </i>
+                NEW CUSTOMER
+            </button>
+        </div>
+        <div class="col-md-1 col-xs-4">
+            <button class="btn btn-success mr-1" title="Download Excel File" (click)="exportAsXLSX()"
+                style="float:right; padding: 3px 10px;"><i class="fas fa-download"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="tableFixHead">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark" style="position: sticky;">
+                <tr>
+
+                    <th style="width: 5%;">#</th>
+                    <th style="width: 20%">Username</th>
+                    <th style="width: 5%">Login Name</th>
+                    <th style="width: 5%">Dealer Code</th>
+                    <th style="width: 20%">Dealer Name</th>
+                    <th style="width: 10%">Address</th>
+                    <th style="width: 10%">Contact</th>
+                    <th style="width: 5%">Status</th>
+                    <th style="width: 5%">Segmentation</th>
+                    <th style="width: 5%">Created_On</th>
+                    <th style="width: 10%">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    *ngFor="let c of customer | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index ">
+                    <td>{{itemsPerPage*(p-1)+i+1}}</td>
+                    <td>{{c.firstName}} {{c.lastName}}</td>
+                    <td>{{c.loginName}}</td>
+                    <td>{{c.userDealer}}</td>
+                    <td>{{c.dealerName}}</td>
+                    <td>{{c.address}}</td>
+                    <td>{{c.phone}}</td>
+                    <td *ngIf="c.isActive == true">Active </td>
+                    <td *ngIf="c.isActive == false"> InActive </td>
+                    <td>{{c.segmentation}}</td>
+                    <td>{{c.createdAt | date:'dd-MM-yyyy'}}</td>
+                    <td style="white-space: nowrap">
+                        <button type="button" (click)="update($event,i,c.id)" id="closeModel"
+                            [hidden]="showEditCustomer" class="btn btn-sm btn-primary mr-1" data-toggle="modal"
+                            data-target="#exampleModal">
+                            <i class="far fa-edit"></i>
+                        </button>
+                        <button (click)="deletecustomer(c.id)" [hidden]="showDeleteCustomer"
+                            class="btn btn-sm btn-danger">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="!customer">
+                    <td colspan="4" class="text-center">
+                        <span class="spinner-border spinner-border-lg align-center"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="input-group-icon input-group-icon-left text-center mt-3">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+    </div>
+</div>

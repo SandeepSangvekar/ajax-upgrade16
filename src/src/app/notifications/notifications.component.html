@@ -1,0 +1,106 @@
+<div class="row mb-2">
+    <div class="col-md-6">
+        <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Notifications
+        </span>
+    </div>
+    <div class="col-md-6 mob-date dashdate">
+        <div ng-app ng-controller="Ctrl" style="text-align: right;">
+            <b style="margin-bottom: 0px;">
+                {{date | date:'dd.MM.yyyy'}}
+            </b>
+        </div>
+        <div style="text-align: right;">
+            {{date | date:'EEEE'}}
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="row card-top-padding">
+        <div class="col-md-5 m-mb-1">
+            <div class="input-group-icon input-group-icon-left">
+                <form class="form-inline">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input class="form-control form-control-sm ml-10 w-87" id="key-search" type="text" name="search"
+                        [(ngModel)]="searchText" autocomplete="off" placeholder="Search"
+                        style="background-color: #d9d9d9; ">
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-6 offset-md-1">
+            <form class="form-inline" [formGroup]="form" (ngSubmit)="onSubmit()" style="float: right;">
+                <label class="mob-footer-hide">From</label> &nbsp;
+                <input type="date" [ngModel]="startDate | date:'yyyy-MM-dd'" max="{{endDate}}"
+                    formControlName="startDate" class="form-control m-w-35"
+                    style="padding: 0px 10px; margin-right: 15px;">
+                <label>To</label> &nbsp;
+                <input type="date" [ngModel]="endDate | date:'yyyy-MM-dd'" max="{{endDate}}" formControlName="endDate"
+                    class="form-control m-w-35" placeholder="Tosasasasas"
+                    style="padding: 0px 10px; margin-right: 10px;">
+                <button class="btn btn-primary" type="button" type="submit"
+                    style="padding: 6px 7px; float: right; border: none;">GO!</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="tableFixHead">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Machine</th>
+                    <!-- <th>Type</th>
+                 <th>Mode</th> -->
+
+                    <th>Message</th>
+                    <th style="width: 10%;"> Date & Time </th>
+                    <th>Sent To</th>
+                    <th>Device Id</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr *ngFor="let v of variant"> -->
+                <tr *ngFor="let n of notification | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index"
+                    (click)="setClickedRow(i)" [class.active]="i == selectedRow">
+                    <td>{{itemsPerPage*(p-1)+i+1}}</td>
+                    <td> 
+                        <ng-container *ngIf="n.title === 'FUEL LEVEL'; else elseif1"><img class="titleIcon" src="{{fuelLevelConsumption}}" alt="Fuel Level"> {{n.title}}</ng-container>
+                        <ng-template #elseif1>
+                            <ng-container *ngIf="n.title === 'OIL PRESSURE'; else elseif2"><img class="titleIcon" src="{{engineOilPressure}}" alt="OIL PRESSURE"> {{n.title}}</ng-container>
+                        </ng-template>
+                        <ng-template #elseif2>
+                            <ng-container *ngIf="n.title === 'COOLANT TEMPERATURE'; else elseif3"><img class="titleIcon" src="{{coolant}}" alt="COOLANT TEMPERATURE"> {{n.title}}</ng-container>
+                        </ng-template>
+                        <ng-template #elseif3>
+                            <ng-container *ngIf="n.title === 'BATTERY VOLTAGE'; else else1"><img class="titleIcon" src="{{vehicleBatteryVoltage}}" alt="BATTERY VOLTAGE"> {{n.title}}</ng-container>
+                        </ng-template>
+                        <ng-template #else1><img class="titleIcon" src="{{noIcon}}" alt="No Icon">{{n.title}}</ng-template>
+                    </td>
+                    <td>{{n.pinno}}</td>
+                    <td>{{n.message}}</td>
+                    <td>{{n.createdAt | slice:8:10}}-{{n.createdAt| slice:5:7}}-{{n.createdAt| slice:0:4}}
+                            <br>
+                        {{n.createdAt | date:'h:mm:ss a':'+0000'}} </td>
+                    <td>{{n.mobileNumber}}</td>
+                    <td>{{n.deviceID}} <p *ngIf="n.type == 'dvmap'">Advanced</p>
+		<p *ngIf="n.type == 'advance'">Advanced</p>
+              <p *ngIf="n.type == 'dvmapb'">Basic</p>
+              <p *ngIf="n.type == 'bs4'">Bs4</p></td>
+                </tr>
+                <tr *ngIf="!notification">
+                    <td colspan="7" class="text-center">
+                        <span class="spinner-border spinner-border-lg align-center"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="col-md-12 col-xs-12">
+    <div class="input-group-icon input-group-icon-right text-center mt-2">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+</div>

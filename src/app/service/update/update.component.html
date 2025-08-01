@@ -1,0 +1,456 @@
+<div class="layout-style">
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Services Schedule Update
+            </span>
+        </div>
+        <div class="col-md-6 mob-date dashdate">
+            <div ng-app ng-controller="Ctrl" style="text-align: right; margin-top: 10px;">
+                <b style="margin-bottom: 0px;">
+                    {{ date | date:'dd.MM.yyyy' }}
+                </b>
+            </div>
+            <div style="text-align: right;">
+                {{ date | date:'EEEE' }}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        [style.display]='showModal? "block":"none"'>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> Update Vehicles Details</h5>
+                    <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close"
+                        id="invoiceMode">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form [formGroup]="realeseForm" (ngSubmit)="onreleaseSubmit()">
+                        <!-- <app-add></app-add>  add.component.ts -->
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-6">
+                                <label><span class="required-asterisk" style='color: red;'>*</span>Category</label><br>
+                                <select class="form-control" formControlName="category" class="form-control"
+                                    [ngClass]="{'is-invalid': realesesubmitted && f1.category.errors}"
+                                    (change)="getSubCategory()">
+                                    <option></option>
+                                    <option *ngFor="let cat of categoryDocs">{{ cat.name }}</option>
+                                </select>
+                                <div *ngIf="realesesubmitted && f1.category.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.category.errors.required">Category is required</div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <label><span class="required-asterisk" style='color: red;'>*</span> Sub
+                                    Category</label><br>
+                                <select class="form-control" formControlName="subcategory" class="form-control"
+                                    [ngClass]="{'is-invalid': realesesubmitted && f1.subcategory.errors}">
+                                    <option></option>
+                                    <option *ngFor="let sub of subcategoryDocs">{{ sub.name }}</option>
+                                </select>
+                                <div *ngIf="realesesubmitted && f1.subcategory.errors" class="invalid-feedback">
+                                    <div *ngIf="f1.subcategory.errors.required">Sub Category is required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="submit" class="btn btn-success"
+                                    style="background-color:  #3385ff;  float: right; margin-top: 37px; padding: 1px 5px;">
+                                    <i class="fa fa-plus" aria-hidden="true" style="-webkit-text-stroke: 0.05px white;">
+                                    </i>
+                                </button>
+                            </div>
+                        </div>
+                        <div *ngIf='showFromData'>
+                            <table class="table table-striped table-bordered table-hover" style="margin-top: 10px;">
+                                <thead class="thead-dark">
+                                    <th>
+                                        Category
+                                    </th>
+                                    <th>
+                                        Sub category
+                                    </th>
+                                    <th>
+                                        Actions
+                                    </th>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let t of release let i = index">
+                                        <td> {{ t.category }}</td>
+                                        <td> {{ t.subcategory }}</td>
+                                        <td>
+                                            <button style="padding: 1px 5px;"
+                                                class="btn btn-sm btn-danger btn-delete-user" (click)="delete(i)">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk" style='color: red;'>*</span>Machine Number
+                                </label><br>
+                                <input type="text" readonly [(ngModel)]="pinno" formControlName="machineno"
+                                    class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.machineno.errors }" />
+                                <div *ngIf="submitted && f.machinenoerrors" class="invalid-feedback">
+                                    <div *ngIf="f.machineno.errors.required">Machine Number is required</div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk" style='color: red;'>*</span>Completion
+                                    Date</label><br>
+                                <input type="date" formControlName="actualcompletiondate" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.actualcompletiondate.errors }" />
+                                <div *ngIf="submitted && f.actualcompletiondate.errors" class="invalid-feedback">
+                                    <div *ngIf="f.actualcompletiondate.errors.required">Completion Date is required
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label> <span class="required-asterisk" style='color: red;'>*</span>Maintenence
+                                    Details</label><br>
+                                <input type="text" formControlName="remarks" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.remarks.errors }" />
+                                <div *ngIf="submitted && f.remarks.errors" class="invalid-feedback">
+                                    <div *ngIf="f.remarks.errors.required">Maintenence Details are required</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12">
+                            <label>Upload Image</label><br>
+                            <input type="text"  formControlName="title" class="form-control" />
+                        </div>
+                    </div> -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label> <span class="required-asterisk" style='color: red;'>*</span> Cost </label><br>
+                                <input type="number" formControlName="cost" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.cost.errors }" />
+                                <div *ngIf="submitted && f.cost.errors" class="invalid-feedback">
+                                    <div *ngIf="f.cost.errors.required">Cost is required</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: none;">
+                            <label for="">Device Model</label>
+                            <input type="text" placeholder="Device Model" readonly [(ngModel)]="deviceModel"
+                                formControlName="deviceModel1" class="form-control" />
+
+                            <label for="">Device ID</label>
+                            <input type="text" placeholder="Device ID" readonly [(ngModel)]="deviceId"
+                                formControlName="deviceId1" class="form-control" />
+
+                            <label for="">Company ID</label>
+                            <input type="text" placeholder="Company ID" readonly [(ngModel)]="companyId"
+                                formControlName="companyId1" class="form-control" />
+
+                            <label for="">Service No</label>
+                            <input type="text" placeholder="Service No" readonly [(ngModel)]="snum"
+                                formControlName="snum1" class="form-control" />
+
+                            <label for="">Customer Mobile</label>
+                            <input type="text" placeholder="Customer Mobile" readonly [(ngModel)]="customerMob"
+                                formControlName="customerMob1" class="form-control" />
+
+                            <label for="">Machine No.</label>
+                            <input type="text" placeholder="Machine No." readonly [(ngModel)]="engineNo"
+                                formControlName="engineNo1" class="form-control" />
+
+                            <label for="">Type</label>
+                            <input type="text" placeholder="Type" readonly [(ngModel)]="type" formControlName="type1"
+                                class="form-control" />
+                        </div>
+
+                        <br>
+
+
+
+                        <div class="form-group" style="text-align: center;">
+
+                            <button type="submit" class="btn btn-primary" id="closeModel">
+                                Save
+                            </button>&nbsp;
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                        </div>
+                    </form>
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        [style.display]='showModal? "block":"none"'>
+        <div class="modal-dialog modal-lg" style="width: 60%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Schedule Details</h5>
+                    <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form [formGroup]="form">
+                        <!-- <app-add></app-add>  add.component.ts -->
+                        <div *ngFor="let service of service" class="m-overflow-y">
+                            <table class="table table-striped table-bordered table-hover" style="margin-top: 10px; ">
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: bold;text-align: right;">
+                                            Device Model:
+                                        </td>
+                                        <td>
+                                            {{ deviceModel }}
+                                        </td>
+                                        <td style="font-weight: bold;text-align: right;">
+                                            Schedule Date:
+                                        </td>
+                                        <td>
+                                            {{ service.scheduledCompletionDate }}
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;text-align: right;">
+                                            Variant
+                                        </td>
+                                        <td>
+                                            {{ variant }}
+                                        </td>
+                                        <td style="font-weight: bold;text-align: right;">
+                                            Completion Date:
+                                        </td>
+                                        <td>
+                                            {{ service.actualcompletiondate }}
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;text-align: right;">
+                                            Machine Number
+                                        </td>
+                                        <td>
+                                            {{ pinno }}
+                                        </td>
+                                        <td style="font-weight: bold;text-align: right;">
+                                            Category
+                                        </td>
+                                        <td>
+
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;text-align: right;">
+                                            Engine Hours
+                                        </td>
+                                        <td>
+                                            {{ totalEngineHours }}
+                                        </td>
+                                        <td style="font-weight: bold;text-align: right;">
+                                            Service Engineer
+                                        </td>
+                                        <td>
+                                            {{ service.serviceengineer }}
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;text-align: right;">
+                                            Service Number
+                                        </td>
+                                        <td>
+                                            {{ service.serviceNumber }}
+
+                                        </td>
+                                        <td style="font-weight: bold;text-align: right;">
+                                            Maintenence Details
+                                        </td>
+                                        <td>
+                                            {{ service.remarks }}
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;text-align: right;">
+                                            Service Type
+                                        </td>
+                                        <td>
+                                            {{ service.serviceType }}
+
+                                        </td>
+                                        <td style="font-weight: bold;text-align: right;">
+                                            Cost
+                                        </td>
+                                        <td>
+                                            {{ service.cost }}
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <div style="width: 50%;  display: block;margin: auto;">
+                            <table class="table table-hover" style="margin-top: 10px; ">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>Sub-Category</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let it of items">
+                                        <td>
+                                            {{ it.category }}
+                                        </td>
+                                        <td>
+                                            {{ it.subcategory }}
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="row card-top-padding">
+            <div class="col-md-6">
+                <div class="input-group-icon input-group-icon-left">
+                    <form class="form-inline">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input class="form-control form-control-sm ml-3 w-87" id="key-search" type="text" name="search"
+                            [(ngModel)]="searchText" autocomplete="off" placeholder="Search Device"
+                            style="background-color: #d9d9d9; ">
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+
+            </div>
+        </div>
+        <div class="tableFixHead">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr class="head">
+                        <th>#</th>
+                        <th>Model</th>
+                        <th>Machine Number</th>
+                        <th>Scheduled Service</th>
+                        <th>Cumm Engg. Run Hours</th>
+                        <th>Scheduled date</th>
+                        <th>Completion date</th>
+                        <th>Scheduled Since(days)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let mod of model | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index ">
+                        <td>{{itemsPerPage*(p-1)+i+1}}</td>
+                        <td>{{ mod.deviceModel }} </td>
+                        <td> {{ mod.pinno }} </td>
+                        <td>
+                            <ul *ngFor="let m of mod.services">
+                                <li>
+                                    Service Number {{ m.serviceNumber }}
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            {{ mod.totalEngineHours }}
+                        </td>
+                        <td>
+                            <ul *ngFor="let s of mod.services">
+                                <li *ngIf="s.status != 'close' ">
+                                    {{ s.scheduledCompletionDate }}
+                                </li>
+                                <li *ngIf="s.status == 'close' ">
+
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul *ngFor="let s of mod.services">
+                                <li *ngIf="s.status != 'close' ">
+
+                                </li>
+                                <li *ngIf="s.status == 'close' ">
+                                    {{ s.actualcompletiondate }}
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul *ngFor="let s of mod.services">
+                                <li *ngIf="s.status != 'close' ">
+                                    {{ s.scheduledSince }}
+                                </li>
+                                <li *ngIf="s.status == 'close' ">
+
+                                </li>
+                            </ul>
+
+                        </td>
+                        <td style="white-space: nowrap">
+                            <ul *ngFor="let m of mod.services;let t = index" style="margin: 0 0 -6px 0;">
+                                <li>
+                                    <button *ngIf="m.status == 'close' " type="button" class="btn btn-success"
+                                        style="background-color: #3bdd43; padding: 1px 15px; font-size: 12px;"
+                                        data-toggle="modal" data-target="#exampleModal3"
+                                        (click)="getService(mod.pinno,mod.deviceModel,mod.services[t].serviceNumber,mod.variant,mod.totalEngineHours)">
+                                        View
+                                    </button>
+
+                                    <button *ngIf="m.status == 'open' " type="button" class="btn btn-success"
+                                        style="background-color: #3385ff; padding: 1px 9px; font-size: 12px;"
+                                        data-toggle="modal" data-target="#exampleModal"
+                                        (click)="getCategory(mod.pinno, mod.deviceModel, mod.deviceID, mod.companyID, mod.services[t].serviceNumber, mod.customerMobile, mod.engineNumber, mod.type)">
+                                        Update
+                                    </button>
+                                </li>
+                                <br style="line-height: 100px" />
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group-icon input-group-icon-left text-center mt-3">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

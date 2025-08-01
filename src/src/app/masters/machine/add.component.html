@@ -1,0 +1,133 @@
+<!-- <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8"> -->
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add Machine</h3>
+    </div>
+</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<div class="row">
+    <div class="col-md-12">
+        <label>Select Model</label><br>
+        <select class="form-control"
+        formControlName="deviceModel" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.deviceModel.errors }"  >
+            <option *ngFor="let device of master">{{device.deviceModel}}</option>
+        </select>
+        <div *ngIf="submitted && f.deviceModel.errors" class="invalid-feedback">
+            <div *ngIf="f.deviceModel.errors.required">Model is required</div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <label>Select Variant Code</label><br>
+        <select class="form-control"
+        formControlName="variant" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.variant.errors }"  >
+            <option></option>
+        </select>
+        <div *ngIf="submitted && f.variant.errors" class="invalid-feedback">
+            <div *ngIf="f.variant.errors.required">Model is required</div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <label>Engine Number</label><br>
+        <input type="text" formControlName="machineno" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.machineno.errors }" />
+        <div *ngIf="submitted && f.machineno.errors" class="invalid-feedback">
+            <div *ngIf="f.machineno.errors.required">Machine No is required</div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- <div class="row">
+    <div class="col-md-6">
+        <label>Machine Type</label><br>
+        <select class="form-control">
+            <option></option> 
+           
+    </div>
+    <div class="col-md-6">
+        <label>CBC Transpose</label><br>
+        <select class="form-control" >
+            <option></option>
+        </select>
+    </div>
+</div> -->
+
+
+<div class="row">
+    <div class="col-md-6">
+        <label>Pin No</label><br>
+        <input type="text" formControlName="pinno" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.pinno.errors }" />
+        <div *ngIf="submitted && f.pinno.errors" class="invalid-feedback">
+            <div *ngIf="f.pinno.errors.required">Pin No is required</div>
+        </div>
+           
+    </div>
+    <div class="col-md-6">
+        <label>Battery Lot Number</label><br>
+        <input type="text" formControlName="batterylotno" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.batterylotno.errors }" />
+        <div *ngIf="submitted && f.batterylotno.errors" class="invalid-feedback">
+            <div *ngIf="f.batterylotno.errors.required">Pin No is required</div>
+        </div>
+      
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <label>Manufacturing Date</label><br>
+        <input type="date" formControlName="manufacturingDate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.manufacturingDate.errors }" />
+        <div *ngIf="submitted && f.manufacturingDate.errors" class="invalid-feedback">
+            <div *ngIf="f.manufacturingDate.errors.required">Pin No is required</div>
+        </div>
+           
+    </div>
+    <div class="col-md-6">
+        <label>Delivery Date</label><br>
+        <input type="date" formControlName="deliveryDate" class="form-control"  />
+        <!-- <div *ngIf="submitted && f.deliveryDate.errors" class="invalid-feedback">
+            <div *ngIf="f.deliveryDate.errors.required">Pin No is required</div>
+        </div> -->
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <label>Shipment Date</label><br>
+        <input type="date" formControlName="shipmentDate" class="form-control"  />
+        <!-- <div *ngIf="submitted && f.shipmentDate.errors" class="invalid-feedback">
+            <div *ngIf="f.shipmentDate.errors.required">Pin No is required</div>
+        </div> -->
+           
+    </div>
+    <div class="col-md-6">
+        <label>Battery Installation Date</label><br>
+        <input type="date" formControlName="batteryInstallationDate" class="form-control"  />
+        <!-- <div *ngIf="submitted && f.batteryInstallationDate.errors" class="invalid-feedback">
+            <div *ngIf="f.batteryInstallationDate.errors.required">Pin No is required</div>
+        </div> -->
+    </div>
+</div>
+
+<br>
+<div class="form-group" style="text-align: right;">
+    
+    <button [disabled]="loading" class="btn btn-primary">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        Save
+    </button>
+    <a routerLink="/masters" class="btn btn-link">Cancel</a>
+
+</div>
+
+</form>
+
+<!-- <div class="col-md-2"></div>
+
+</div>
+</div> -->

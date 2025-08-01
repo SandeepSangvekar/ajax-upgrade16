@@ -1,0 +1,175 @@
+<!-- Modal -->
+<div class="row mb-2">
+    <div class="col-md-6">
+        <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Vehicles Report
+        </span>
+    </div>
+    <div class="col-md-6 mob-date dashdate">
+        <div ng-app ng-controller="Ctrl" style="text-align: right;">
+            <b style="margin-bottom: 0px;">
+                {{date | date:'dd.MM.yyyy'}}
+            </b>
+        </div>
+        <div style="text-align: right;">
+            {{date | date:'EEEE'}}
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="example1" tabindex="-1" aria-labelledby="example1lLabel" aria-hidden="true"
+    [style.display]='showModal? "block":"none"'>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="example1Label">Add Customer</h5>
+                <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="Customerform" (ngSubmit)="onCustomerSubmit()">
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-4">
+                            <label><span class="required-asterisk">*</span>Customer</label><br>
+                            <select formControlName="customerID" class="form-control" #selectedList
+                                (change)="selectedCustomer(selectedList.value)"
+                                [ngClass]="{ 'is-invalid': submitted && f1.customerID.errors }">
+                                <option></option>
+                                <option *ngFor="let customer of customers" [value]="customer | json">
+                                    <span>
+                                        {{customer.firstName}} {{customer.lastName}} {{customer.loginName}}
+                                    </span>
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && f1.customerID.errors" class="invalid-feedback">
+                                <div *ngIf="f1.customerID.errors.required">Customer is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label><span class="required-asterisk">*</span>Vehicle Number</label>
+                            <input type="text" formControlName="vehicleNo" class="form-control" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f1.vehicleNo.errors }" />
+                            <div *ngIf="submitted && f1.vehicleNo.errors" class="invalid-feedback">
+                                <div *ngIf="f1.vehicleNo.errors.required">Vehicle number is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label><span class="required-asterisk">*</span>Subscription For</label><br>
+                            <select class="form-control" formControlName="subscriptionMonths" class="form-control"
+                                [ngClass]="{'is-invalid': submitted && f1.subscriptionMonths.errors}">
+                                <option>12 months</option>
+                                <option>18 months</option>
+                                <option>24 months</option>
+                                <option>36 months</option>
+                            </select>
+                            <div *ngIf="submitted && f1.subscriptionMonths.errors" class="invalid-feedback">
+                                <div *ngIf="f1.subscriptionMonths.errors.required">Subscription For is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group" style="text-align: center;">
+                        <button type="submit" class="btn btn-primary" (click)="updateCustomerMapping()"
+                            [disabled]="Customerform.invalid" id="closeModel1">
+                            Save
+                        </button>&nbsp;
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="row card-top-padding">
+        <div class="col-md-6 col-xs-10">
+            <div class="input-group-icon input-group-icon-left">
+                <form class="form-inline">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input class="form-control form-control-sm ml-10 w-87" id="key-search" type="text" name="search"
+                        [(ngModel)]="searchText" autocomplete="off" placeholder="Search"
+                        style="background-color: #d9d9d9;">
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-2">
+            <button class="btn btn-success mr-1" title="Download Excel file" (click)="exportAsXLSX()"
+                style="float:right; font-size: 10px;"><i class="fas fa-file-excel fa-2x"></i>
+            </button>
+        </div>
+    </div>
+    <div class="tableFixHead">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr class="head">
+                    <th style="width:2;">#</th>
+                    <th style="width:5;">Device Model</th>
+                    <th style="width:5;">DeviceID</th>
+                    <th style="width:5;">Variant</th>
+                    <th style="width:5;">{{pinNo}}</th>
+                    <th style="width:5;">Engine No.</th>
+                    <th style="width:5;">Manufacturing Date</th>
+                    <th style="width:5;">Machine Type</th>
+                    <th style="width:3;">cbc Transpose</th>
+                    <th style="width:5;">Battery Lot No.</th>
+                    <th style="width:14;">Delivery Date</th>
+                    <th style="width:5;">Battery Installation Date</th>
+                    <th style="width:2;">Type</th>
+                    <th style="width:10;">CreatedAt</th>
+                    <!-- <th>CustomerID</th>
+                <th>DealerID</th> -->
+                    <th style="width:2;">Device Activation QC Date</th>
+                    <th style="width:2;">Device Installation Date</th>
+                    <th style="width:2;">Vehicle Name</th>
+                    <th style="width:5;">Dealer Code</th>
+                    <th style="width:5;">Customer code</th>
+                    <th style="width:5;">Stage</th>
+                    <th style="width:3;">Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    *ngFor="let delear of reportListDocs | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index">
+                    <td style="width:2;">{{itemsPerPage*(p-1)+i+1}}</td>
+                    <td style="width:5;">{{delear.deviceModel}}</td>
+                    <td style="width:5;">{{delear.deviceID}}</td>
+                    <td style="width:5;">{{delear.variant}}</td>
+                    <td style="width:5;">{{delear.pinno}}</td>
+                    <td style="width:5;">{{delear.engineNumber}}</td>
+                    <td style="width:5;">{{delear.manufacturingDate | date:'dd-MM-yyyy'}}</td>
+                    <td style="width:5;">{{delear.machineType}}</td>
+                    <td style="width:3;">{{delear.cbcTranspose}}</td>
+                    <td style="width:5;">{{delear.batterylotno}}</td>
+                    <td style="width:14;">{{delear.deliveryDate | date:'dd-MM-yyyy'}}</td>
+                    <td style="width:5;">{{delear.batteryInstallationDate | date:'dd-MM-yyyy'}}</td>
+                    <td style="width:2;">{{delear.type}}</td>
+                    <td style="width:10;">{{delear.createdDate | date:'dd-MM-yyyy'}}</td>
+                    <!-- <td>{{delear.customerID}}</td>
+                <td>{{delear.dealerID}}</td>-->
+                    <td style="width:2;">{{delear.deviceactivationqcDate | date:'dd-MM-yyyy'}}</td>
+                    <td style="width:2;">{{delear.deviceinstallationDate | date:'dd-MM-yyyy'}}</td>
+                    <td style="width:2;">{{delear.vehicleName}}</td>
+                    <td style="width:5;">{{delear.dealerCode}}</td>
+                    <td style="width:5;">{{delear.customerCode}}</td>
+                    <td style="width:3;">{{delear?.stage}}
+                    </td>
+                    <td>
+                        <a style="margin-right: 10px;" *ngIf="delear?.stage=='3.Dealer Assigned'"><i
+                                class="fa fa-map-marker fa-lg" data-toggle="modal" data-target="#example1"
+                                (click)="mapCheck(delear)"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="input-group-icon input-group-icon-left text-center mt-3">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+    </div>
+</div>

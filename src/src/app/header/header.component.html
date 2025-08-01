@@ -1,0 +1,197 @@
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    [style.display]='showModal? "block":"none"'>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+                <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span> Login Name </label>
+
+                        </div>
+                        <div class="col-md-6">
+
+                            <input type="text" placeholder="Login Name" formControlName="loginName" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.loginName.errors }" readonly
+                                [(ngModel)]="loginName" />
+                            <div *ngIf="submitted && f.loginName.errors" class="invalid-feedback">
+                                <div *ngIf="f.loginName.errors.required">Login Name is required</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span> Old Password </label>
+
+                        </div>
+                        <div class="col-md-6">
+
+                            <input type="password" placeholder="Old Password" formControlName="oldPassword"
+                                class="form-control" [ngClass]="{ 'is-invalid': submitted && f.oldPassword.errors }" />
+                            <div *ngIf="submitted && f.oldPassword.errors" class="invalid-feedback">
+                                <div *ngIf="f.oldPassword.errors.required">Old Password is required</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span> New Password </label>
+
+                        </div>
+                        <div class="col-md-6">
+                            <input type="password" placeholder="New Password" formControlName="newPassword"
+                                class="form-control" [pattern]="checkPasswordPattern" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.newPassword.errors  }" />
+                            <div *ngIf="submitted && f.newPassword.errors" class="invalid-feedback">
+                                <div *ngIf="f.newPassword.errors.required">Password is required</div>
+                                <div *ngIf="f.newPassword.errors.pattern">
+                                    <ul>
+                                        <li>
+                                            Password must be of 8 characters
+                                        </li>
+                                        <li>
+                                            Password must have one lower case and upper case letter
+                                        </li>
+                                        <li>
+                                            Password must have one number
+                                        </li>
+                                        <li>
+                                            Password must have one special character
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div *ngIf="f.newPassword.errors.mustNotMatch">
+                                    Old and New Password cannot be same
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span> Confirm Password </label>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <input type="password" autocomplete="off" formControlName="cnPassword" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.cnPassword.errors }" />
+                            <div *ngIf="submitted && f.cnPassword.errors" class="invalid-feedback">
+                                <div *ngIf="f.cnPassword.errors.required">Password is required</div>
+                                <div *ngIf="f.cnPassword.errors.mustMatch">Passwords must match</div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group" style="text-align: center; margin-top:10px ;">
+
+                        <button type="submit" class="btn btn-primary" id="closeModel">
+                            Save
+                        </button>&nbsp;
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                    </div>
+                </form>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="changeProfile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Change Profile Photo</h5>
+                <button type="button" #closeButton2 class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="form2" (ngSubmit)="onSubmit2()" enctype="multipart/form-data">
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6">
+                            <label> <span class="required-asterisk">*</span> Select Profile Photo </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="file" name="photo" class="form-control" required accept="image/*" (change)="onFileSelect($event)" #UploadFileInput/>
+                        </div>
+                    </div>
+                    <div class="form-group" style="text-align: center; margin-top:10px ;">
+
+                        <button type="submit" class="btn btn-primary">
+                            Save
+                        </button>&nbsp;
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" style="margin: 5px 0px;">
+    <div class="col-md-4 col-sm-4 col-xs-4">
+        <img class="pro-logo" src="assets/img/company-logo.png">
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-4">
+        <h3 class="main-header">
+            AJAX Smart Fleet
+        </h3>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-4">
+        <a routerLink="notifications" style="float: right; margin-right: 4%;">
+            <i class="fa fa-bell fa-lg"></i>
+        </a>
+        <div class="dropdown header-user-icon">
+            <a href="#" id="imageDropdown" data-toggle="dropdown">
+                <i class="fa fa-user"></i>
+            </a>
+            <ul class="dropdown-menu user-menu" role="menu" aria-labelledby="imageDropdown">
+                <li class="icon_li" role="presentation">
+                    <a  data-toggle="modal" (click)="clear()"
+                    data-target="#exampleModal2"><i class="fas fa-key"> Change Password</i> </a>
+                  </li>
+                <li class="icon_li" role="presentation">
+                    <a  data-toggle="modal"
+                    data-target="#changeProfile"><i class="fa fa-image"> Change Profile Photo</i> </a>
+                  </li>
+                  <hr class="mt-1 mb-1">
+                <li class="icon_li" role="presentation" [hidden]="showManual">
+                    <a href="../../assets/files/UserManual-Admin.pdf" target="_blank"><i class="fas fa-book" style="color:black;"> User Manual(ADMIN)</i> </a>
+                  </li>
+                <li class="icon_li" role="presentation">
+                    <a href="../../assets/files/userManual-Customer.pdf" target="_blank"><i class="fas fa-book" style="color:black;"> User Manual(Customer)</i> </a>
+                  </li>
+                  <hr class="mt-1 mb-1">
+                <li class="icon_li" role="presentation">
+                    <a (click)="logout()" style="color:black;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+               
+            </ul>
+        </div>
+        <button href="#sidebar-left" data-toggle="modal" class="navbar-btn mob-navbar-btn">
+            <i class="fa fa-bars"></i>
+        </button>
+    </div>

@@ -1,0 +1,87 @@
+<div class="layout-style">
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Customer
+                Segmentation
+            </span>
+        </div>
+        <div class="col-md-6 mob-date dashdate">
+            <div ng-app ng-controller="Ctrl" style="text-align: right;">
+                <b style="margin-bottom: 0px;">
+                    {{date | date:'dd.MM.yyyy'}}
+                </b>
+            </div>
+            <div style="text-align: right;">
+                {{date | date:'EEEE'}}
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="row card-top-padding">
+            <div class="col-md-6">
+                <div class="input-group-icon input-group-icon-left">
+                    <form class="form-inline">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input class="form-control form-control-sm ml-3 w-87 m-mb-1" id="key-search" type="text"
+                            name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="Search"
+                            style="background-color: #d9d9d9; ">
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-3 offset-md-3">
+                <select class="form-control" [(ngModel)]="selectOne" [value]="selectOne"
+                    (ngModelChange)="changeSegment()">
+                    <option value="individual">Individual</option>
+                    <option value="institutional">Institutional</option>
+                    <option value="others">Others</option>
+                    <option value="contractor">Contractor</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="tableFixHead">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Segmentation</th>
+                        <th>Customer Name</th>
+                        <th>LoginName</th>
+                        <th>Contact</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>Dealer</th>
+                        <th>Machine Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let cust of customerSegmentCount | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index ">
+                        <td>{{itemsPerPage*(p-1)+i+1}}</td>
+                        <td>{{ cust.segmentation }}</td>
+                        <td>{{ cust.firstName }} {{ cust.lastName }}</td>
+                        <td>{{ cust.loginName }}</td>
+                        <td>{{ cust.phone }}</td>
+                        <td>{{ cust.city }}</td>
+                        <td>{{ cust.userState }}</td>
+                        <td>{{ cust.userDealer }}</td>
+                        <td></td>
+                    </tr>
+                    <tr *ngIf="loading == true">
+                        <td colspan="9" class="text-center">
+                            <span class="spinner-border spinner-border-lg align-center"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group-icon input-group-icon-left text-center mt-2">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

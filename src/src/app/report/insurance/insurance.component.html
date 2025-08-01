@@ -1,0 +1,303 @@
+<div class="layout-style">
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Insurance</h5>
+                    <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>{{ pinNo }}</label>
+                                <select class="form-control" formControlName="pinNo" class="form-control"
+                                    (change)="fetchData()">
+                                    <option></option>
+                                    <option *ngFor="let pList of pinNoList">{{ pList.pinno }} </option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Contact No</label>
+                                <input type="text" formControlName="contact" placeholder="Contact No"
+                                    class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Address</label>
+                                <input type="text" formControlName="address" placeholder="Address" class="form-control">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Model</label>
+                                <input type="text" formControlName="model" placeholder="Model" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Commission Date</label>
+                                <input type="date" formControlName="commissionDate" placeholder="Commission Date"
+                                    class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Customer</label>
+                                <input type="text" formControlName="customer" placeholder="Customer"
+                                    class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Insurance By</label>
+                                <select formControlName="insuranceBy" class="form-control">
+                                    <option value="Bajaj Allianz">Bajaj Allianz</option>
+				    <option value="Bharati AXA">Bharati AXA</option>
+				    <option value="ICICI Lombard">ICICI Lombard</option>
+				    <option value="IFFCO Tokio">IFFCO Tokio</option>
+				    <option value="HDFC Ergo">HDFC Ergo</option>
+				    <option value="SBI General">SBI General</option>
+				    <option value="TATA AIG">TATA AIG</option>				    
+				    <option value="Others">Others</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Policy Number</label>
+                                <input type="text" formControlName="policyNo" placeholder="Policy Number"
+                                    class="form-control">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Start Date</label>
+                                <input type="date" formControlName="startDate" placeholder="Start Date"
+                                    class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>End Date</label>
+                                <input type="date" formControlName="endDate" placeholder="End Date"
+                                    class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Product Value</label>
+                                <input type="text" formControlName="productValue" placeholder="Product Value"
+                                    class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Insurance Amt.</label>
+                                <input type="text" formControlName="insuranceAmt" placeholder="Insurance Amt."
+                                    class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>type</label>
+                                <select formControlName="type" class="form-control">
+                                    <option value="Comprehensive">Comprehensive</option>
+                                    <option value="Basic">Basic</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="text-align: center; margin-top: 10px;">
+
+                            <button [disabled]="loading" type="submit" class="btn btn-primary" id="closeModel">
+                                Save
+                            </button>&nbsp;
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- renew model start -->
+    <div class="modal fade" id="renewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Renew Insurance</h5>
+                    <button type="button" #closeButton2 class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form [formGroup]="form2" (ngSubmit)="renewSubmit()">
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>{{ pinNo }}</label>
+                                <input type="text" formControlName="pinNo2" placeholder="Pin No" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.pinNo?.errors }">
+                                <div *ngIf="submitted && f.pinNo?.errors" class="invalid-feedback">
+                                    <div *ngIf="f.pinNo?.errors.required">Pin No is required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Contact No</label>
+                                <input type="text" formControlName="contact2" placeholder="Contact No"
+                                    class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Address</label>
+                                <input type="text" formControlName="address2" placeholder="Address" class="form-control">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Model</label>
+                                <input type="text" formControlName="model2" placeholder="Model" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Commission Date</label>
+                                <input type="date" formControlName="commissionDate2" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Customer</label>
+                                <input type="text" formControlName="customer2" placeholder="Customer"
+                                    class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Insurance By</label>
+                                <select formControlName="insuranceBy2" class="form-control">                                    
+                                    <option value="Bajaj Allianz">Bajaj Allianz</option>
+				    <option value="Bharati AXA">Bharati AXA</option>
+				    <option value="ICICI Lombard">ICICI Lombard</option>
+				    <option value="IFFCO Tokio">IFFCO Tokio</option>
+				    <option value="HDFC Ergo">HDFC Ergo</option>
+				    <option value="SBI General">SBI General</option>
+				    <option value="TATA AIG">TATA AIG</option>				    
+				    <option value="Others">Others</option>
+
+
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Policy Number</label>
+                                <input type="text" formControlName="policyNo2" placeholder="Policy Number"
+                                    class="form-control">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Start Date</label>
+                                <input type="date" formControlName="startDate2" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>End Date</label>
+                                <input type="date" formControlName="endDate2" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Product Value</label>
+                                <input type="text" formControlName="productValue2" placeholder="Product Value"
+                                    class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Insurance Amt.</label>
+                                <input type="text" formControlName="insuranceAmt2" placeholder="Insurance Amt."
+                                    class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>type</label>
+                                <select formControlName="type2" class="form-control">
+				<option value="Comprehensive">Comprehensive</option>
+				<option value="Basic">Basic</option>
+                               </select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="text-align: center; margin-top: 10px;">
+
+                            <button [disabled]="loading" type="submit" class="btn btn-primary" id="closeModel">
+                                Save
+                            </button>&nbsp;
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+			
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- renew model end -->
+
+    <div class="row mb-2">
+        <div class="col-md-6 banner-sec">
+            <a onclick="goBack()"> <i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Insurance
+            </span>
+        </div>
+        <div class="col-md-6 banner-sec mob-date dashdate">
+            <div ng-app ng-controller="Ctrl" style="text-align: right;">
+                <b style="margin-bottom: 0px;">
+                    {{date | date:'dd.MM.yyyy'}}
+                </b>
+            </div>
+            <div style="text-align: right;">
+                {{date | date:'EEEE'}}
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="row card-top-padding">
+            <div class="col-md-6 col-xs-10">
+                <div class="input-group-icon input-group-icon-left">
+                    <form class="form-inline">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input class="form-control form-control-sm ml-10 w-87" [(ngModel)]="searchText" id="key-search" type="text" name="search" autocomplete="off" placeholder="Search" style="background-color: #d9d9d9; ">
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-2">
+                <button type="button" class="btn btn-success m-mb-1" data-toggle="modal" data-target="#addModal"
+                    style="background-color:  #3385ff; padding: 2px 10px; float: right;" (click)="getPinNo()">
+                    Add
+                </button>
+            </div>
+        </div>
+        <div class="tableFixHead">
+            <table class="table table-striped table-bordered table-hover m-table-width">
+                <thead class="thead-dark" style="position: sticky;">
+                    <tr>
+                        <th rowspan="2" style="width: 3%;">#</th>
+                        <th rowspan="2" style="width: 15%;">{{pinNo}}</th>
+                        <th rowspan="2">Model</th>
+                        <th rowspan="2">Customer</th>
+                        <th rowspan="2">Comm. Date</th>
+                        <th colspan="3" style="text-align: center;">Policy</th>
+                        <!-- <th rowspan="2">Vehicle No</th> -->
+                        <th rowspan="2">Days remaining</th>
+                        <th rowspan="2">Action</th>
+                    </tr>
+                    <tr>
+                        <th>Type</th>
+                        <th>Insured By</th>
+                        <th>End Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let d of insuranceList | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index">
+                        <td style="width: 3%;">{{itemsPerPage*(p-1)+i+1}} </td>
+                        <td style="width: 15%;">{{ d.pinno }}</td>
+                        <td>{{ d.model }}</td>
+                        <td>{{ d.customer }}</td>
+                        <td>{{ d.commissionDate }}</td>
+                        <td>{{ d.type }}</td>
+                        <td>{{ d.insuranceBy }}</td>
+                        <td>{{ d.endDate }}</td>
+                        <td>---</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                data-target="#renewModal" (click)="getRenewData(d.pinno, d.contactNo, d.address, d.model, d.commissionDate, d.customer, d.insuranceBy, d.policyNumber, d.startDate, d.endDate, d.productValue, d.insuranceAmt, d.type)">
+                                Renew
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!insuranceList">
+                        <td colspan="10" class="text-center">
+                            <span class="spinner-border spinner-border-lg align-center"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group-icon input-group-icon-left text-center mt-3">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

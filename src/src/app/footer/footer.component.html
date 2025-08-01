@@ -1,0 +1,66 @@
+<!-- Footer -->
+<footer class="mob-footer-hide" style="background-color: #404040; color: white; width: 100%; font-size: small; padding: 5px 0;">
+    <!-- Copyright -->
+    <div class="row">
+        <div class="col-md-5">
+            <div class="row" style="margin-left:4%;">
+                <div class="col-md-3">
+                    Manual
+                </div>
+                <div class="col-md-3">
+                    <a data-toggle="modal" (click)="clear()" data-target="#exampleModal3">Feedback</a>
+                </div>
+            </div>          
+        </div>
+        <div class="col-md-7" style="text-align: right;">
+           <div style="margin-right: 2%;">
+               Powered By Augmented Transformations
+            </div>
+        </div>
+    </div>
+  </footer>
+  <!-- Footer -->
+
+  <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    [style.display]='showModal? "block":"none"'>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Feedback Form</h5>
+                <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <label>&nbsp;&nbsp; Your feedback is important to us. Pls share your inputs.</label>
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-5">
+                            <label> <span class="required-asterisk">*</span>Rating</label>
+                        </div>
+                        <div class="star-rating-container star-rating-animation" fxLayout="row" fxLayoutAlign="start center">
+                            <div *ngFor="let star of stars" [ngClass]="[star.class]"  [(ngModal)]="selectedRating" (click)="selectStar(star.id)" required>
+                                <i class="fas fa-star">{{icon}}</i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-5">
+                            <label>Remarks</label>
+                        </div>
+                        <div class="col-md-7">
+                            <textarea type="text" placeholder="Pls enter your remarks / suggestions" formControlName="comment" rows="3" class="form-control"></textarea>
+                        </div>
+                    </div>
+                   
+                    <div class="form-group" style="text-align: center; margin-top:10px;">
+                        <button type="submit" class="btn btn-primary" id="closeModel">
+                            Submit
+                        </button>&nbsp;
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

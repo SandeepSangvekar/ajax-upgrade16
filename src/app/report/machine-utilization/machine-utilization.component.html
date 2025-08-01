@@ -1,0 +1,174 @@
+<div class="layout-style">
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Machine
+                Utilization
+            </span>
+        </div>
+        <div class="col-md-6 mob-date dashdate">
+            <div ng-app ng-controller="Ctrl" style="text-align: right;">
+                <b style="margin-bottom: 0px;">
+                    {{date | date:'dd.MM.yyyy'}}
+                </b>
+            </div>
+            <div style="text-align: right;">
+                {{date | date:'EEEE'}}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Action</h5>
+                    <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Model</label>
+                                <input type="text" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label><span class="required-asterisk">*</span>Vehicle Number</label>
+                                <input type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Engine Hrs</label>
+                                <input type="text" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label><span class="required-asterisk">*</span>Service No</label>
+                                <input type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Assigned To</label>
+                                <input type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Remarks</label>
+                                <input type="text" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Status</label>
+                                <select class="form-control">
+                                    <option>Pending</option>
+                                    <option>Acknowledged</option>
+                                    <option>Closed</option>
+                                    <option>Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group" style="text-align: center;">
+
+                            <button class="btn btn-primary">
+                                <!-- <span *ngIf="loading"></span> -->
+                                Submit
+                            </button>&nbsp;
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="row card-top-padding">
+            <div class="col-md-5">
+                <div class="input-group-icon input-group-icon-left">
+                    <form class="form-inline">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input class="form-control form-control-sm ml-10 w-87 m-mb-1" id="key-search" type="text"
+                            name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="Search"
+                            style="background-color: #d9d9d9; ">
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 offset-md-1">
+                <form class="form-inline" [formGroup]="form" (ngSubmit)="onSubmit()" style="float: right;">
+                    <label class="mob-footer-hide">From</label> &nbsp;
+                    <input type="date" class="form-control m-w-35" [ngModel]="startDate | date:'yyyy-MM-dd'"
+                        max="{{endDate}}" formControlName="startDate" style="padding: 0px 10px; margin-right: 15px;">
+                    <label>To</label> &nbsp;
+                    <input type="date" class="form-control m-w-35" [ngModel]="endDate | date:'yyyy-MM-dd'"
+                        max="{{endDate}}" formControlName="endDate" placeholder="Tosasasasas"
+                        style="padding: 0px 10px; margin-right: 10px;">
+                    <button class="btn btn-primary" type="button" type="submit"
+                        style="padding: 6px 7px; float: right; border: none;">GO!</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="tableFixHead">
+            <table class="table table-striped table-bordered table-hover m-table-width">
+                <thead class="thead-dark" style="position: sticky;">
+                    <tr>
+                        <th rowspan="2" style="width: 5%;">#</th>
+                        <th rowspan="2" style="width: 15%;">Pinno</th>
+                        <th rowspan="2">Total days</th>
+                        <th colspan="2" class="text-center">Engine Hours</th>
+                        <th colspan="2" class="text-center">No of Batches</th>
+                        <th rowspan="2">Total Wt(kgs)</th>
+                        <th rowspan="2">CuM</th>
+                        <th colspan="3" class="text-center">% Utilization</th>
+                    </tr>
+                    <tr>
+                        <th>Ideal</th>
+                        <th>Actual</th>
+                        <th>Ideal</th>
+                        <th>Actual</th>
+                        <th>Engine Hours</th>
+                        <th>Batches</th>
+                        <th>Production</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let item of mutilizationdatadocs  | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index ">
+                        <td style="width: 5%;">{{ itemsPerPage*(p-1)+i+1 }}</td>
+                        <td style="width: 15%;">{{item.pinno}}</td>
+                        <td>{{item.totalDays}}</td>
+                        <td>{{item.idealEngineHours}}</td>
+                        <td>{{item.actualEngineHours}}</td>
+                        <td>{{item.idealBatchCount}}</td>
+                        <td>{{item.actualBatchCount}}</td>
+                        <td>{{item.totalWeight}}</td>
+                        <td>{{item.CuM}}</td>
+                        <td>{{item.engineHourUtilization}}</td>
+                        <td>{{item.batchUtilization}}</td>
+                        <td>{{item.production}}</td>
+                    </tr>
+
+                    <tr *ngIf="!mutilizationdatadocs">
+                        <td colspan="12" class="text-center">
+                            <span class="spinner-border spinner-border-lg align-center"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group-icon input-group-icon-left text-center mt-3">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

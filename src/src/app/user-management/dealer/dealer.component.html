@@ -1,0 +1,260 @@
+<!-- Modal -->
+<div class="layout-style">
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Dealers
+            </span>
+        </div>
+        <div class="col-md-6 mob-date dashdate">
+            <div ng-app ng-controller="Ctrl" style="text-align: right;">
+                <b style="margin-bottom: 0px;">
+                    {{date | date:'dd.MM.yyyy'}}
+                </b>
+            </div>
+            <div style="text-align: right;">
+                {{date | date:'EEEE'}}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        [style.display]='showModal? "block":"none"'>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Dealer</h5>
+                    <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                        <!-- <app-add></app-add>  add.component.ts -->
+
+
+
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-4">
+                                <label><span class="required-asterisk" style='color: red;'>*</span>Dealer
+                                    Name</label><br>
+                                <input type="text" placeholder="Dealer Name"
+                                    [ngClass]="{ 'is-invalid': submitted && f.name.errors}" formControlName="name"
+                                    class="form-control" />
+                                <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                    <div *ngIf="f.name.errors.required">Dealer Name is required</div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <label><span class="required-asterisk" style='color: red;'>*</span> Dealer
+                                    Code</label><br>
+                                <input type="text" placeholder="Dealer Code" formControlName="code"
+                                    [ngClass]="{ 'is-invalid': submitted && f.code.errors}" class="form-control" />
+                                <div *ngIf="submitted && f.code.errors" class="invalid-feedback">
+                                    <div *ngIf="f.code.errors.required">Dealer Code is required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label> <span class="required-asterisk" style='color: red;'>*</span> Market/Country
+                                </label><br>
+                                <select class="form-control" formControlName="marketCode" (click)="getZone()"
+                                    [ngClass]="{ 'is-invalid': submitted && f.marketCode.errors }">
+                                    <option *ngFor="let mar of market">{{mar.code}}</option>
+                                </select>
+                                <div *ngIf="submitted && f.marketCode.errors" class="invalid-feedback">
+                                    <div *ngIf="f.marketCode.errors.required">Market/Country is required</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="row" style="margin-top: 10px;">
+                        </div> -->
+
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-4">
+                                <label> <span class="required-asterisk" style='color: red;'>*</span> Select Zone
+                                </label><br>
+                                <select class="form-control" formControlName="zoneCode" (click)="getSubZone()"
+                                    [ngClass]="{ 'is-invalid': submitted && f.zoneCode.errors }">
+                                    <option>{{zoneCode}}</option>
+                                    <option *ngFor="let zon of zone">
+                                        <span>{{zon.code}}</span>
+                                    </option>
+
+                                </select>
+                                <div *ngIf="submitted && f.zoneCode.errors" class="invalid-feedback">
+                                    <div *ngIf="f.zoneCode.errors.required">Zone is required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label> <span class="required-asterisk" style='color: red;'>*</span> Select Sub-Zone
+                                </label><br>
+                                <select class="form-control" formControlName="subzoneCode" (click)="getState()"
+                                    [ngClass]="{ 'is-invalid': submitted && f.subzoneCode.errors }">
+                                    <option>{{subzoneCode}}</option>
+                                    <option *ngFor="let sub of subzone">{{sub.code}}</option>
+
+                                </select>
+                                <div *ngIf="submitted && f.subzoneCode.errors" class="invalid-feedback">
+                                    <div *ngIf="f.subzoneCode.errors.required">Subzone is required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label> <span class="required-asterisk" style='color: red;'>*</span> State </label><br>
+                                <select class="form-control" formControlName="stateCode" [value]='stateCode'
+                                    [ngClass]="{ 'is-invalid': submitted && f.stateCode.errors }">
+                                    <option>{{stateCode}}</option>
+                                    <option *ngFor="let state of states">{{state.name}}</option>
+
+                                </select>
+                                <div *ngIf="submitted && f.stateCode.errors" class="invalid-feedback">
+                                    <div *ngIf="f.stateCode.errors.required">State is required</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-4">
+                                <label> Address</label><br>
+                                <textarea class="form-control" formControlName="address" rows="2" id="to"
+                                    placeholder="Enter Here"></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Pin Code</label><br>
+                                <input type="text" class="form-control" placeholder="Pin Code" formControlName="pinCode"
+                                    class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Latitude</label><br>
+                                <input type="text" class="form-control" placeholder="Lat" formControlName="lat"
+                                    class="form-control" />
+
+                            </div>
+                        </div>
+
+
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-4">
+                                <label>Longitude</label><br>
+                                <input type="text" class="form-control" placeholder="Lng" formControlName="lng"
+                                    class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Contact No.</label><br>
+                                <input type="text" placeholder="Contact Number" [pattern]="mobileNumberPattern"
+                                    maxlength="10"
+                                    [ngClass]="{ 'is-invalid': submitted && f.contactNo.errors && f.contactNo.dirty}"
+                                    formControlName="contactNo" class="form-control" />
+                                <div *ngIf="submitted && f.contactNo.errors && f.contactNo.dirty"
+                                    class="invalid-feedback">
+                                    <div *ngIf="f.contactNo.errors.pattern">Please, Enter 10 digit Mobile Number.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Contact Person</label><br>
+                                <input type="text" placeholder="Contact Person" formControlName="contactPerson"
+                                    class="form-control" />
+
+                            </div>
+                        </div>
+                        <!-- <div class="row" style="margin-top: 10px;">
+                            
+                        </div> -->
+                        <br>
+
+
+                        <div class="form-group" style="text-align: center;">
+
+                            <button type="submit" class="btn btn-primary" id="closeModel"
+                                style="background-color: #bfbfbf; color: black; border: none;outline: none;">
+                                SAVE AND UPDATE
+                            </button>
+
+                        </div>
+                    </form>
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="row card-top-padding">
+            <div class="col-md-6">
+                <div class="input-group-icon input-group-icon-left">
+                    <form class="form-inline">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input class="form-control form-control-sm ml-3 w-87" id="key-search" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="Search Dealer" style="background-color: #d9d9d9; ">
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 m-mt-5 m-f-13">
+                <input type="checkbox" [(ngModel)]="isChecked" style="margin-right: 10px;"
+                    (change)="inactiveRecords(isChecked)"> Show Inactive Dealers
+                <button type="button" class="btn btn-success" (click)="addDealer()" data-toggle="modal"
+                    data-target="#exampleModal" style="background-color:  #3385ff; padding: 2px 10px; float: right;">
+
+                    <i class="fa fa-plus" aria-hidden="true" style="width: 30px; -webkit-text-stroke: 0.05px white;">
+
+                    </i>
+                    ADD DEALER
+                </button>
+            </div>
+        </div>
+        <div class="tableFixHead">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr class="head">
+                        <th>#</th>
+                        <th>Dealer Name</th>
+                        <th>Code</th>
+                        <th>Market</th>
+                        <th>State</th>
+                        <th>Zone</th>
+                        <th>Sub Zone</th>
+                        <th style='width: 10%;'>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <tr *ngFor="let mod of model"> -->
+                    <tr
+                        *ngFor="let deal of dealer  | filter:searchText | paginate : {itemsPerPage : 50, currentPage : p} let i = index ">
+                        <td>{{itemsPerPage*(p-1)+i+1}}</td>
+                        <td> {{deal.name}} </td>
+                        <td>{{deal.code}}</td>
+                        <td> {{deal.marketCode}}</td>
+                        <td> {{deal.stateCode}}</td>
+                        <td>{{deal.zoneCode}}</td>
+                        <td>{{deal.subzoneCode}}</td>
+                        <td style="white-space: nowrap">
+                            <button type="button" id="closeModel" class="btn btn-sm btn-primary mr-1"
+                                data-toggle="modal" data-target="#exampleModal" (click)="update($event,i,deal.id)"
+                                style="padding: 1px 5px;">
+                                Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger btn-delete-user" style="padding: 1px 5px;"
+                                (click)="deleteDealer(deal.id)"> Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!dealer">
+                        <td colspan="8" class="text-center">
+                            <span class="spinner-border spinner-border-lg align-center"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group-icon input-group-icon-left text-center mt-2">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

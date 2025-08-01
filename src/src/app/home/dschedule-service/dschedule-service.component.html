@@ -1,0 +1,113 @@
+<div class="layout-style">
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Scheduled Service
+            </span>
+        </div>
+        <div class="col-md-6 mob-date dashdate">
+            <div ng-app ng-controller="Ctrl" style="text-align: right;">
+                <b style="margin-bottom: 0px;">
+                    {{date | date:'dd.MM.yyyy'}}
+                </b>
+            </div>
+            <div style="text-align: right;">
+                {{date | date:'EEEE'}}
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="row card-top-padding">
+            <div class="col-md-6">
+                <div class="input-group-icon input-group-icon-left">
+                    <form class="form-inline">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input class="form-control form-control-sm ml-3 w-87 m-mb-1" id="key-search" type="text"
+                            name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="Search"
+                            style="background-color: #d9d9d9; ">
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-3 offset-md-3">
+                <select class="form-control" [(ngModel)]="selectOne" [value]="selectOne"
+                    (ngModelChange)="changeSegment()">
+                    <option value="scheduled">Scheduled</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="tableFixHead">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th rowspan="2">#</th>
+                        <th rowspan="2">Model</th>
+                        <th rowspan="2">Variant</th>
+                        <th rowspan="2">{{pinNo}}</th>
+                        <th colspan="4" class="text-center">Service</th>
+                    </tr>
+                    <tr>
+                        <th>No</th>
+                        <th>Type</th>
+                        <th>Completion Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let serviceCount of servicesCount | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index ">
+                        <td>{{itemsPerPage*(p-1)+i+1}}</td>
+                        <td>{{ serviceCount.deviceModel }}</td>
+                        <td>{{ serviceCount.variant }}</td>
+                        <td>{{ serviceCount.pinno }}</td>
+                        <td>
+                            <ul>
+                                <li *ngFor="let m of serviceCount.services">
+                                    {{m.serviceNumber}}
+                                    <br>
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li *ngFor="let m of serviceCount.services">
+                                    {{m.serviceType}}
+                                    <br>
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li *ngFor="let m of serviceCount.services">
+                                    {{m.scheduledCompletionDate}}
+                                    <br>
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li *ngFor="let m of serviceCount.services">
+                                    {{m.status}}
+                                    <br>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr *ngIf="loading == true">
+                        <td colspan="8" class="text-center">
+                            <span class="spinner-border spinner-border-lg align-center"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group-icon input-group-icon-left text-center mt-3">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

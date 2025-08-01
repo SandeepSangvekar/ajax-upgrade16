@@ -1,0 +1,63 @@
+.tableFixHead
+{
+  overflow: auto;
+}
+
+.table-width {
+  width: 135%
+}
+
+@media(max-width: 480px)
+{
+  .mob-table {
+    width: 421%;
+  }
+}
+
+ul.dataList {
+  padding: 0 0 0 5px;
+}
+// header fix start
+tbody {
+  display:block;
+  height:315px;
+  overflow:auto;
+}
+thead, tbody tr {
+  display:table;
+  width:100%;
+  table-layout:fixed;/* even columns width , fix width of table too*/
+}
+thead {
+  width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
+}
+// header fix end
+
+.modal-header {
+  background-color: #454397;
+}
+
+.modal-title {
+  color: #fff;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: small;
+}
+
+th,
+td {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+}
+
+.head th{
+  vertical-align: top;
+}
+
+.table tr.active td {
+  background-color:#454397 !important;
+  color: white;
+}

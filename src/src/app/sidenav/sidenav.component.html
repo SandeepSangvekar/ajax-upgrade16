@@ -1,0 +1,303 @@
+<div class="desk-menu" style="background: #454397; align-items: center; margin: 50% auto;">
+    <nav class="navbar">
+        <ul class="navbar-nav" style="list-style-type:none; padding: 0;">
+            <li class="nav-item" style="margin-bottom:75px; margin-top: -30px;">
+                <!-- <img src="assets/img/fav-logo.png" class="sidebar-logo"> -->
+                <img src="{{ userProfile }}" class="sidebar-logo">
+            </li>
+            <li class="nav-item" *ngIf="dashboard">
+                <a class="sideBar-icon" *ngIf="userType == 'customer'" routerLink="/dashboard/CustomerDashboard"
+                    routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                    style="display: block; margin: auto;">
+                    <img src="assets/img/Dashboard Icon.png" class="icon" title="Dashboard">
+                </a>
+                <a class="sideBar-icon" *ngIf="userType != 'customer'" routerLink="/dashboard" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}" style="display: block; margin: auto;">
+                    <img src="assets/img/Dashboard Icon.png" class="icon" title="Dashboard">
+                </a>
+            </li>
+
+            <!--  <a class="sideBar-icon" routerLink="/masters" routerLinkActive="active">Machine</a>
+    <a class="sideBar-icon" routerLink="/device" routerLinkActive="active">Device</a> -->
+            <li class="nav-item" *ngIf="masters">
+                <div class="dropdown">
+                    <a class="sideBar-icon" href="#" id="imageDropdown" data-toggle="dropdown">
+                        <img src="assets/img/Breifcase Icon.png" class="icon" title="Master">
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="imageDropdown"
+                        style="background-color: #454397; border: 0px; outline: 0px;">
+                        <li class="icon_li" role="presentation" *ngIf="model"><a class="menu" role="menuitem"
+                                routerLink="/masters/model">Model</a></li>
+                        <li class="icon_li" role="presentation" *ngIf="variant"><a class="menu icon_li" role="menuitem"
+                                tabindex="-1" routerLink="/masters/variant">Variant</a></li>
+                        <li class="icon_li" role="presentation" *ngIf="machine"><a class="menu icon_li" role="menuitem"
+                                tabindex="-1" routerLink="/masters/machine">Machine</a></li>
+                        <li class="icon_li" role="presentation" *ngIf="device"><a class="menu icon_li" role="menuitem"
+                                 tabindex="-1" routerLink="/masters/device">Device</a></li>
+                        <li class="icon_li" role="presentation" *ngIf="customer"><a class="menu icon_li" role="menuitem"
+                                tabindex="-1" routerLink="/masters/customer">Customer</a></li>
+                        <li class="icon_li" role="presentation" *ngIf="location"><a class="menu icon_li" role="menuitem"
+                                tabindex="-1" routerLink="/masters/location">Location</a></li>
+                        <li class="icon_li" role="presentation" *ngIf="geofence"><a class="menu icon_li" role="menuitem"
+                                tabindex="-1" routerLink="/masters/geofencing">Geofence</a></li>
+                        <li class="icon_li" role="presentation" *ngIf="shipment"><a class="menu icon_li" role="menuitem"
+                                tabindex="-1" routerLink="/masters/shipment">Shipment</a></li>
+                        <li class="icon_li" role="presentation" *ngIf="serviceMaster"><a class="menu icon_li"
+                                role="menuitem" tabindex="-1" routerLink="/masters/service">Service</a></li>
+                        <li class="icon_li" role="presentation" *ngIf="roles"><a class="menu icon_li" role="menuitem"
+                                tabindex="-1" routerLink="masters/roles">Roles</a></li>
+
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item" *ngIf="trackvehicles">
+                <a class="sideBar-icon" routerLink="/track">
+                    <img src="assets/img/Truck Icon.png" title="Track Vehicles" class='icon' style="width: 30px;">
+                </a>
+            </li>
+            <li class="nav-item" *ngIf="services">
+                <div class="dropdown">
+                    <a class="sideBar-icon" href="#" id="imageDropdown2" data-toggle="dropdown">
+                        <img src="assets/img/Settings Icon.png" class="icon" title="Services">
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="imageDropdown2"
+                        style="background-color: #454397; border: 0px; outline: 0px;">
+                        <li class="icon_li" role="presentation" *ngIf="schedules"><a class="menu icon_li"
+                                role="menuitem" tabindex="-1" routerLink="/service/schedule">Schedule</a></li>
+                        <li class="icon_li" role="presentation" *ngIf="update"><a class="menu icon_li" role="menuitem"
+                                tabindex="-1" routerLink="/service/update">Update</a></li>
+                        <!-- <li class="icon_li" role="presentation" *ngIf="createondemand"><a class="menu icon_li" role="menuitem" tabindex="-1" routerLink="service/register-service-report">Create OnDemand</a></li> -->
+
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item" *ngIf="reports">
+                <div class="dropdown">
+                    <a class="sideBar-icon" href="#" id="imageDropdown3" data-toggle="dropdown">
+                        <img src="assets/img/report.svg" class='icon' title="Reports">
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="imageDropdown3"
+                        style="background-color: #454397; border: 0px; outline: 0px;">
+                        <li role="presentation" *ngIf="vehicle"><a class="menu" role="menuitem"
+                                routerLink="report">Vehicle</a></li>
+                        <li role="presentation" *ngIf="batch"><a class="menu" role="menuitem"
+                                routerLink="report/batch-report">Batch data</a></li>
+                        <li role="presentation" *ngIf="serviceReport"><a class="menu" role="menuitem"
+                                routerLink="report/service-report">Service Report</a></li>
+                        <li role="presentation" *ngIf="qatesting"><a class="menu" role="menuitem"
+                                routerLink="report/qa-testing">QA Testing</a> </li>
+                        <li role="presentation" *ngIf="noniotMachines"><a class="menu" role="menuitem"
+                                routerLink="report/non-iot-machines-report">Non IOT Machines</a></li>
+                        <li role="presentation" *ngIf="userlogs"><a class="menu" role="menuitem"
+                                routerLink="report/userLogs_report">User Logs</a> </li>
+                        <li role="presentation" *ngIf="refferal"><a class="menu" role="menuitem"
+                                routerLink="report/reportRefferal">Refferal</a></li>
+                        <li role="presentation" *ngIf="insurance"><a class="menu" role="menuitem"
+                                routerLink="report/insurance">Insurance</a></li>
+                        <li role="presentation" *ngIf="devicenotmapped"><a class="menu" role="menuitem"
+                                routerLink="report/device-not-mapped">Device Not Mapped</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item" *ngIf="usermanagement">
+                <div class="dropdown">
+                    <a class="sideBar-icon" href="#" id="imageDropdown3" data-toggle="dropdown">
+                        <img src="assets/img/Users.png" class="icon" title="User Management">
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="imageDropdown3"
+                        style="background-color: #454397; border: 0px; outline: 0px;">
+                        <li role="presentation" *ngIf="users"><a class="menu" role="menuitem"
+                                routerLink="/user/userlist">Users</a></li>
+                        <li role="presentation" *ngIf="dealers"><a class="menu" role="menuitem"
+                                routerLink="/user/dealer">Dealers</a></li>
+                    </ul>
+                </div>
+            </li>
+            <!-- analytics not added according to roles -->
+            <li class="nav-item" *ngIf="analytics">
+                <div class="dropdown">
+                    <a class="sideBar-icon" id="imageDropdown3" data-toggle="dropdown">
+                        <img src="assets/img/analytics.png" class='icon' title="Analytics">
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="imageDropdown3"
+                        style="background-color: #454397; border: 0px; outline: 0px;">
+                        <li role="presentation" *ngIf="machineUtilization"><a class="menu" role="menuitem"
+                                routerLink="report/machine_utilization_report">Machine Utilization</a></li>
+                        <li role="presentation" *ngIf="subscription"><a class="menu" role="menuitem"
+                                routerLink="report/subscription">Subscription</a></li>
+                        <li role="presentation" *ngIf="battery"><a class="menu" role="menuitem"
+                                routerLink="analytics/battery">Battery</a></li>
+                        <li role="presentation" *ngIf="fuel"><a class="menu" role="menuitem"
+                                routerLink="analytics/fuel">Fuel</a></li>
+
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+<!-- Mobile Responsive Menu -->
+<!-- Sidebar Left -->
+<div class="modal mobi-menu fade left" data-keyboard="false" data-backdrop="static" id="sidebar-left" tabindex="-1"
+    role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header mob-nab-header">
+                <button type="button" class="close" data-dismiss="modal"><i class="fa fa-arrow-left"></i></button>
+                <!-- <h4 class="modal-title">Left Sidebar</h4> -->
+            </div>
+            <div class="modal-body" style="padding: 0px;">
+                <div style="background: #454397; align-items: center;">
+                    <nav class="navbar">
+                        <ul class="navbar-nav" style="list-style-type:none; padding: 0;">
+                            <li class="nav-item" style="margin-bottom:30px;">
+                                <img src="assets/img/fav-logo.png" class="sidebar-logo">
+                            </li>
+                            <li class="nav-item" *ngIf="dashboard">
+                                <a class="sideBar-icon" routerLink="/dashboard" routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact: true}" style="display: block; margin: auto;">
+
+                                    <img src="assets/img/Dashboard Icon.png" class="icon" title="Dashboard">
+                                </a>
+                            </li>
+
+                            <!--  <a class="sideBar-icon" routerLink="/masters" routerLinkActive="active">Machine</a>
+                    <a class="sideBar-icon" routerLink="/device" routerLinkActive="active">Device</a> -->
+
+                            <li class="nav-item" *ngIf="masters">
+                                <div class="dropdown">
+                                    <a class="sideBar-icon" href="#" id="imageDropdown" data-toggle="dropdown">
+                                        <img src="assets/img/Breifcase Icon.png" class="icon" title="Master">
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="imageDropdown"
+                                        style="background-color: #454397; border: 0px; outline: 0px;">
+                                        <li class="icon_li" role="presentation" *ngIf="model"><a class="menu"
+                                                role="menuitem" routerLink="/masters/model">Model</a></li>
+                                        <li class="icon_li" role="presentation" *ngIf="variant"><a class="menu icon_li"
+                                                role="menuitem" tabindex="-1" routerLink="/masters/variant">Variant</a>
+                                        </li>
+                                        <li class="icon_li" role="presentation" *ngIf="machine"><a class="menu icon_li"
+                                                role="menuitem" tabindex="-1" routerLink="/masters/machine">Machine</a>
+                                        </li>
+                                        <li class="icon_li" role="presentation" *ngIf="device"><a class="menu icon_li"
+                                                role="menuitem" tabindex="-1"
+                                                routerLink="/masters/device">Device</a></li>
+                                        <li class="icon_li" role="presentation" *ngIf="customer"><a class="menu icon_li"
+                                                role="menuitem" tabindex="-1"
+                                                routerLink="/masters/customer">Customer</a></li>
+                                        <li class="icon_li" role="presentation" *ngIf="location"><a class="menu icon_li"
+                                                role="menuitem" tabindex="-1"
+                                                routerLink="/masters/location">Location</a></li>
+                                        <li class="icon_li" role="presentation" *ngIf="geofence"><a class="menu icon_li"
+                                                role="menuitem" tabindex="-1"
+                                                routerLink="/masters/geofencing">Geofence</a></li>
+                                        <li class="icon_li" role="presentation" *ngIf="shipment"><a class="menu icon_li"
+                                                role="menuitem" tabindex="-1"
+                                                routerLink="/masters/shipment">Shipment</a></li>
+                                        <li class="icon_li" role="presentation" *ngIf="serviceMaster"><a
+                                                class="menu icon_li" role="menuitem" tabindex="-1"
+                                                routerLink="/masters/service">Service</a></li>
+                                        <li class="icon_li" role="presentation" *ngIf="roles"><a class="menu icon_li"
+                                                role="menuitem" tabindex="-1" routerLink="masters/roles">Roles</a></li>
+
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item" *ngIf="trackvehicles">
+                                <a class="sideBar-icon" routerLink="/track">
+                                    <img src="assets/img/Truck Icon.png" title="Track Vehicles" class='icon'
+                                        style="width: 30px;">
+                                </a>
+                            </li>
+                            <li class="nav-item" *ngIf="services">
+                                <div class="dropdown">
+                                    <a class="sideBar-icon" href="#" id="imageDropdown2" data-toggle="dropdown">
+                                        <img src="assets/img/Settings Icon.png" class="icon" title="Services">
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="imageDropdown2"
+                                        style="background-color: #454397; border: 0px; outline: 0px;">
+                                        <li class="icon_li" role="presentation" *ngIf="schedules"><a
+                                                class="menu icon_li" role="menuitem" tabindex="-1"
+                                                routerLink="/service/schedule">Schedule</a></li>
+                                        <li class="icon_li" role="presentation" *ngIf="update"><a class="menu icon_li"
+                                                role="menuitem" tabindex="-1" routerLink="/service/update">Update</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item" *ngIf="reports">
+                                <div class="dropdown">
+                                    <a class="sideBar-icon" href="#" id="imageDropdown3" data-toggle="dropdown">
+                                        <img src="assets/img/report.svg" class='icon' title="Reports">
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="imageDropdown3"
+                                        style="background-color: #454397; border: 0px; outline: 0px;">
+                                        <li role="presentation" *ngIf="vehicle"><a class="menu" role="menuitem"
+                                                routerLink="report">Vehicle</a></li>
+                                        <li role="presentation" *ngIf="batch"><a class="menu" role="menuitem"
+                                                routerLink="report/batch-report">Batch data</a></li>
+
+                                        <li role="presentation" *ngIf="serviceReport"><a class="menu" role="menuitem"
+                                                routerLink="report/service-report">Service Report</a></li>
+                                        <li role="presentation" *ngIf="qatesting"><a class="menu" role="menuitem"
+                                                routerLink="report/qa-testing">QA Testing</a> </li>
+                                        <li role="presentation" *ngIf="noniotMachines"><a class="menu" role="menuitem"
+                                                routerLink="report/non-iot-machines-report">Non IOT Machines</a></li>
+                                        <li role="presentation" *ngIf="userlogs"><a class="menu" role="menuitem"
+                                                    routerLink="report/userLogs_report">User Logs</a> </li>
+                                        <li role="presentation" *ngIf="refferal"><a class="menu" role="menuitem"
+                                                    routerLink="report/reportRefferal">Refferal</a></li>
+                                        <li role="presentation" *ngIf="insurance"><a class="menu" role="menuitem"
+                                                    routerLink="report/insurance">Insurance</a></li>
+                                        <li role="presentation" *ngIf="devicenotmapped"><a class="menu" role="menuitem"
+                                                    routerLink="report/device-not-mapped">Device Not Mapped</a></li>
+
+
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item" *ngIf="usermanagement">
+                                <div class="dropdown">
+                                    <a class="sideBar-icon" href="#" id="imageDropdown3" data-toggle="dropdown">
+                                        <img src="assets/img/Users.png" class="icon" title="User Management">
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="imageDropdown3"
+                                        style="background-color: #454397; border: 0px; outline: 0px;">
+                                        <li role="presentation" *ngIf="users"><a class="menu" role="menuitem"
+                                                routerLink="/user/userlist">Users</a></li>
+                                        <li role="presentation" *ngIf="dealers"><a class="menu" role="menuitem"
+                                                routerLink="/user/dealer">Dealers</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="nav-item" *ngIf="analytics">
+                                <div class="dropdown">
+                                    <div class="sideBar-icon" id="imageDropdown3" data-toggle="dropdown">
+                                        <img src="assets/img/analytics.png" class='icon' title="Analytics">
+                                    </div>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="imageDropdown3"
+                                        style="background-color: #454397; border: 0px; outline: 0px;">
+                                        <li role="presentation" *ngIf="machineUtilization"><a class="menu"
+                                                role="menuitem" routerLink="report/machine_utilization_report">Machine
+                                                Utilization</a></li>
+
+
+                                        <li role="presentation" *ngIf="subscription"><a class="menu" role="menuitem"
+                                                routerLink="report/subscription">Subscription</a></li>
+                                        <li role="presentation" *ngIf="battery"><a class="menu" role="menuitem"
+                                                routerLink="analytics/battery">Battery</a></li>
+                                        <li role="presentation" *ngIf="fuel"><a class="menu" role="menuitem"
+                                                routerLink="analytics/fuel">Fuel</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

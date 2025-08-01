@@ -1,0 +1,79 @@
+<div class="layout-style">
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Top 5 Performance
+            </span>
+        </div>
+        <div class="col-md-6 mob-date dashdate">
+            <div ng-app ng-controller="Ctrl" style="text-align: right;">
+                <b style="margin-bottom: 0px;">
+                    {{date | date:'dd.MM.yyyy'}}
+                </b>
+            </div>
+            <div style="text-align: right;">
+                {{date | date:'EEEE'}}
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="row card-top-padding">
+            <div class="col-md-6">
+                <div class="input-group-icon input-group-icon-left">
+                    <form class="form-inline">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input class="form-control form-control-sm ml-3 w-87 m-mb-1" id="key-search" type="text"
+                            name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="Search"
+                            style="background-color: #d9d9d9; ">
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-3 offset-md-3">
+                <select class="form-control" [(ngModel)]="selectMonth" [value]="selectMonth"
+                    (ngModelChange)="changeMonth()">
+                    <!-- <option value="">Select Month</option> -->
+                    <option value="lastMonth">Last Month</option>
+                    <option value="currentMonth">Current Month</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="tableFixHead">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Model</th>
+                        <th>Variant</th>
+                        <th>Pin No</th>
+                        <th>Engine Hrs</th>
+                        <th>Distance (Kms)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let p of top5Performers | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index ">
+                        <td>{{i+1}}</td>
+                        <td>{{ p.deviceModel }}</td>
+                        <td>{{ p.variant }}</td>
+                        <td>{{ p.pinno }}</td>
+                        <td>{{ (p.totalSecond)*(1/3600)| number}}</td>
+                        <td>{{ p.totalDistance| number }}</td>
+                    </tr>
+                    <tr *ngIf="loading == true">
+                        <td colspan="6" class="text-center">
+                          <span class="spinner-border spinner-border-lg align-center"></span>
+                        </td>
+                      </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group-icon input-group-icon-left text-center mt-3">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

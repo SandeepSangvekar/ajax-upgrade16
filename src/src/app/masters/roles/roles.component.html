@@ -1,0 +1,560 @@
+<div class="layout-style">
+  <div class="row mb-2">
+    <div class="col-md-6">
+      <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Roles
+      </span>
+    </div>
+    <div class="col-md-6 mob-date dashdate">
+      <div ng-app ng-controller="Ctrl" style="text-align: right; margin-top: 10px;">
+        <b style="margin-bottom: 0px;">{{xdate | date:'dd.MM.yyyy'}}</b>
+      </div>
+      <div style="text-align: right;">{{xdate | date:'EEEE'}}</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row card-top-padding">
+      <div class="col-md-6">
+        <div class="input-group-icon input-group-icon-left">
+          <form class="form-inline">
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <input class="form-control form-control-sm ml-3 w-87 m-mb-1" id="key-search" type="text" name="search"
+              [(ngModel)]="searchText" autocomplete="off" placeholder="Search" style="background-color: #d9d9d9; ">
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="tableFixHead">
+      <table class="table table-striped table-bordered table-hover" style="margin-top: 10px;">
+        <thead class="thead-dark" style="position: sticky;">
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Usetype</th>
+            <th>Description</th>
+            <th>Code</th>
+            <th>Created On</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let role of rolesData | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index">
+            <td>{{itemsPerPage*(p-1)+i+1}}</td>
+            <td>{{role.name}}</td>
+            <td>{{role.useType}}</td>
+            <td>{{role.description}}</td>
+            <td>{{role.code}}</td>
+            <!-- <td>{{role.updatedBy}}</td>
+              <td>{{role.updatedAt | date:'dd-MM-yyyy'}}</td> 
+              <td>{{role.createdBy}}</td> -->
+            <td>{{role.createdDate | date:'dd-MM-yyyy'}}</td>
+            <td style="white-space: nowrap">
+              <button type="button" (click)="getRole($event,i, role.code)" id="closeModel"
+                class="btn btn-sm btn-primary mr-1" data-toggle="modal" data-target="#exampleModal"><i
+                  class="far fa-edit"></i></button>
+            </td>
+          </tr>
+          <tr *ngIf="!rolesData">
+            <td colspan="4" class="text-center">
+              <span class="spinner-border spinner-border-lg align-center"></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="input-group-icon input-group-icon-left text-center mt-3">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    [style.display]='showModal? "block":"none"'>
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Roles</h5>
+          <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body" *ngFor="let roles of rolesMenu">
+          <h3>{{roles.name}}</h3>
+          <hr>
+          <form [formGroup]="rolesForm">
+            <div class="row">
+              <div class="col-md-6">
+                <table class="table table-striped table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Main Menu</th>
+                      <th scope="col">Link</th>
+                      <th scope="col">Add</th>
+                      <th scope="col">Edit</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Dashboard</td>
+                      <td><input type="checkbox" name="add" id="linkDashboard"
+                          [checked]="roles.roleMenus.dashboard?.link"></td>
+                      <td><input type="checkbox" name="add" id="addDashboard" [checked]="roles.roleMenus.dashboard?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editDashboard"
+                          [checked]="roles.roleMenus.dashboard?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deleteDashboard"
+                          [checked]="roles.roleMenus.dashboard?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Masters</td>
+                      <td><input type="checkbox" name="add" id="linkmasters" [checked]="roles.roleMenus.masters?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addmasters" [checked]="roles.roleMenus.masters?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editmasters" [checked]="roles.roleMenus.masters?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deletemasters"
+                          [checked]="roles.roleMenus.masters?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Track Vehicles</td>
+                      <td><input type="checkbox" name="add" id="linktrackvehicles"
+                          [checked]="roles.roleMenus.trackvehicles?.link"></td>
+                      <td><input type="checkbox" name="add" id="addtrackvehicles"
+                          [checked]="roles.roleMenus.trackvehicles?.add"></td>
+                      <td><input type="checkbox" name="add" id="edittrackvehicles"
+                          [checked]="roles.roleMenus.trackvehicles?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deletetrackvehicles"
+                          [checked]="roles.roleMenus.trackvehicles?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Services</td>
+                      <td><input type="checkbox" name="add" id="linkservices" [checked]="roles.roleMenus.services?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addservices" [checked]="roles.roleMenus.services?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editservices" [checked]="roles.roleMenus.services?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deleteservices"
+                          [checked]="roles.roleMenus.services?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>User Management</td>
+                      <td><input type="checkbox" name="add" id="linkusermanagement"
+                          [checked]="roles.roleMenus.usermanagement?.link"></td>
+                      <td><input type="checkbox" name="add" id="addusermanagement"
+                          [checked]="roles.roleMenus.usermanagement?.add"></td>
+                      <td><input type="checkbox" name="add" id="editusermanagement"
+                          [checked]="roles.roleMenus.usermanagement?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deleteusermanagement"
+                          [checked]="roles.roleMenus.usermanagement?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Reports</td>
+                      <td><input type="checkbox" name="add" id="linkreports" [checked]="roles.roleMenus.reports?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addreports" [checked]="roles.roleMenus.reports?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editreports" [checked]="roles.roleMenus.reports?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deletereports"
+                          [checked]="roles.roleMenus.reports?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Analytics</td>
+                      <td><input type="checkbox" name="add" id="linkanalyticsreport"
+                          [checked]="roles.roleMenus.analytics?.link"></td>
+                      <td><input type="checkbox" name="add" id="addanalyticsreport"
+                          [checked]="roles.roleMenus.analytics?.add"></td>
+                      <td><input type="checkbox" name="add" id="editanalyticsreport"
+                          [checked]="roles.roleMenus.analytics?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deleteanalyticsreport"
+                          [checked]="roles.roleMenus.analytics?.delete"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-md-6">
+                <h6>Sub Menu</h6>
+                <table class="table table-striped table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Master</th>
+                      <th scope="col">Link</th>
+                      <th scope="col">Add</th>
+                      <th scope="col">Edit</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Model</td>
+                      <td><input type="checkbox" name="add" id="linkmodel" [checked]="roles.roleMenus.model?.link"></td>
+                      <td><input type="checkbox" name="add" id="addmodel" [checked]="roles.roleMenus.model?.add"></td>
+                      <td><input type="checkbox" name="add" id="editmodel" [checked]="roles.roleMenus.model?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deletemodel" [checked]="roles.roleMenus.model?.delete">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Variant</td>
+                      <td><input type="checkbox" name="add" id="linkvariant" [checked]="roles.roleMenus.variant?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addvariant" [checked]="roles.roleMenus.variant?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editvariant" [checked]="roles.roleMenus.variant?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deletevariant"
+                          [checked]="roles.roleMenus.variant?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Machine</td>
+                      <td><input type="checkbox" name="add" id="linkmachine" [checked]="roles.roleMenus.machine?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addmachine" [checked]="roles.roleMenus.machine?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editmachine" [checked]="roles.roleMenus.machine?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deletemachine"
+                          [checked]="roles.roleMenus.machine?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Device</td>
+                      <td><input type="checkbox" name="add" id="linkdevice" [checked]="roles.roleMenus.device?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="adddevice" [checked]="roles.roleMenus.device?.add"></td>
+                      <td><input type="checkbox" name="add" id="editdevice" [checked]="roles.roleMenus.device?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deletedevice" [checked]="roles.roleMenus.device?.delete">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Customer</td>
+                      <td><input type="checkbox" name="add" id="linkcustomer" [checked]="roles.roleMenus.customer?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addcustomer" [checked]="roles.roleMenus.customer?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editcustomer" [checked]="roles.roleMenus.customer?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deletecustomer"
+                          [checked]="roles.roleMenus.customer?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Location</td>
+                      <td><input type="checkbox" name="add" id="linklocation" [checked]="roles.roleMenus.location?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addlocation" [checked]="roles.roleMenus.location?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editlocation" [checked]="roles.roleMenus.location?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deletelocation"
+                          [checked]="roles.roleMenus.location?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Geofence</td>
+                      <td><input type="checkbox" name="add" id="linkgeofence" [checked]="roles.roleMenus.geofence?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addgeofence" [checked]="roles.roleMenus.geofence?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editgeofence" [checked]="roles.roleMenus.geofence?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deletegeofence"
+                          [checked]="roles.roleMenus.geofence?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Shipment</td>
+                      <td><input type="checkbox" name="add" id="linkshipment" [checked]="roles.roleMenus.shipment?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addshipment" [checked]="roles.roleMenus.shipment?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editshipment" [checked]="roles.roleMenus.shipment?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deleteshipment"
+                          [checked]="roles.roleMenus.shipment?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Service</td>
+                      <td><input type="checkbox" name="add" id="linkservice" [checked]="roles.roleMenus.service?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addservice" [checked]="roles.roleMenus.service?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editservice" [checked]="roles.roleMenus.service?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deleteservice"
+                          [checked]="roles.roleMenus.service?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Roles</td>
+                      <td><input type="checkbox" name="add" id="linkrolesMaster" [checked]="roles.roleMenus.roles?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addrolesMaster" [checked]="roles.roleMenus.roles?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editrolesMaster" [checked]="roles.roleMenus.roles?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deleterolesMaster"
+                          [checked]="roles.roleMenus.roles?.delete"></td>
+                    </tr>
+                  </tbody>
+                  <thead>
+                    <tr>
+                      <th scope="col">Users</th>
+                      <th scope="col">Link</th>
+                      <th scope="col">Add</th>
+                      <th scope="col">Edit</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Users</td>
+                      <td><input type="checkbox" name="add" id="linkusers" [checked]="roles.roleMenus.users?.link"></td>
+                      <td><input type="checkbox" name="add" id="addusers" [checked]="roles.roleMenus.users?.add"></td>
+                      <td><input type="checkbox" name="add" id="editusers" [checked]="roles.roleMenus.users?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deleteusers" [checked]="roles.roleMenus.users?.delete">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Dealers</td>
+                      <td><input type="checkbox" name="add" id="linkdealers" [checked]="roles.roleMenus.dealers?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="adddealers" [checked]="roles.roleMenus.dealers?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editdealers" [checked]="roles.roleMenus.dealers?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deletedealers"
+                          [checked]="roles.roleMenus.dealers?.delete"></td>
+                    </tr>
+                  </tbody>
+                  <thead>
+                    <tr>
+                      <th scope="col">Services</th>
+                      <th scope="col">Link</th>
+                      <th scope="col">Add</th>
+                      <th scope="col">Edit</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Schedules</td>
+                      <td><input type="checkbox" name="add" id="linkschedules"
+                          [checked]="roles.roleMenus.schedules?.link"></td>
+                      <td><input type="checkbox" name="add" id="addschedules" [checked]="roles.roleMenus.schedules?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editschedules"
+                          [checked]="roles.roleMenus.schedules?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deleteschedules"
+                          [checked]="roles.roleMenus.schedules?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Update</td>
+                      <td><input type="checkbox" name="add" id="linkupdate" [checked]="roles.roleMenus.update?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addupdate" [checked]="roles.roleMenus.update?.add"></td>
+                      <td><input type="checkbox" name="add" id="editupdate" [checked]="roles.roleMenus.update?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deleteupdate" [checked]="roles.roleMenus.update?.delete">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Create OnDemand</td>
+                      <td><input type="checkbox" name="add" id="linkcreateondemand"
+                          [checked]="roles.roleMenus.createondemand?.link"></td>
+                      <td><input type="checkbox" name="add" id="addcreateondemand"
+                          [checked]="roles.roleMenus.createondemand?.add"></td>
+                      <td><input type="checkbox" name="add" id="editcreateondemand"
+                          [checked]="roles.roleMenus.createondemand?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deletecreateondemand"
+                          [checked]="roles.roleMenus.createondemand?.delete"></td>
+                    </tr>
+                  </tbody>
+                  <thead>
+                    <tr>
+                      <th scope="col">Report</th>
+                      <th scope="col">Link</th>
+                      <th scope="col">Add</th>
+                      <th scope="col">Edit</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Vehicle</td>
+                      <td><input type="checkbox" name="add" id="linkvehreport" [checked]="roles.roleMenus.vehicle?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addvehreport" [checked]="roles.roleMenus.vehicle?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editvehreport" [checked]="roles.roleMenus.vehicle?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deletevehreport"
+                          [checked]="roles.roleMenus.vehicle?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Batch</td>
+                      <td><input type="checkbox" name="add" id="linkbatchreport" [checked]="roles.roleMenus.batch?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addbatchreport" [checked]="roles.roleMenus.batch?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editbatchreport" [checked]="roles.roleMenus.batch?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deletebatchreport"
+                          [checked]="roles.roleMenus.batch?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Service</td>
+                      <td><input type="checkbox" name="add" id="linkservicereport"
+                          [checked]="roles.roleMenus.serviceReport?.link"></td>
+                      <td><input type="checkbox" name="add" id="addservicereport"
+                          [checked]="roles.roleMenus.serviceReport?.add"></td>
+                      <td><input type="checkbox" name="add" id="editservicereport"
+                          [checked]="roles.roleMenus.serviceReport?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deleteservicereport"
+                          [checked]="roles.roleMenus.serviceReport?.delete"></td>
+                    </tr>
+
+                    <tr>
+                      <td>QA Testing</td>
+                      <td><input type="checkbox" name="add" id="linkqareport"
+                          [checked]="roles.roleMenus.qatesting?.link"></td>
+                      <td><input type="checkbox" name="add" id="addqareport" [checked]="roles.roleMenus.qatesting?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editqareport"
+                          [checked]="roles.roleMenus.qatesting?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deleteqareport"
+                          [checked]="roles.roleMenus.qatesting?.delete"></td>
+                    </tr>
+
+                    <tr>
+                      <td>Subscription</td>
+                      <td><input type="checkbox" name="add" id="linksubscriptionreport"
+                          [checked]="roles.roleMenus.subscription?.link"></td>
+                      <td><input type="checkbox" name="add" id="addsubscriptionreport"
+                          [checked]="roles.roleMenus.subscription?.add"></td>
+                      <td><input type="checkbox" name="add" id="editsubscriptionreport"
+                          [checked]="roles.roleMenus.subscription?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deletesubscriptionreport"
+                          [checked]="roles.roleMenus.subscription?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Non IOT Machines</td>
+                      <td><input type="checkbox" name="add" id="linknoniotreport"
+                          [checked]="roles.roleMenus.noniotMachines?.link"></td>
+                      <td><input type="checkbox" name="add" id="addnoniotreport"
+                          [checked]="roles.roleMenus.noniotMachines?.add"></td>
+                      <td><input type="checkbox" name="add" id="editnoniotreport"
+                          [checked]="roles.roleMenus.noniotMachines?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deletenoniotreport"
+                          [checked]="roles.roleMenus.noniotMachines?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>User Logs</td>
+                      <td><input type="checkbox" name="add" id="linkuserlogsreport"
+                          [checked]="roles.roleMenus.userlogs?.link"></td>
+                      <td><input type="checkbox" name="add" id="adduserlogsreport"
+                          [checked]="roles.roleMenus.userlogs?.add"></td>
+                      <td><input type="checkbox" name="add" id="edituserlogsreport"
+                          [checked]="roles.roleMenus.userlogs?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deleteuserlogsreport"
+                          [checked]="roles.roleMenus.userlogs?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Refferal</td>
+                      <td><input type="checkbox" name="add" id="linkrefferalreport"
+                          [checked]="roles.roleMenus.refferal?.link"></td>
+                      <td><input type="checkbox" name="add" id="addrefferalreport"
+                          [checked]="roles.roleMenus.refferal?.add"></td>
+                      <td><input type="checkbox" name="add" id="editrefferalreport"
+                          [checked]="roles.roleMenus.refferal?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deleterefferalreport"
+                          [checked]="roles.roleMenus.refferal?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Insurance</td>
+                      <td><input type="checkbox" name="add" id="linkinsurancereport"
+                          [checked]="roles.roleMenus.insurance?.link"></td>
+                      <td><input type="checkbox" name="add" id="addinsurancereport"
+                          [checked]="roles.roleMenus.insurance?.add"></td>
+                      <td><input type="checkbox" name="add" id="editinsurancereport"
+                          [checked]="roles.roleMenus.insurance?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deleteinsurancereport"
+                          [checked]="roles.roleMenus.insurance?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Device Not Mapped</td>
+                      <td><input type="checkbox" name="add" id="linkdevicenotmappedreport"
+                        [checked]="roles.roleMenus.deviceNotMappedReport?.link"></td>
+                          
+                      <td><input type="checkbox" name="add" id="adddevicenotmappedreport"
+                          [checked]="roles.roleMenus.deviceNotMappedReport?.add"></td>
+                      <td><input type="checkbox" name="add" id="editdevicenotmappedreport"
+                          [checked]="roles.roleMenus.deviceNotMappedReport?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deletedevicenotmappedreport"
+                          [checked]="roles.roleMenus.deviceNotMappedReport?.delete"></td>
+                    </tr>
+                  </tbody>
+                  <thead>
+                    <tr>
+                      <th scope="col">Analytics</th>
+                      <th scope="col">Link</th>
+                      <th scope="col">Add</th>
+                      <th scope="col">Edit</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Machine Utilization</td>
+                      <td><input type="checkbox" name="add" id="linkutireport"
+                          [checked]="roles.roleMenus.machineUtilization?.link"></td>
+                      <td><input type="checkbox" name="add" id="addutireport"
+                          [checked]="roles.roleMenus.machineUtilization?.add"></td>
+                      <td><input type="checkbox" name="add" id="editutireport"
+                          [checked]="roles.roleMenus.machineUtilization?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deleteutireport"
+                          [checked]="roles.roleMenus.machineUtilization?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Battery</td>
+                      <td><input type="checkbox" name="add" id="linkbatteryreport"
+                          [checked]="roles.roleMenus.battery?.link"></td>
+                      <td><input type="checkbox" name="add" id="addbatteryreport"
+                          [checked]="roles.roleMenus.battery?.add"></td>
+                      <td><input type="checkbox" name="add" id="editbatteryreport"
+                          [checked]="roles.roleMenus.battery?.edit"></td>
+                      <td><input type="checkbox" name="add" id="deletebatteryreport"
+                          [checked]="roles.roleMenus.battery?.delete"></td>
+                    </tr>
+                    <tr>
+                      <td>Fuel</td>
+                      <td><input type="checkbox" name="add" id="linkfuelreport" [checked]="roles.roleMenus.fuel?.link">
+                      </td>
+                      <td><input type="checkbox" name="add" id="addfuelreport" [checked]="roles.roleMenus.fuel?.add">
+                      </td>
+                      <td><input type="checkbox" name="add" id="editfuelreport" [checked]="roles.roleMenus.fuel?.edit">
+                      </td>
+                      <td><input type="checkbox" name="add" id="deletefuelreport"
+                          [checked]="roles.roleMenus.fuel?.delete"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="form-group" style="text-align: center;">
+              <button type="button" class="btn btn-sm btn-primary mr-1" (click)="rolesSubmit(roles.id)"> Update
+              </button>
+              <button type="button" class="btn btn-sm btn-primary mr-1" data-dismiss="modal">Close</button>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+   
+      </div> -->
+      </div>
+    </div>
+  </div>
+</div>

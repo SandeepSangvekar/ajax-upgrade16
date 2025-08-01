@@ -1,0 +1,245 @@
+<div class="layout-style">    
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Upcoming Services
+            </span>
+        </div>
+        <div class="col-md-6 mob-date dashdate">
+            <div ng-app ng-controller="Ctrl" style="text-align: right; margin-top: 10px;">
+                <b style="margin-bottom: 0px;">
+                    {{date | date:'dd.MM.yyyy'}}
+                </b>
+            </div>
+            <div style="text-align: right;">
+                {{date | date:'EEEE'}}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        [style.display]='showModal? "block":"none"'>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Schedule Details</h5>
+                    <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                        <!-- <app-add></app-add>  add.component.ts -->
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-6">
+                                <label>Device Model </label><br>
+                                <input type="text" placeholder="XXXXXX" readonly [(ngModel)]="deviceModel"
+                                    formControlName="dmodel" class="form-control" />
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Pin No </label><br>
+                                <input type="text" placeholder="XXXXXX" readonly [(ngModel)]="pinno"
+                                    formControlName="pinno" id="pinno" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-6">
+                                <label>Engine Hours</label><br>
+                                <input type="text" formControlName="enhr" readonly [(ngModel)]="enhr"
+                                    class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Service Number </label><br>
+                                <input type="text" placeholder="XXXXXX" formControlName="serviceNumber" readonly
+                                    [(ngModel)]="snum" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.serviceNumber.errors }" />
+                                <div *ngIf="submitted && f.serviceNumber.errors" class="invalid-feedback">
+                                    <div *ngIf="f.serviceNumber.errors.required">Service Number is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="padding: 18px 15px 5px;">
+                                <span style="font-size: 17px; font-weight: 600;">Customer given details:</span>
+                            </div>
+                            <!-- <div class="col-md-6">
+                            <label>Customer Lat. </label><br>
+                            <input type="text" formControlName="customerLat1" readonly [(ngModel)]="customerLat" class="form-control" />
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label>Customer Long. </label><br>
+                            <input type="text" readonly formControlName="customerLong1" [(ngModel)]="customerLong" class="form-control" />
+                        </div> -->
+                            <div class="col-md-6">
+                                <label>Dealer Code </label><br>
+                                <input type="text" formControlName="dealerCode1" readonly [(ngModel)]="dealerCode"
+                                    class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label>Given Date </label><br>
+                                <input type="date" [(ngModel)]="customerScheduleDate" formControlName="gdate"
+                                    class="form-control" />
+                            </div>
+
+                            <!-- <div class="row" style="margin-top: 10px;">
+                    </div> -->
+
+                            <div class="col-md-6">
+                                <label> <span class="required-asterisk">*</span>Expected Date Of Completion</label><br>
+                                <input type="date" formControlName="scheduledCompletionDate" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted && f.scheduledCompletionDate.errors }" />
+                                <div *ngIf="submitted && f.scheduledCompletionDate.errors" class="invalid-feedback">
+                                    <div *ngIf="f.scheduledCompletionDate.errors.required">Expected Date Of Completion
+                                        is
+                                        required</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label><span class="required-asterisk"></span>Customer Remarks</label><br>
+                                <textarea class="form-control" formControlName="customerRemarks1"
+                                    [(ngModel)]="customerRemarks" rows="2" readonly></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Data for Send Notification start here -->
+                        <div style="display: none;">
+                            <input type="text" placeholder="Device ID" readonly [(ngModel)]="deviceId"
+                                formControlName="deviceId1" class="form-control" />
+                            <input type="text" placeholder="Company ID" readonly [(ngModel)]="companyId"
+                                formControlName="companyId1" class="form-control" />
+                            <input type="text" placeholder="Customer Mobile" readonly [(ngModel)]="customerMob"
+                                formControlName="customerMob1" class="form-control" />
+                            <input type="text" placeholder="Machine No." readonly [(ngModel)]="engineNo"
+                                formControlName="engineNo1" class="form-control" />
+                            <input type="text" placeholder="Type" readonly [(ngModel)]="type" formControlName="type1"
+                                class="form-control" />
+                        </div>
+                        <!-- Data for Send Notification end here -->
+
+                        <br>
+                        <div class="form-group" style="text-align: center;">
+
+                            <button [disabled]="loading" type="submit" class="btn btn-primary" id="closeModel">
+                                Save
+                            </button>&nbsp;
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                        </div>
+                    </form>
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="row card-top-padding">
+            <div class="col-md-6">
+                <div class="input-group-icon input-group-icon-left">
+                    <form class="form-inline">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input class="form-control form-control-sm ml-3 w-87" id="key-search" type="text" name="search"
+                            [(ngModel)]="searchText" autocomplete="off" placeholder="Search Device"
+                            style="background-color: #d9d9d9; ">
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+
+            </div>
+        </div>
+        <div class="tableFixHead">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr class="head">
+                        <th style="width: 5%;">#</th>
+                        <th style="width: 10%">Model</th>
+                        <th style="width: 15%">Machine Number</th>
+                        <th> Cumm Engine hours</th>
+                        <th> Upcoming Service</th>
+                        <th> Service Due On</th>
+                        <th style="width: 15%">Schedule Run Hours</th>
+                        <th style="width: 10%">Action</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let mod of model | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index ">
+                        <td>{{itemsPerPage*(p-1)+i+1}}</td>
+                        <td>{{mod.deviceModel}} </td>
+                        <td> {{mod.pinno}} </td>
+                        <td>
+                            {{mod.totalEngineHours}}
+                        </td>
+                        <td>
+                            <ul *ngFor="let m of mod.upcomingServices">
+                                <li>
+                                    Service Number {{m.serviceNumber}}
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul *ngFor="let m of mod.upcomingServices">
+                                <li *ngIf="today <= m.serviceDueOn" class="text-success">
+                                    {{m.serviceDueOn | slice:8:10}}-{{m.serviceDueOn | slice:5:7}}-{{m.serviceDueOn |
+                                    slice:0:4}}
+                                </li>
+                                <li *ngIf="today > m.serviceDueOn" class="text-danger">
+                                    {{m.serviceDueOn | slice:8:10}}-{{m.serviceDueOn | slice:5:7}}-{{m.serviceDueOn |
+                                    slice:0:4}}
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul *ngFor="let m of mod.upcomingServices">
+                                <li>
+                                    {{m.serviceDueAfterSeconds / 3600}} hrs
+                                </li>
+                            </ul>
+                        </td>
+
+
+                        <td style="white-space: nowrap">
+                            <ul *ngFor="let m of mod.upcomingServices; let t = index">
+                                <li style="display: inline-flex;">
+                                    <span *ngIf="m.customerScheduleDate">
+                                        <i class="fas fa-hand-paper text-warning"></i> &nbsp;
+                                    </span>
+                                    <span *ngIf="!m.customerScheduleDate">
+                                        &nbsp; &nbsp; &nbsp;
+                                    </span>
+                                    <button type="button" class="btn btn-success"
+                                        style="background-color:  #3385ff; padding: 1px 7px; float: right; font-size: 12px;"
+                                        data-toggle="modal" data-target="#exampleModal3"
+                                        (click)="register(mod.pinno,mod.totalEngineHours,mod.upcomingServices[t].serviceNumber,mod.deviceModel,mod.deviceID,mod.companyID,mod.customerMobile,mod.engineNumber,mod.type,mod.upcomingServices[t].customerLat,mod.upcomingServices[t].customerLong,mod.upcomingServices[t].dealerCode, mod.upcomingServices[t].customerScheduleDate,mod.upcomingServices[t].customerRemarks)">
+                                        <!-- <i class="fa fa-plus" aria-hidden="true"
+                                    style="width: 30px; -webkit-text-stroke: 0.05px white;">
+
+                                </i> -->
+                                        Register Service
+                                    </button>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group-icon input-group-icon-left text-center mt-3">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

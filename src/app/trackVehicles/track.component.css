@@ -1,0 +1,1407 @@
+.modal-lg{
+  width: 80%;
+}
+  .actions {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .actions-item {
+    float: left;
+    margin-left: 5px;
+    font-size: 18px;
+  }
+  agm-map {
+    height: 300px;
+  }
+  
+  .tableFixHead {
+    overflow-y: auto;
+    height: 400px;
+  }
+  .tableFixHead thead th {
+    position: sticky;
+    top: 0;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: small;
+  }
+  th,
+  td {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+  } 
+  #onNavigate {
+    color: rgb(11, 53, 170)
+  }
+  #t1{
+    color: blue;
+  }
+  /* .table tr.active #t1{
+    color:white;
+
+  }
+  .table tr.active td {
+    background-color:#454397 !important;
+    color: white;
+  } */
+ 
+  #startendmarker{
+    height: 2px;
+    width: 2px;
+  }
+  .cluster-diagram {
+    width: 728px;
+    text-align: center;
+    background: #aaa;
+    padding: 20px;
+    border: 10px solid #555;
+    border-radius: 68px;
+    -webkit-box-shadow: inset 0px 0px 0px 10px #a7ccd1;
+    -moz-box-shadow: inset 0px 0px 0px 10px #a7ccd1;
+    box-shadow: inset 0px 0px 0px 10px #a7ccd1;
+    margin: 25px auto;
+  }
+  
+  .cluster-diagram .row {
+    display: flow-root !important;
+  }
+  
+  .main-container {
+    position: relative;
+    text-align: center;
+    margin: 20px auto 20px auto;
+    width: 500px;
+  }
+  
+  .container-argo2500 {
+    width: 110px;
+    height: 107px;
+    position: absolute;
+    top: 135px;
+    left: 138px;
+    overflow: hidden;
+  }
+  
+  .container-water {
+    width: 112px;
+    height: 115px;
+    position: absolute;
+    top: 134px;
+    left: 247px;
+    overflow: hidden;
+  }
+  
+  .ajax-img {
+    position: relative;
+    left: 0px;
+    background: url('../../assets/img/meter/argo2500/ajaxfiori.png') no-repeat;
+    width: 500px;
+    height: 478px;
+  }
+  
+  .gaugec {
+    transition: transform .2s linear;
+    transform-origin: bottom right;
+    transform-style: preserve-3D;
+  }
+  
+  .gaugecwater {
+    transition: transform .2s linear;
+    transform-origin: bottom left;
+    transform-style: preserve-3D;
+  }
+  
+  .gauge-data {
+    position: relative;
+  }
+  
+  .fuel,
+  .water,
+  .ops {
+    position: relative;
+  }
+  
+  #inputval {
+    position: absolute;
+    padding: 2px;
+    width: 112px;
+    top: 248px;
+    left: 190px;
+    background: transparent;
+    border: 1px solid #ccc;
+    text-align: center;
+    color: #fff;
+    z-index: 1;
+  }
+  
+  #inputvalwater {
+    position: absolute;
+    padding: 2px;
+    width: 63px;
+    top: 218px;
+    left: 214px;
+    background: transparent;
+    border: 1px solid #ccc;
+    text-align: center;
+    color: #fff;
+    z-index: 1;
+  }
+  
+  #inputvalOPS {
+    position: absolute;
+    padding: 2px;
+    width: 28px;
+    top: 248px;
+    left: 270px;
+    background: transparent;
+    border: 1px solid #ccc;
+    color: #fff;
+    z-index: 1;
+  }
+  
+  .loc-animate {
+    width: 142px;
+    height: 15px;
+    background: #33a0e1;
+    position: absolute;
+    top: 280px;
+    z-index: 10;
+    left: 182px;
+  }
+  
+  .icon-bg {
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 17px;
+    position: absolute;
+    z-index: 1;
+  }
+  
+  .elo {
+    background-image: url('../../assets/img/meter/argo2500/engine-lubrication-oilpressure.png');
+    left: 371px;
+    top: 152px;
+  }
+  
+  .holi {
+    background-image: url('../../assets/img/meter/argo2500/hydrolic-oillevel-low-indicator.png');
+    width: 30px;
+    height: 25px;
+    left: 392px;
+    top: 197px;
+  }
+  
+  .gare1 {
+    background-image: url('../../assets/img/meter/argo2500/gear1-indication.png');
+    width: 17px;
+    height: 29px;
+    left: 397px;
+    top: 257px;
+  }
+  
+  .gare2 {
+    background-image: url('../../assets/img/meter/argo2500/gear2-indication.png');
+    width: 22px;
+    height: 29px;
+    left: 375px;
+    top: 310px;
+  }
+  
+  .hbi {
+    background-image: url('../../assets/img/meter/argo2500/highbeam-indicator.png');
+    width: 31px;
+    height: 29px;
+    left: 301px;
+    top: 374px;
+  }
+  
+  .lri {
+    background-image: url('../../assets/img/meter/argo2500/leftright-indicators.png');
+    width: 40px;
+    height: 23px;
+    left: 242px;
+    top: 390px;
+  }
+  
+  .eph {
+    background-image: url('../../assets/img/meter/argo2500/engine-preheading.png');
+    width: 31px;
+    height: 28px;
+    left: 188px;
+    top: 383px;
+  }
+  
+  .hsi {
+    background-image: url('../../assets/img/meter/argo2500/highspeed-indicators.png');
+    width: 35px;
+    height: 28px;
+    left: 134px;
+    top: 355px;
+  }
+  
+  .neutral {
+    background-image: url('../../assets/img/meter/argo2500/neutral.png');
+    width: 22px;
+    height: 28px;
+    left: 101px;
+    top: 317px;
+  }
+  
+  .wcentring {
+    background-image: url('../../assets/img/meter/argo2500/wheel-centring.png');
+    width: 25px;
+    height: 28px;
+    left: 78px;
+    top: 267px;
+  }
+  
+  .bci {
+    background-image: url('../../assets/img/meter/argo2500/battery-charging.png');
+    width: 25px;
+    height: 28px;
+    left: 74px;
+    top: 206px;
+  }
+  
+  .bci-full {
+    background-image: url('../../assets/img/meter/argo2500/battery-charging-green.png');
+  }
+  
+  .bci-med {
+    background-image: url('../../assets/img/meter/argo2500/battery-charging-yellow.png');
+  }
+  
+  .bci-low {
+    background-image: url('../../assets/img/meter/argo2500/battery-charging-red.png');
+  }
+  
+  .fri {
+    background-image: url('../../assets/img/meter/argo2500/fuel-serve.png');
+    width: 23px;
+    height: 25px;
+    left: 91px;
+    top: 159px;
+  }
+  
+  .fri-full {
+    background-image: url('../../assets/img/meter/argo2500/fuel-serve-green.png');
+  }
+  
+  .fri-low {
+    background-image: url('../../assets/img/meter/argo2500/fuel-serve-red.png');
+  }
+  
+  .pbfailure {
+    background-image: url('../../assets/img/meter/argo2500/parking-brake-failure.png');
+    width: 26px;
+    height: 25px;
+    left: 116px;
+    top: 119px;
+  }
+  
+  .pbapplied {
+    background-image: url('../../assets/img/meter/argo2500/parking-brake-applied-indication.png');
+    width: 26px;
+    height: 25px;
+    left: 158px;
+    top: 88px;
+  }
+  
+  .pb-released {
+    background-image: url('../../assets/img/meter/argo2500/parking-brake-applied-indication-green.png');
+  }
+  
+  .pb-applied {
+    background-image: url('../../assets/img/meter/argo2500/parking-brake-applied-indication-red.png');
+  }
+  
+  .plindicator {
+    background-image: url('../../assets/img/meter/argo2500/parkinglight-indicator.png');
+    width: 30px;
+    height: 25px;
+    left: 215px;
+    top: 69px;
+  }
+  
+  .hof {
+    background-image: url('../../assets/img/meter/argo2500/hydraulicoil-level.png');
+    width: 22px;
+    height: 29px;
+    left: 281px;
+    top: 73px;
+  }
+  
+  .hof-green {
+    background-image: url('../../assets/img/meter/argo2500/hydraulicoil-level-green.png');
+  }
+  
+  .hof-red {
+    background-image: url('../../assets/img/meter/argo2500/hydraulicoil-level-red.png');
+  }
+  
+  .ewt {
+    background-image: url('../../assets/img/meter/argo2500/engine-water-temperature.png');
+    width: 30px;
+    height: 25px;
+    left: 333px;
+    top: 103px;
+  }
+  
+  
+  
+  
+  /*21-07-2017
+  customer DASHBOARD */
+  .meter-details {
+    background: #ffebcd;
+    border: 1px solid #999;
+    padding: 20px 10px;
+    border-radius: 12px;
+  }
+  
+  .text-red {
+    color: #da251d;
+  }
+  .icons-row1 {
+    margin-top: -42px !important;
+  }
+  
+  .reading-input input {
+    position: absolute;
+    width: 112px;
+    height: 24px;
+    top: 210px;
+    left: 79px;
+    float: left;
+    background: #e5ebeb;
+    border: 0px;
+    color: red;
+    font-size: 15px;
+    padding: 3px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .reading-input input::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: #000;
+  }
+  
+  .reading-input input::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #000;
+  }
+  
+  .reading-input input:-ms-input-placeholder {
+    /* IE 10+ */
+    color: #000;
+  }
+  
+  .reading-input input:-moz-placeholder {
+    /* Firefox 18- */
+    color: #000;
+  }
+  
+  .gauge {
+    position: relative;
+    display: inline-block;
+    font-size: 33px;
+    line-height: 1em;
+    height: 1em;
+    width: 2em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  
+  .gauge.gauge-big {
+    background: url('../../assets/img/meter/speedometer.png') no-repeat;
+    width: 264px;
+    height: 258px;
+    display: inline-block;
+    font-size: 100px;
+  }
+  
+  .gauge.gauge-fuel {
+    background: url('../../assets/img/meter/speedometer-fuel.png') no-repeat;
+    width: 190px;
+    height: 258px;
+    display: inline-block;
+    background-size: 100%;
+    font-size: 100px;
+  }
+  
+  .gauge.gauge-temperature {
+    background: url('../../assets/img/meter/speedometer-temperature.png') no-repeat;
+    width: 190px;
+    height: 258px;
+    display: inline-block;
+    background-size: 100%;
+    font-size: 100px;
+  }
+  
+  .gauge.gauge-small {
+    font-size: 17px;
+  }
+  
+  .gauge:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 100%;
+    height: 2em;
+    width: 2em;
+    line-height: 1em;
+    
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    -ms-border-radius: 100%;
+    -o-border-radius: 100%;
+    border-radius: 100%;
+    clip: rect(auto, auto, 1em, auto);
+  }
+  
+  .gauge .gauge-arrow {
+    height: 82px;
+    width: 0.075em;
+    margin-left: -.05em;
+    -webkit-transform-origin: 50% 100%;
+    -moz-transform-origin: 50% 100%;
+    -ms-transform-origin: 50% 100%;
+    -o-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    top: 41px;
+    box-shadow: 3px 4px 3px #333;
+  }
+  
+  .gauge .gauge-arrow,
+  .gauge .gauge-arrow:before {
+    position: absolute;
+    display: inline-block;
+    background: #fff;
+    left: 51%;
+    border-radius: 50% 50% 50% 50% / 50% 50% 0 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  
+  .gauge.gauge-fuel .gauge-arrow,
+  .gauge.gauge-fuel .gauge-arrow:before {
+    left: 39%;
+  }
+  
+  .gauge.gauge-fuel .gauge-arrow {
+    top: 7px;
+  }
+  
+  .gauge.gauge-temperature .gauge-arrow,
+  .gauge.gauge-temperature .gauge-arrow:before {
+    left: 66%;
+  }
+  
+  .gauge.gauge-temperature .gauge-arrow {
+    top: 13px;
+  }
+  
+  .gauge .gauge-arrow:before {
+    content: '';
+    height: 0.15em;
+    width: 0.15em;
+    bottom: -0.1em;
+    margin-left: -0.075em;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    -ms-border-radius: 100%;
+    -o-border-radius: 100%;
+    background: #333;
+    box-shadow: 1px 1px 9px #ccc;
+  }
+  
+  
+  .cluster-icon {
+    width: 53px;
+    height: 52px;
+    float: left;
+  }
+  
+  .battery-icon {
+    width: 53px;
+    height: 52px;
+    float: left;
+    margin-left: 19px;
+  }
+  
+  .cluster-icon-size {
+    width: 53px;
+    height: 52px;
+  }
+  
+  .battery {
+    background: url('../../assets/img/meter/battery-regular.png') no-repeat;
+  }
+  
+  .battery-full {
+    background: url('../../assets/img/meter/battery-green.png') no-repeat;
+  }
+  
+  .battery-med {
+    background: url('../../assets/img/meter/battery-yellow.png') no-repeat;
+  }
+  
+  .battery-low {
+    background: url('../../assets/img/meter/battery-red.png') no-repeat;
+  }
+  
+  .hydroulic-oil {
+    background: url('../../assets/img/meter/hydroulic-regular.png') no-repeat;
+  }
+  
+  .hydroulic-oil-green {
+    background: url('../../assets/img/meter/hydroulic-green.png') no-repeat;
+  }
+  
+  .hydroulic-oil-red {
+    background: url('../../assets/img/meter/hydroulic-red.png') no-repeat;
+  }
+  
+  .parking-brake {
+    background: url('../../assets/img/meter/parking-regular.png') no-repeat;
+  }
+  
+  .parking-brake-applied {
+    background: url('../../assets/img/meter/parking-red.png') no-repeat;
+  }
+  
+  .parking-brake-released {
+    background: url('../../assets/img/meter/parking-green.png') no-repeat;
+  }
+  
+  .icons-row2 div:last-child {
+    margin-right: 0px;
+  }
+  
+  .icons-left {
+    float: left;
+    width: 132px;
+    margin-left: 32px;
+  }
+  
+  .icons-right {
+    float: right;
+    margin-right: 24px;
+    width: 132px;
+  }
+  
+  .icons-row2 div {
+    float: left;
+    margin: 5px 10px;
+  }
+  
+  .icons-row2 {
+    margin: 10px 0px 10px 8px;
+  }
+  
+  .m-l-20 {
+    margin-left: 20px;
+  }
+  
+  .m-t-10 {
+    margin-top: 10px;
+  }
+  
+  .dropdown-toggle::after {
+    display: none !important;
+  }
+  
+  .btn-drop-down
+  {
+    padding: 0px !important;
+    margin-left: 35%;
+  }
+  
+  p {
+    margin-bottom: 5px !important;
+  }
+  b {
+    font-weight: 500 !important;
+  }
+/* bs5 css start */
+.main-container-bs5 {
+  position: relative;
+  text-align: center;
+  margin: 20px auto 20px 60px;
+  width: 500px;
+}
+.bs5-img {
+  position: relative;
+  left:px;
+  top: 85px;
+  background: url('../../assets/img/meter/bs5/bs5Meter1.png') no-repeat;
+  width: 610px;
+  height: 478px;
+}
+.company-img2 {
+  background-image: url('../../assets/img/company-logo.png');
+  width: 25%;
+  background-size: contain;
+  height: 40px;
+  left: 234px;
+  top: 102px;
+}
+.innerPanel3 {
+  margin-top: -40%;
+  position: inherit;
+  width: 18%;
+  margin-left: 42%;
+}
+.bs5-pbapplied {
+  background-image: url('../../assets/img/meter/bs5/parking-break-indicator-gray.png');
+  width: 27px;
+  height: 22px;
+  left: 156px;
+  top: 47%;
+}
+.bs5-pb-released {
+  background-image: url('../../assets/img/meter/bs5/parking-break-indicator-green.png');
+}
+.bs5-pb-applied {
+  background-image: url('../../assets/img/meter/bs5/parking-break-indicator-red.png');
+}
+.bs5-system-check-lamp {
+  background-image: url('../../assets/img/meter/bs5/system-check-lamp-gray.png');
+  width: 27px;
+  height: 18px;
+  left: 418px;
+  top: 47%;
+}
+.bs5-system-check-lamp-yellow {
+  background-image: url('../../assets/img/meter/bs5/system-check-lamp-yellow.png');
+}
+.bs5-eng-exhaust-lamp {
+  background-image: url('../../assets/img/meter/bs5/EngineExhaustTemp-gray.png');
+  width: 30px;
+  height: 23px;
+  left: 28px;
+  top: 65%;
+}
+.bs5-eng-exhaust-lamp-yellow {
+  background-image: url('../../assets/img/meter/bs5/EngineExhaustTemp.png');
+}
+.bs5-dpf-lamp {
+  background-image: url('../../assets/img/meter/bs5/dpf-lamp-gray.png');
+  width: 27px;
+  height: 20px;
+  left: 545px;
+  top: 48%;
+}
+.bs5-dpf-lamp-yellow {
+  background-image: url('../../assets/img/meter/bs5/dpf-lamp.png');
+}
+.bs5-hsi {
+  background-image: url('../../assets/img/meter/bs5/highspeed-indicate-gray.png');
+  width: 27px;
+  height: 25px;
+  right: 55px;
+  top: 301px;
+}
+.bs5-hsi-full {
+  background-image: url('../../assets/img/meter/bs5/highspeed-indicate-red.png');
+}
+.bs5-hsi-low {
+  background-image: url('../../assets/img/meter/bs5/highspeed-indicate-green.png');
+}
+.bs5-elo {
+  background-image: url('../../assets/img/meter/can/engine-lubrication-oilpressure.png');
+  left: 153px;
+  top: 64%;
+}
+.bs5-elo-full {
+  background-image: url('../../assets/img/meter/can/engine-lubrication-oilpressure-red.png');
+}
+.bs5-elo-low {
+  background-image: url('../../assets/img/meter/can/engine-lubrication-oilpressure-green.png');
+}
+.bs5-fri {
+  background-image: url('../../assets/img/meter/bs5/water-in-fuel-gray.png');
+  width: 27px;
+  height: 16px;
+  left: 155px;
+  top: 56%;
+}
+
+.bs5-fri-full {
+  background-image: url('../../assets/img/meter/bs5/water-in-fuel-green.png');
+}
+
+.bs5-fri-med {
+  background-image: url('../../assets/img/meter/bs5/water-in-fuel-yellow.png');
+}
+
+.bs5-fri-low {
+  background-image: url('../../assets/img/meter/bs5/water-in-fuel-red.png');
+}
+.bs5-bci {
+  background-image: url('../../assets/img/meter/bs5/battery-charge-gray.png');
+  width: 27px;
+  height: 18px;
+  right: 55px;
+  top: 183px;
+}
+
+.bs5-bci-full {
+  background-image: url('../../assets/img/meter/bs5/battery-charge-green.png');
+}
+
+.bs5-bci-med {
+  background-image: url('../../assets/img/meter/bs5/battery-charge-yellow.png');
+}
+
+.bs5-bci-low {
+  background-image: url('../../assets/img/meter/bs5/battery-charge-red.png');
+}
+.bs5-hof {
+  background-image: url('../../assets/img/meter/bs5/hydraulic-oil-level-gray.png');
+  width: 27px;
+  height: 21px;
+  left: 156px;
+  top: 38%;
+}
+
+.bs5-hof-green {
+  background-image: url('../../assets/img/meter/bs5/hydraulic-oil-level-green.png');
+}
+
+.bs5-hof-red {
+  background-image: url('../../assets/img/meter/bs5/hydraulic-oil-level-red.png');
+}
+.bs5-mil-lamp {
+  background-image: url('../../assets/img/meter/bs5/mil-lamp-gray.png');
+  width: 27px;
+  height: 18px;
+  right: 53px;
+  top: 55.2%;
+}
+
+.bs5-mil-lamp-yellow {
+  background-image: url('../../assets/img/meter/bs5/mil-lamp-yellow.png');
+}
+.bs5-fuel-g1 {
+  /* background-image: url('../../assets/img/meter/can/green1.png'); */
+  background-image: url('../../assets/img/meter/bs5/fuel-orange0.png');
+  width: 21px;
+  height: 25px;
+  left: 75px;
+  bottom: 122px;
+  /* transform: rotate(-1deg); */
+}
+.bs5-fuel-r1 {
+  /* background-image: url('../../assets/img/meter/can/red1.png'); */
+  background-image: url('../../assets/img/meter/bs5/fuel-gray0.png');
+}
+
+.bs5-fuel-g2 {
+  background-image: url('../../assets/img/meter/bs5/fuel-orange1.png');
+  width: 15px;
+  height: 18px;
+  left: 72px;
+  bottom: 151px;
+  /* transform: rotate(0deg); */
+}
+.bs5-fuel-r2 {
+  background-image: url('../../assets/img/meter/bs5/fuel-gray1.png');
+}
+
+.bs5-fuel-g3 {
+  background-image: url('../../assets/img/meter/bs5/fuel-green1.png');
+  width: 14px;
+  height: 18px;
+  left: 70px;
+  bottom: 173px;
+  /* transform: rotate(4deg); */
+}
+.bs5-fuel-r3 {
+  background-image: url('../../assets/img/meter/bs5/fuel-gray1.png');
+}
+
+.bs5-fuel-g4 {
+  background-image: url('../../assets/img/meter/bs5/fuel-green1.png');
+  width: 14px;
+  height: 18px;
+  left: 70px;
+  bottom: 194px;
+  /* transform: rotate(7deg); */
+}
+.bs5-fuel-r4 {
+  background-image: url('../../assets/img/meter/bs5/fuel-gray1.png');
+}
+.bs5-fuel-g5 {
+  background-image: url('../../assets/img/meter/bs5/fuel-green1.png');
+  width: 14px;
+  height: 18px;
+  left: 70px;
+  bottom: 214px;
+  /* transform: rotate(7deg); */
+}
+.bs5-fuel-r5 {
+  background-image: url('../../assets/img/meter/bs5/fuel-gray1.png');
+}
+.bs5-fuel-g6 {
+  background-image: url('../../assets/img/meter/bs5/fuel-green1.png');
+  width: 14px;
+  height: 18px;
+  left: 71px;
+  bottom: 235px;
+  /* transform: rotate(7deg); */
+}
+.bs5-fuel-r6 {
+  background-image: url('../../assets/img/meter/bs5/fuel-gray1.png');
+}
+.bs5-fuel-g7 {
+  background-image: url('../../assets/img/meter/bs5/fuel-green6.png');
+  width: 14px;
+  height: 18px;
+  left: 72px;
+  bottom: 256px;
+  /* transform: rotate(7deg); */
+}
+.bs5-fuel-r7 {
+  background-image: url('../../assets/img/meter/bs5/fuel-gray6.png');
+}
+.bs5-fuel-g8 {
+  background-image: url('../../assets/img/meter/bs5/fuel-gray7.png');
+  width: 20px;
+  height: 23px;
+  left: 77px;
+  bottom: 277px;
+  /* transform: rotate(7deg); */
+}
+.bs5-fuel-r8 {
+  background-image: url('../../assets/img/meter/bs5/fuel-green7.png') !important;
+}
+.bs5-collant-g1{
+  background-image: url('../../assets/img/meter/bs5/coolant-level-green0.png');
+  width: 20px;
+  height: 26px;
+  left: 504px;
+  bottom: 121px;
+  /* transform: rotate(-11deg); */
+
+}
+.bs5-collant-r1 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-red0.png');
+  width: 20px;
+  height: 26px;
+  left: 504px;
+  bottom: 121px;
+}
+
+.bs5-collant-g2 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-green1.png');
+  width: 14px;
+  height: 18px;
+  left: 514px;
+  bottom: 151px;
+  /* transform: rotate(-11deg); */
+
+}
+.bs5-collant-r2 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-red1.png');
+  width: 14px;
+  height: 18px;
+  left: 514px;
+  bottom: 151px;
+}
+
+.bs5-collant-g3 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-green1.png');
+  width: 14px;
+  height: 18px;
+  left: 516px;
+  top: 288px;
+  /* transform: rotate(-4deg) */
+}
+.bs5-collant-r3 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-red1.png');
+  width: 14px;
+  height: 18px;
+  left: 516px;
+  top: 288px;
+}
+
+.bs5-collant-g4 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-green1.png');
+  width: 14px;
+  height: 18px;
+  left: 516px;
+  top: 267px;
+  /* transform: rotate(-1deg) */
+}
+.bs5-collant-r4 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-red1.png');
+  width: 14px;
+  height: 18px;
+  left: 516px;
+  top: 267px;
+}
+.bs5-collant-g5 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-green1.png');
+  width: 14px;
+  height: 18px;
+  left: 516px;
+  top: 246px;
+}
+.bs5-collant-r5 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-red1.png');
+  width: 14px;
+  height: 18px;
+  left: 516px;
+  top: 246px;
+}
+.bs5-collant-g6 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-green1.png');
+  width: 14px;
+  height: 18px;
+  left: 516px;
+  top: 225px;
+}
+.bs5-collant-r6 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-red1.png');
+  width: 14px;
+  height: 18px;
+  left: 516px;
+  top: 225px;
+}
+.bs5-collant-g7 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-green6.png');
+  width: 12px;
+  height: 20px;
+  left: 515px;
+  top: 203px;
+}
+.bs5-collant-r7 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-red6.png');
+  width: 12px;
+  height: 20px;
+  left: 515px;
+  top: 203px;
+}
+.bs5-collant-g8 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-green7.png');
+  width: 20px;
+  height: 23px;
+  left: 504px;
+  top: 179px;
+}
+.bs5-collant-r8 {
+  background-image: url('../../assets/img/meter/bs5/coolant-level-red7.png');
+  width: 20px;
+  height: 23px;
+  left: 504px;
+  top: 179px;
+}
+.bs5-fuel-icon{
+  background-image: url('../../assets/img/meter/bs5/fuel-icon-gray.png');
+  width: 27px;
+  height: 21px;
+  left: 94px;
+  top: 251px;
+}
+.bs5-fuel-icon-white{
+  background-image: url('../../assets/img/meter/bs5/fuel-icon-white.png');
+}
+.bs5-coolant-icon{
+  background-image: url('../../assets/img/meter/bs5/coolant-temp-gray.png');
+  width: 25px;
+  height: 24px;
+  right: -4px;
+  top: 251px;
+}
+.bs5-coolant-icon-white{
+  background-image: url('../../assets/img/meter/bs5/coolant-temp-white.png');
+}
+/* bs5 css end */
+/* can start here */
+.main-container-can {
+  position: relative;
+  text-align: center;
+  margin: 20px auto 20px 60px;
+  width: 500px;
+}
+
+.can-img {
+  position: relative;
+  left:px;
+  background: url('../../assets/img/meter/can/canMeter.png') no-repeat;
+  width: 610px;
+  height: 478px;
+}
+
+.can-hsi {
+  background-image: url('../../assets/img/meter/can/highspeed-indicators.png');
+  width: 35px;
+  height: 28px;
+  left: 90px;
+  top: 340px;
+}
+.can-hsi-full {
+  background-image: url('../../assets/img/meter/can/highspeed-indicators-red.png');
+}
+.can-hsi-low {
+  background-image: url('../../assets/img/meter/can/highspeed-indicators-green.png');
+}
+
+.can-bci {
+  background-image: url('../../assets/img/meter/can/battery-charging.png');
+  width: 25px;
+  height: 28px;
+  left: 174px;
+  top: 345px;
+}
+
+.can-bci-full {
+  background-image: url('../../assets/img/meter/can/battery-charging-green.png');
+}
+
+.can-bci-med {
+  background-image: url('../../assets/img/meter/can/battery-charging-yellow.png');
+}
+
+.can-bci-low {
+  background-image: url('../../assets/img/meter/can/battery-charging-red.png');
+}
+
+.can-pbapplied {
+  background-image: url('../../assets/img/meter/can/parking-brake-applied-indication.png');
+  width: 26px;
+  height: 25px;
+  left: 158px;
+  top: 30%;
+}
+
+.can-pb-released {
+  background-image: url('../../assets/img/meter/can/parking-brake-applied-indication-green.png');
+}
+
+.can-pb-applied {
+  background-image: url('../../assets/img/meter/can/parking-brake-applied-indication-red.png');
+}
+
+.can-hof {
+  background-image: url('../../assets/img/meter/can/hydraulicoil-level.png');
+  width: 22px;
+  height: 29px;
+  left: 255px;
+  top: 72%;
+}
+
+.can-hof-green {
+  background-image: url('../../assets/img/meter/can/hydraulicoil-level-green.png');
+}
+
+.can-hof-red {
+  background-image: url('../../assets/img/meter/can/hydraulicoil-level-red.png');
+}
+
+.can-elo {
+  background-image: url('../../assets/img/meter/can/engine-lubrication-oilpressure.png');
+  left: 330px;
+  top: 73%;
+}
+.can-elo-full {
+  background-image: url('../../assets/img/meter/can/engine-lubrication-oilpressure-red.png');
+}
+.can-elo-low {
+  background-image: url('../../assets/img/meter/can/engine-lubrication-oilpressure-green.png');
+}
+
+.can-fri {
+  background-image: url('../../assets/img/meter/can/fuel-serve.png');
+  width: 23px;
+  height: 25px;
+  left: 405px;
+  top: 72%;
+}
+
+.can-fri-full {
+  background-image: url('../../assets/img/meter/can/fuel-serve-green.png');
+}
+
+.can-fri-med {
+  background-image: url('../../assets/img/meter/can/fuel-serve-yellow.png');
+}
+
+.can-fri-low {
+  background-image: url('../../assets/img/meter/can/fuel-serve-red.png');
+}
+
+.can-plindicator {
+  background-image: url('../../assets/img/meter/can/parkinglight-indicator.png');
+  width: 30px;
+  height: 25px;
+  left: 410px;
+  top: 72%;
+}
+
+.can-mil-lamp {
+  background-image: url('../../assets/img/meter/can/mil-lamp.png');
+  width: 30px;
+  height: 25px;
+  left: 475px;
+  top: 72%;
+}
+
+.can-mil-lamp-yellow {
+  background-image: url('../../assets/img/meter/can/mil-lamp-yellow.png');
+}
+
+.can-system-check-lamp {
+  background-image: url('../../assets/img/meter/can/system-check-lamp.png');
+  width: 30px;
+  height: 25px;
+  left: 400px;
+  top: 30%;
+}
+
+.can-system-check-lamp-yellow {
+  background-image: url('../../assets/img/meter/can/system-check-lamp-yellow.png');
+}
+
+.fuel-g1 {
+  background-image: url('../../assets/img/meter/can/green1.png');
+  width: 15px;
+  height: 15px;
+  left: 85px;
+  top: 204px;
+  transform: rotate(-1deg);
+}
+.fuel-r1 {
+  background-image: url('../../assets/img/meter/can/red1.png');
+}
+
+.fuel-g2 {
+  background-image: url('../../assets/img/meter/can/green2.png');
+  width: 30px;
+  height: 20px;
+  left: 94px;
+  top: 193px;
+  transform: rotate(0deg);
+}
+.fuel-r2 {
+  background-image: url('../../assets/img/meter/can/red2.png');
+}
+
+.fuel-g3 {
+  background-image: url('../../assets/img/meter/can/green3.png');
+  width: 30px;
+  height: 20px;
+  left: 125px;
+  top: 194px;
+  transform: rotate(4deg);
+}
+.fuel-r3 {
+  background-image: url('../../assets/img/meter/can/red3.png');
+}
+
+.fuel-g4 {
+  background-image: url('../../assets/img/meter/can/green4.png');
+  width: 30px;
+  height: 30px;
+  left: 147px;
+  top: 204px;
+  transform: rotate(7deg);
+}
+.fuel-r4 {
+  background-image: url('../../assets/img/meter/can/red4.png');
+}
+
+.collant-g2 {
+  background-image: url('../../assets/img/meter/can/green2.png');
+  width: 30px;
+  height: 20px;
+  left: 443px;
+  top: 196px;
+  transform: rotate(-11deg);
+
+}
+.collant-r2 {
+  background-image: url('../../assets/img/meter/can/red2.png');
+}
+
+.collant-g3 {
+  background-image: url('../../assets/img/meter/can/green3.png');
+  width: 30px;
+  height: 20px;
+  left: 476px;
+  top: 192px;
+  transform: rotate(-4deg)
+}
+.collant-r3 {
+  background-image: url('../../assets/img/meter/can/red3.png');
+}
+
+.collant-g4 {
+  background-image: url('../../assets/img/meter/can/green4.png');
+  width: 30px;
+  height: 30px;
+  left: 502px;
+  top: 200px;
+  transform: rotate(-1deg)
+}
+.collant-r4 {
+  background-image: url('../../assets/img/meter/can/red4.png');
+}
+
+
+/* Inner Pannel */
+
+.innerPanel {
+  margin-top: -43%;
+  position: inherit;
+  width: 18%;
+  margin-left: 42%;
+}
+
+.lubeOilPressure {
+  background-image: url('../../assets/img/meter/can/lubeOilPressure.png');
+  width: 25px;
+  height: 26px;
+  left: -30px;
+  top: -3px;
+}
+
+.batt-green {
+  background-image: url('../../assets/img/meter/can/battery-charging-green.png');
+  width: 25px;
+  height: 26px;
+  left: -31px;
+  top: 28px;
+}
+.bs5-batt-green {
+  background-image: url('../../assets/img/meter/bs5/battery-charge-green.png');
+  width: 27px;
+  height: 18px;
+  left: -31px;
+  top: 28px;
+}
+
+.ncdLamp {
+  background-image: url('../../assets/img/meter/can/ncdLamp.png');
+  width: 25px;
+  height: 26px;
+  left: -30px;
+  top: 55px;
+}
+
+.innerPanel2 {
+  margin-top: -39%;
+  position: inherit;
+  width: 25%;
+  margin-left: 38%;
+}
+
+.inner-col-md-3
+{
+  max-width: 39% !important;
+  flex: 0 0 70%;
+  margin-top: -80px;
+  margin-left: 56%;
+}
+
+.lubeOilPressure2 {
+  background-image: url('../../assets/img/meter/can/lubeOilPressure.png');
+  width: 25px;
+  height: 26px;
+  left: 135px;
+  top: 53px;
+}
+
+.ncdLamp2 {
+  background-image: url('../../assets/img/meter/can/ncdLamp.png');
+  width: 25px;
+  height: 26px;
+  left: 12px;
+  top: 70px;
+}
+
+.batt-green2 {
+  background-image: url('../../assets/img/meter/can/battery-charging-green.png');
+  width: 25px;
+  height: 26px;
+  left: 5px;
+  top: 7px;
+}
+
+.batt-full{
+  width: 100%;
+}
+.batt-mid{
+  width: 50%;
+}
+.batt-low{
+  width: 10%;
+}
+
+.oilPressure-full{
+  width: 90%;
+}
+.oilPressure-mid{
+  width: 40%;
+}
+.company-img {
+
+  background-image: url('../../assets/img/company-logo.png');
+
+  width: 25%;
+
+  background-size: contain;
+
+  height: 40px;
+
+  left: 234px;
+
+  top: 120px;
+
+}
+
+.loader {
+  border: 4px solid #d9d9d9;
+  border-radius: 50%;
+  /* border-top: 4px solid #454397;
+  border-bottom: 4px solid #454397; */
+  border-top: 4px solid #000000;
+  border-bottom: 4px solid #000000;
+  width: 29px;
+  height: 29px;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.banner-section .carousel-inner img{
+  height: 120px;
+}

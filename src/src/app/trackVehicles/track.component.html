@@ -1,0 +1,856 @@
+<div class="modal fade" id="meter" data-keyboard="false" data-backdrop="static" tabindex="-1" aria-labelledby="example2Label" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content mob-gauge-content" style="width: 1150px; right: 150px;">
+      <div class="modal-header bg-primary py-2">
+        <h5 class="modal-title d-flex justify-content-center">Gauge Meter(Pin No: {{pinnumber}}) </h5>
+        <button type="button" #closeButton class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div colspan="4" class="text-center" *ngIf="loader == true">
+          <span class="spinner-border spinner-border-lg align-center"></span>
+        </div>
+        <div class="row">
+
+          <div class="col-sm-4">
+            <p>Panel will display Last Engine On Data. <br> <b> Date Time : {{devicePublishTime |
+                slice:8:10}}-{{devicePublishTime| slice:5:7}}-{{devicePublishTime| slice:0:4}}
+                <!-- <br> -->
+                {{devicePublishTime | date:'h:mm:ss a':'+0000'}}
+              </b>
+              <!-- <div class="row">
+                <b class="col-sm-7 col-7 text-right">Date Time :</b>
+                <div class="col-sm-5 col-5">
+                 
+                  {{devicePublishTime | slice:8:10}}-{{devicePublishTime| slice:5:7}}-{{devicePublishTime| slice:0:4}}
+                  <br>
+                  {{devicePublishTime | date:'h:mm:ss a':'+0000'}}
+                </div>
+              </div> -->
+            </p>
+            <div class="meter-details">
+              <div class="row">
+                <b class="col-sm-7 col-7 text-right">Engine Hours :</b>
+                <div class="col-sm-5 col-5">
+                  <p class="form-control-static"><span class="text-red">{{enhr}} </span>
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <b class="col-sm-7 col-7 text-right">Distance(kms) :</b>
+                <div class="col-sm-5 col-5">
+                  <p class="form-control-static"><span class="text-red">{{tdist | number :'1.2-2'}} </span>
+                    &nbsp; <b></b> &nbsp;
+                    <span class="text-red"> </span>
+                  </p>
+                </div>
+              </div>
+
+              <h4 class="text-center mb-4 text-red">Last Engine ON Data
+              </h4>
+              <div class="row">
+                <b class="col-sm-7 col-7 text-right">Oil Pressure :</b>
+                <div class="col-sm-5 col-5">
+                  <p class="form-control-static">
+                    {{oilpressure | number :'1.2-2'}}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <b class="col-sm-7 col-7 text-right">Fuel Level :</b>
+                <div class="col-sm-5 col-5">
+                  <p class="form-control-static">{{fuelLevel}}</p>
+                </div>
+              </div>
+              <!--  <div class="row">
+                <b class="col-sm-7 col-7 text-right">Fuel % :</b>
+                <div class="col-sm-5 col-5">
+                  <p class="form-control-static">{{fuelPercentage}}</p>
+                </div>
+              </div>   -->
+              <div class="row">
+                <b class="col-sm-7 col-7 text-right">Coolant Temperature:</b>
+                <div class="col-sm-5 col-5">
+                  <p>{{coolantTemp}}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <b class="col-sm-7 col-7 text-right">Battery Level :</b>
+                <div class="col-sm-5 col-5">
+                  <p>{{batteryLevel | number :'1.2-2'}}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <b class="col-sm-7 col-7 text-right">RPM:</b>
+                <div class="col-sm-5 col-5">
+                  <p>{{rpm}}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <b class="col-sm-7 col-7 text-right">Hydraulic Filter Choke :</b>
+                <div class="col-sm-5 col-5">
+                  <p>{{hydralicOilFilterChoke}}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <b class="col-sm-7 col-7 text-right">Parking Brake :</b>
+                <div class="col-sm-5 col-5">
+                  <p>{{parkingSwitch}}
+                  </p>
+                </div>
+              </div>
+              <div class="row" *ngIf = "milLamp != ' '">
+                <b class="col-sm-7 col-7 text-right">MIL Lamp :</b>
+                <div class="col-sm-5 col-5">
+                  <p>{{milLamp}}
+                  </p>
+                </div>
+              </div>
+              <div class="row" *ngIf = "systemLamp != ' '">
+                <b class="col-sm-7 col-7 text-right">System Lamp :</b>
+                <div class="col-sm-5 col-5">
+                  <p>{{systemLamp}}
+                  </p>
+                </div>
+              </div>
+              <div class="row" *ngIf="engineExhaustTemp != ' '">
+                <b class="col-sm-7 col-7 text-right">Engine Exhaust Temp :</b>
+                <div class="col-sm-5 col-5">
+                  <p>{{engineExhaustTemp}}
+                  </p>
+                </div>
+              </div>
+              <div class="row" *ngIf="dpfLamp != ' '">
+                <b class="col-sm-7 col-7 text-right">DPF Lamp :</b>
+                <div class="col-sm-5 col-5">
+                  <p>{{dpfLamp}}
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <b class="text-right col-sm-7 col-7" text-right text-right>Engine :</b>
+                <div class="col-sm-5" *ngIf="engineStatus == 'ON'">
+                  <i class="fa fa-plug fa-1x" style="color: green"></i> {{engineStatus}}
+                </div>
+                <div class="col-sm-5" *ngIf="engineStatus == 'OFF'">
+                  <i class="fa fa-plug fa-1x" style="color: red"></i> {{engineStatus}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-8" style="top: 30px;" *ngIf="checkModel == 'gauge2'">
+            <div class="main-container mt-0 mob-main-container">
+              <div class="ajax-img"></div>
+              <div class="icon-bg elo"></div>
+              <div class="icon-bg holi"></div>
+              <div class="icon-bg gare1"></div>
+              <div class="icon-bg gare2"></div>
+              <div class="icon-bg hbi"></div>
+              <div class="icon-bg lri"></div>
+              <div class="icon-bg eph"></div>
+              <div class="icon-bg hsi"></div>
+              <div class="icon-bg neutral"></div>
+              <div class="icon-bg wcentring"></div>
+              <div class="icon-bg bci" title="Battery" [class.bci-full]="batteryLevel > '11.5'"
+                [class.bci-med]="batteryLevel > '6' && batteryLevel < '11.5'" [class.bci-low]="batteryLevel < '6'">
+              </div>
+              <div class="icon-bg fri" title="Fuel Status" [class.fri-full]="fuelLevel == 'Full'"
+                [class.fri-med]="fuelLevel == 'Half'"
+                [class.fri-low]="(fuelLevel == 'Reserve') || (fuelLevel == 'Empty')">
+              </div>
+              <div class="icon-bg pbfailure"></div>
+              <div class="icon-bg pbapplied" title="Parking Brake" [class.pb-released]="parkingSwitch === 'RELEASE'"
+                [class.pb-applied]="parkingSwitch === 'APPLIED'">
+              </div>
+              <div class="icon-bg plindicator"></div>
+              <div class="icon-bg hof" title="Hydraulic Oil" [class.hof-green]="hydralicOilFilterChoke === 'NORMAL'"
+                [class.hof-red]="hydralicOilFilterChoke === 'CHOKE'">
+              </div>
+              <div class="icon-bg ewt"></div>
+              <h6 type="text" id="inputvalwater" title="RPM" readonly="readonly">{{rpm}}</h6>
+              <h6 type="text" id="inputval" title="Engine Hours" readonly="readonly">{{enhr}}</h6>
+              <span class="loc-animate" title="Oil Pressure">
+              </span>
+              <div class="container-argo2500" title="Fuel Level">
+                <img class="gaugec" src="../../assets/img/meter/argo2500/curve.png" />
+              </div>
+              <div class="container-water" title="Coolent Temperature">
+                <img class="gaugecwater" src="../../assets/img/meter/argo2500/curve-water.png" />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-8" style="top: 30px;" *ngIf="checkModel == 'gauge1'">
+            <div class="cluster-diagram">
+              <div class="row">
+                <div class="gauge gauge-fuel gauge-green" id="gaugeDemo">
+                  <div class="gauge-arrow" style="transform: rotate(126deg)" [style.transform]="gaugeLeft(+fuelPer)">
+                  </div>
+                </div>
+                <div class="gauge gauge-big gauge-green" id="gaugeDemo-left">
+                  <div class="gauge-arrow" style="transform: rotate(-48deg)"
+                    [style.transform]="gaugeMiddle(+oilpressure)">
+                  </div>
+                  <div class="reading-input">
+                    <input title="Engine Hours" value="{{enhr}}" readonly />
+                  </div>
+                </div>
+                <div class="gauge gauge-temperature gauge-green" id="gaugeDemo-right">
+                  <div class="gauge-arrow" style="transform: rotate(-126deg)"
+                    [style.transform]="gaugeRight(+coolantTemp)">
+
+                  </div>
+                </div>
+              </div>
+              <div class="icons-row1 row">
+                <div class="icons-left">
+                  <div class="cluster-icon"><img src="../../assets/img/meter/lowlubric-icon.png" /></div>
+                  <div class="cluster-icon battery m-l-20" title="Battery" [class.battery-full]="batteryLevel > '11.5'"
+                    [class.battery-med]="batteryLevel > '6' && batteryLevel < '11.5'"
+                    [class.battery-low]="batteryLevel < '6'">
+
+                  </div>
+                </div>
+                <div class="icons-right">
+                  <div class="cluster-icon"><img src="../../assets/img/meter/gear1-icon.png" /></div>
+                  <div class="cluster-icon m-l-20"><img src="../../assets/img/meter/gear2-icon.png" /></div>
+                </div>
+              </div>
+              <div class="icons-row2 row">
+                <div class="cluster-icon-size"><img src="../../assets/img/meter/break-icon.png" /></div>
+                <div class="cluster-icon-size"><img src="../../assets/img/meter/breakfail-icon.png" /></div>
+                <div class="cluster-icon-size hydroulic-oil" title="Hydraulic Oil"
+                  [class.hydroulic-oil-green]="hydralicOilFilterChoke === 'NORMAL'"
+                  [class.hydroulic-oil-red]="hydralicOilFilterChoke === 'CHOKE'">
+                </div>
+                <div class="cluster-icon-size"><img src="../../assets/img/meter/left-indi.png" /></div>
+                <div class="cluster-icon-size"><img src="../../assets/img/meter/prehe-icon.png" /></div>
+                <div class="cluster-icon-size"><img src="../../assets/img/meter/right-indi.png" /></div>
+                <div class="cluster-icon-size parking-brake" title="Parking Brake"
+                  [class.parking-brake-released]="parkingSwitch === 'RELEASE'"
+                  [class.parking-brake-applied]="parkingSwitch === 'APPLIED'">
+                </div>
+                <div class="cluster-icon-size"><img src="../../assets/img/meter/axelcenter-icon.png" /></div>
+                <div class="cluster-icon-size"><img src="../../assets/img/meter/highspeed-icon.png" /></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-8" *ngIf="checkModel == 'gauge3'">
+            <div class="main-container-can mt-0 mob-main-container">
+              <div class="can-img"></div>
+              <div class="icon-bg company-img" title="Company Logo"></div>
+              <div class="icon-bg can-elo" title="Hydraulic Pressure" [class.can-elo-full]="oilpressure <= '2'" [class.can-elo-low]="oilpressure > '2'"></div>
+              <div class="icon-bg can-hsi" title="RPM" [class.can-hsi-full]="rpm > '1500'"
+                [class.can-hsi-low]="rpm < '1500'"></div>
+              <div class="icon-bg can-bci" title="Battery" [class.can-bci-full]="batteryLevel > '11.5'"
+                [class.can-bci-med]="batteryLevel > '6' && batteryLevel < '11.5'"
+                [class.can-bci-low]="batteryLevel < '6'">
+              </div>
+              <div class="icon-bg can-fri" title="Water in Fuel" [class.can-fri-full]="waterInFuel == 'No'"
+                [class.can-fri-low]="waterInFuel == 'Yes'">
+              </div>
+              <div class="icon-bg can-pbapplied" title="Parking Brake"
+                [class.can-pb-released]="parkingSwitch === 'RELEASE'"
+                [class.can-pb-applied]="parkingSwitch === 'APPLIED'">
+              </div>
+              
+              <!-- <div class="icon-bg can-plindicator" title="Parking Light" [class.can-pb-applied]="parkingSwitch === 'APPLIED'"></div> -->
+              <div class="icon-bg can-mil-lamp" title="MIL Lamp" [class.can-mil-lamp-yellow]="milLamp === 'Lamp ON'"></div>
+              <div class="icon-bg can-hof" title="Hydraulic Oil"
+              [class.can-hof-green]="hydralicOilFilterChoke === 'NORMAL'"
+              [class.can-hof-red]="hydralicOilFilterChoke === 'CHOKE'"></div>
+              <div class="icon-bg can-system-check-lamp" title="System Lamp" [class.can-system-check-lamp-yellow]="systemLamp === 'Lamp ON'"></div>
+              <div class="icon-bg fuel-g1" title="Fuel Empty" [class.fuel-r1]="fuelPer <= '0'"></div>
+              <div class="icon-bg fuel-g2" title="Fuel 25%" [class.fuel-r2]="fuelPer <= '25'"></div>
+              <div class="icon-bg fuel-g3" title="Fuel 50%" [class.fuel-r3]="fuelPer <= '50'"></div>
+              <div class="icon-bg fuel-g4" title="Fuel 75%" [class.fuel-r4]="fuelPer <= '75'"></div>
+              <div class="icon-bg collant-g2" title="CoolentTemp 70" [class.collant-r2]="coolantTemp >= '70'"></div>
+              <div class="icon-bg collant-g3" title="CoolentTemp 100" [class.collant-r3]="coolantTemp >= '100'"></div>
+              <div class="icon-bg collant-g4" title="CoolentTemp 110" [class.collant-r4]="coolantTemp >= '110'"></div>
+            </div>
+
+            <!-- ARGO2800 -->
+            <div class="innerPanel" *ngIf = "mNumber == 'ARGO2800'">
+              <div>
+                <div class="icon-bg lubeOilPressure" title="Lube Oil Pressure"></div>
+                <div class="progress">
+                  <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" [class.oilPressure-full]="oilpressure <= '2'" [class.oilPressure-mid]="oilpressure > '2'">
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3">
+                <div class="icon-bg batt-green" title="Battery Voltage"></div>
+                <div class="progress">
+                  <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="70" aria-valuemin="0" 
+                    aria-valuemax="100" [class.batt-full]="batteryLevel > '11.5'"
+                    [class.batt-mid]="batteryLevel > '6' && batteryLevel < '11.5'"
+                    [class.batt-low]="batteryLevel < '6'">
+                  </div>
+                </div>
+              </div>
+              <div class="mt-2">
+                <div class="icon-bg ncdLamp" title="NCD Lamp"></div>
+                <div> <b>Hour: {{enhr}}</b> </div>
+              </div>
+              <div class="mt-1" style="margin-left: -30px; font-size: 14px;">
+                <div> <b>123456 - 99</b> &nbsp; <b>{{rpm}} RPM</b> </div>
+              </div>
+            </div>
+
+            <!-- ARGO4300 & 4800 -->
+            <div class="innerPanel2" *ngIf = "mNumber != 'ARGO2800'">
+              <div class="row">
+                <div class="col-md-9" style="margin-top: -47px;">
+                  <div class="mt-2" style="border-right: 1px solid #000;
+                  border-bottom: 1px solid #000;
+                  padding: 7px;">
+                    <div class="progress" title="AdblueLevel(DEF)">
+                      <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:20%">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <b style="margin-left: 42px; border-right: 1px solid;border-top: 1px solid; border-bottom: 1px solid; padding: 0 12px 0 16px;">{{rpm}} RPM </b>
+                  </div>
+                  <div class="row">
+                    <div class="icon-bg ncdLamp2" title="NCD Lamp"></div>
+                    <span style="margin-left: 15px;
+                    border-right: 1px solid;
+                    border-bottom: 1px solid;
+                    border-top: 1px solid;
+                    padding: 3px 10px 6px 40px;">Hr: {{enhr}}</span> 
+                  </div>
+                  <div class="row" style="margin-top: -6px;">
+                    <div class="col-md-6">
+                      <span style="font-size: 11px; font-weight: bolder; border-right: 1px solid;
+                      padding: 0px 3px 7px 0;">g_PCodes</span>
+                    </div>
+                    <div class="col-md-6" style="padding: 6px 0px 0 30px;
+                    margin-left: -16px;">
+                      <div class="icon-bg batt-green2" title="Battery Voltage"></div> 
+                      <span style="font-size: 10px;
+                      font-weight: 700;">{{batteryLevel | number :'1.2-2'}} V</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="inner-col-md-3">
+                  <div class="icon-bg lubeOilPressure2" title="Lube Oil Pressure"></div>
+                  <div class="progress" style="transform: rotate(-90deg);">
+                    <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" [class.oilPressure-full]="oilpressure <= '2'" [class.oilPressure-mid]="oilpressure > '2'">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- bs5 code start  -->
+          <div class="col-sm-8" *ngIf="checkModel == 'gauge4'">
+            <div class="main-container-bs5 mt-0 mob-main-container">
+              <div class="bs5-img"></div>
+              <div class="icon-bg company-img2" title="Company Logo"></div>
+              <div class="icon-bg bs5-elo" title="Hydraulic Pressure" [class.bs5-elo-full]="oilpressure <= '2'"
+                [class.bs5-elo-low]="oilpressure > '2'"></div>
+              <div class="icon-bg bs5-hsi" title="RPM" [class.bs5-hsi-full]="rpm > '1500'"
+                [class.bs5-hsi-low]="rpm < '1500'"></div>
+              <div class="icon-bg bs5-bci" title="Battery" [class.bs5-bci-full]="batteryLevel > '11.5'"
+                [class.bs5-bci-med]="batteryLevel > '6' && batteryLevel < '11.5'"
+                [class.bs5-bci-low]="batteryLevel < '6'">
+              </div>
+              <div class="icon-bg bs5-fri" title="Water in Fuel" [class.bs5-fri-full]="waterInFuel == 'No'"
+                [class.bs5-fri-low]="waterInFuel == 'Yes'">
+              </div>
+              <div class="icon-bg bs5-pbapplied" title="Parking Brake"
+                [class.bs5-pb-released]="parkingSwitch === 'RELEASE'"
+                [class.bs5-pb-applied]="parkingSwitch === 'APPLIED'">
+              </div>
+
+              <!-- <div class="icon-bg can-plindicator" title="Parking Light" [class.can-pb-applied]="parkingSwitch === 'APPLIED'"></div> -->
+              <div class="icon-bg bs5-mil-lamp" title="MIL Lamp" [class.bs5-mil-lamp-yellow]="milLamp === 'Lamp ON'">
+              </div>
+              <div class="icon-bg bs5-hof" title="Hydraulic Oil"
+                [class.bs5-hof-green]="hydralicOilFilterChoke === 'NORMAL'"
+                [class.bs5-hof-red]="hydralicOilFilterChoke === 'CHOKE'"></div>
+              <div class="icon-bg bs5-system-check-lamp" title="System Lamp"
+                [class.bs5-system-check-lamp-yellow]="systemLamp === 'Lamp ON'"></div>
+              <div class="icon-bg bs5-eng-exhaust-lamp" title="Engine Exhaust Lamp"
+                [class.bs5-eng-exhaust-lamp-yellow]="engineExhaustTemp === 'Lamp ON'"></div>
+              <div class="icon-bg bs5-dpf-lamp" title="DPF Lamp"
+                [class.bs5-dpf-lamp-yellow]="dpfLamp === 'Lamp ON'"></div>
+              <!-- <div class="icon-bg fuel-g1" title="Fuel Empty" [class.fuel-r1]="fuelPer <= '0'"></div>
+              <div class="icon-bg fuel-g2" title="Fuel 25%" [class.fuel-r2]="fuelPer <= '25'"></div>
+              <div class="icon-bg fuel-g3" title="Fuel 50%" [class.fuel-r3]="fuelPer <= '50'"></div>
+              <div class="icon-bg fuel-g4" title="Fuel 75%" [class.fuel-r4]="fuelPer <= '75'"></div> -->
+
+              <!-- my fuel per added code start -->
+              <div class="icon-bg bs5-fuel-g1" title="Fuel Empty" [class.bs5-fuel-r1]="fuelPer <= '0'"></div>
+              <div class="icon-bg bs5-fuel-g2" title="Fuel 14%" [class.bs5-fuel-r2]="fuelPer <= '14'"></div>
+              <div class="icon-bg bs5-fuel-g3" title="Fuel 28%" [class.bs5-fuel-r3]="fuelPer <= '28'"></div>
+              <div class="icon-bg bs5-fuel-g4" title="Fuel 42%" [class.bs5-fuel-r4]="fuelPer <= '42'"></div>
+              <div class="icon-bg bs5-fuel-g5" title="Fuel 56%" [class.bs5-fuel-r5]="fuelPer <= '56'"></div>
+              <div class="icon-bg bs5-fuel-g6" title="Fuel 70%" [class.bs5-fuel-r6]="fuelPer <= '70'"></div>
+              <div class="icon-bg bs5-fuel-g7" title="Fuel 84%" [class.bs5-fuel-r7]="fuelPer <= '84'"></div>
+              <div class="icon-bg bs5-fuel-g8" title="Fuel 100%" [class.bs5-fuel-r8]="fuelPer > '84' && fuelPer <= '100' && fuelPer != ''"></div>
+              
+              <!-- my fuel per added code -->
+
+                <!-- <div class="icon-bg bs5-collant-g2" title="CoolentTemp 70" [class.bs5-collant-r2]="coolantTemp >= '70'"></div>
+                <div class="icon-bg bs5-collant-g3" title="CoolentTemp 100" [class.bs5-collant-r3]="coolantTemp >= '100'"></div>
+                <div class="icon-bg bs5-collant-g4" title="CoolentTemp 110" [class.bs5-collant-r4]="coolantTemp >= '110'"></div> -->
+
+                <!-- added code of coolant start -->
+          
+                <!-- new logic of coolant -->
+                <!-- <div class="icon-bg" [ngClass]="{'bs5-collant-g1': coolantTemp >= 12.5, 'bs5-collant-r1': coolantTemp < 12.5}" title="{{'CoolantTemp ' + coolantTemp}}"></div>
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g2': coolantTemp >= 25, 'bs5-collant-r2': coolantTemp < 25}" title="{{'CoolantTemp ' + coolantTemp}}"></div>
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g3': coolantTemp >= 37.5, 'bs5-collant-r3': coolantTemp < 37.5}" title="{{'CoolantTemp ' + coolantTemp}}"></div>
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g4': coolantTemp >= 50, 'bs5-collant-r4': coolantTemp < 50}" title="{{'CoolantTemp ' + coolantTemp}}"></div>
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g5': coolantTemp >= 62.5, 'bs5-collant-r5': coolantTemp < 62.5}" title="{{'CoolantTemp ' + coolantTemp}}"></div>
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g6': coolantTemp >= 75, 'bs5-collant-r6': coolantTemp < 75}" title="{{'CoolantTemp ' + coolantTemp}}"></div>
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g7': coolantTemp >= 87.5, 'bs5-collant-r7': coolantTemp < 87.5}" title="{{'CoolantTemp ' + coolantTemp}}"></div>
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g8': coolantTemp >= 100, 'bs5-collant-r8': coolantTemp < 100}" title="{{'CoolantTemp ' + coolantTemp}}"></div> -->
+
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g1': coolantTemp >= 12.5, 'bs5-collant-r1': coolantTemp < 12.5, 'bs5-collant-hovered': coolantTemp >= 12.5}" [title]="coolantTemp >= 12.5 ? 'CoolantTemp ' + coolantTemp : ' '"></div>
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g2': coolantTemp >= 25, 'bs5-collant-r2': coolantTemp < 25, 'bs5-collant-hovered': coolantTemp >= 25}" [title]="coolantTemp >= 25 ? 'CoolantTemp ' + coolantTemp : ' '"></div>
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g3': coolantTemp >= 37.5, 'bs5-collant-r3': coolantTemp < 37.5, 'bs5-collant-hovered': coolantTemp >= 37.5}" [title]="coolantTemp >= 37.5 ? 'CoolantTemp ' + coolantTemp : ' '"></div>
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g4': coolantTemp >= 50, 'bs5-collant-r4': coolantTemp < 50, 'bs5-collant-hovered': coolantTemp >= 50}" [title]="coolantTemp >= 50 ? 'CoolantTemp ' + coolantTemp : ' '"></div>
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g5': coolantTemp >= 62.5, 'bs5-collant-r5': coolantTemp < 62.5, 'bs5-collant-hovered': coolantTemp >= 62.5}" [title]="coolantTemp >= 62.5 ? 'CoolantTemp ' + coolantTemp : ' '"></div>
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g6': coolantTemp >= 75, 'bs5-collant-r6': coolantTemp < 75, 'bs5-collant-hovered': coolantTemp >= 75}" [title]="coolantTemp >= 75 ? 'CoolantTemp ' + coolantTemp : ' '"></div>
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g7': coolantTemp >= 87.5, 'bs5-collant-r7': coolantTemp < 87.5, 'bs5-collant-hovered': coolantTemp >= 87.5}" [title]="coolantTemp >= 87.5 ? 'CoolantTemp ' + coolantTemp : ' '"></div>
+                <div class="icon-bg" [ngClass]="{'bs5-collant-g8': coolantTemp >= 100, 'bs5-collant-r8': coolantTemp < 100, 'bs5-collant-hovered': coolantTemp >= 100}" [title]="coolantTemp >= 100 ? 'CoolantTemp ' + coolantTemp : ' '"></div>
+                <!-- new logic of coolant -->
+                <!-- added code of coolant  end-->
+            </div>
+
+            <!-- ARGO2800 -->
+            <!-- *ngIf="mNumber == 'ARGO2800'" -->
+            <div class="innerPanel3">
+              <div>
+                <div class="icon-bg lubeOilPressure" title="Lube Oil Pressure"></div>
+                <div class="progress">
+                  <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="70" aria-valuemin="0"
+                    aria-valuemax="100" [class.oilPressure-full]="oilpressure <= '2'"
+                    [class.oilPressure-mid]="oilpressure > '2'">
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3">
+                <div class="icon-bg batt-green" title="Battery Voltage"></div>
+                <div class="progress">
+                  <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="70" aria-valuemin="0"
+                    aria-valuemax="100" [class.batt-full]="batteryLevel > '11.5'"
+                    [class.batt-mid]="batteryLevel > '6' && batteryLevel < '11.5'"
+                    [class.batt-low]="batteryLevel < '6'">
+                  </div>
+                </div>
+              </div>
+              <div class="mt-2">
+                <div class="icon-bg ncdLamp" title="NCD Lamp"></div>
+                <div> <b>Hour: {{enhr}}</b> </div>
+              </div>
+              <div class="mt-1" style="margin-left: -30px; font-size: 14px;">
+                <!-- <div> <b>123456 - 99</b> &nbsp; <b>{{rpm}} RPM</b> </div> -->
+                <div> <b>{{rpm}} RPM</b> </div>
+              </div>
+            </div>
+
+            <!-- ARGO4300 & 4800 -->
+            <!-- <div class="innerPanel2" *ngIf="mNumber != 'ARGO2800'">
+              <div class="row">
+                <div class="col-md-9" style="margin-top: -47px;">
+                  <div class="mt-2" style="border-right: 1px solid #000;
+                  border-bottom: 1px solid #000;
+                  padding: 7px;">
+                    <div class="progress" title="AdblueLevel(DEF)">
+                      <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="70" aria-valuemin="0"
+                        aria-valuemax="100" style="width:20%">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <b
+                      style="margin-left: 42px; border-right: 1px solid;border-top: 1px solid; border-bottom: 1px solid; padding: 0 12px 0 16px;">{{rpm}}
+                      RPM </b>
+                  </div>
+                  <div class="row">
+                    <div class="icon-bg ncdLamp2" title="NCD Lamp"></div>
+                    <span style="margin-left: 15px;
+                    border-right: 1px solid;
+                    border-bottom: 1px solid;
+                    border-top: 1px solid;
+                    padding: 3px 10px 6px 40px;">Hr: {{enhr}}</span>
+                  </div>
+                  <div class="row" style="margin-top: -6px;">
+                    <div class="col-md-6">
+                      <span style="font-size: 11px; font-weight: bolder; border-right: 1px solid;
+                      padding: 0px 3px 7px 0;">g_PCodes</span>
+                    </div>
+                    <div class="col-md-6" style="padding: 6px 0px 0 30px;
+                    margin-left: -16px;">
+                      <div class="icon-bg batt-green2" title="Battery Voltage"></div>
+                      <span style="font-size: 10px;
+                      font-weight: 700;">{{batteryLevel | number :'1.2-2'}} V</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="inner-col-md-3">
+                  <div class="icon-bg lubeOilPressure2" title="Lube Oil Pressure"></div>
+                  <div class="progress" style="transform: rotate(-90deg);">
+                    <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="70" aria-valuemin="0"
+                      aria-valuemax="100" [class.oilPressure-full]="oilpressure <= '2'"
+                      [class.oilPressure-mid]="oilpressure > '2'">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+          </div>
+          <!-- bs5 code end  -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row" style="margin: 0;">
+    <img src="../../assets/img/trackvehicles.jpg" style="width: 100%;">
+  </div>
+  <i data-toggle="modal" data-target="#vehicleLastLocationModal" id="vehicleLastLocationModalopen"></i>
+  <i data-toggle="modal" data-target="#vehicleLocationModal" id="vehicleLocationModalopen"></i>
+
+  <div class="card">
+    <div class="row card-top-padding mob-track-top-padding">
+      <div class="col-md-6 m-p-0">
+        <form class="form-inline">
+          <i class="fas fa-search" aria-hidden="true"></i>
+          <input class="form-control form-control-sm ml-3 w-87" type="text" placeholder="Search Vehicle"
+            aria-label="Search" name="search" [(ngModel)]="searchText" autocomplete="off"
+            style="background-color: #d9d9d9; ">
+        </form>
+      </div>
+
+      <div class="col-md-6 m-p-0 mob-m-1">
+        <form class="form-inline" [formGroup]="form" (ngSubmit)="onSubmit()" style="float: right;">
+          <label class="mob-footer-hide">From</label> &nbsp;
+          <input type="date" class="form-control m-w-35 m-p-0" [ngModel]="fromDate" max="{{toDate}}"
+            formControlName="startDate" style="padding: 0px 10px; margin-right: 15px;">
+          <label>To</label> &nbsp;
+          <input type="date" class="form-control m-w-35 m-p-0" [ngModel]="toDate" max="{{toDate}}"
+            formControlName="endDate" placeholder="Tosasasasas" style="padding: 0px 10px; margin-right: 10px;">
+          <button class="btn btn-primary" type="button" type="submit"
+            style="padding: 6px 7px; float: right; border: none;">GO!</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="tableFixHead">
+      <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th style="vertical-align: top;">#</th>
+            <!-- <th style="vertical-align: top;">Vehicle No. </th> -->
+            <th style="vertical-align: top;">{{ pinNo }}</th>
+            <th style="vertical-align: top;">Model</th>
+            <th style="vertical-align: top;">Engine No.</th>
+            <th style="vertical-align: top;">Customer Login</th>
+            <th style="vertical-align: top;">Engine Hours</th>
+            <th style="vertical-align: top;padding: 8px 38px; ">LastData Recd.</th>
+            <th style="vertical-align: top;"> <i class="fa fa-route fa-2x"></i> <br>(kms) </th>
+            <th style="vertical-align: top;padding: 8px 38px; ">EngineLast ON</th>
+            <th style="vertical-align: top; "><i class="fas fa-tachometer-alt fa-2x"> </i></th>
+            <th style="vertical-align: top; z-index: 1;"><i class="far fa-map fa-2x"></i></th>
+            <th style="vertical-align: top;"> <i class="fa fa-exclamation-triangle fa-2x" title="alert report"></i></th>
+            <!-- <th style="vertical-align: top;"><i class="far fa-list-alt fa-2x"></i></th> -->
+            <th style="vertical-align: top;">Actions</th>
+            <th style="vertical-align: top;">Device ID</th>
+            <th style="vertical-align: top; padding: 5px 30px;">Mapped On</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr *ngFor="let v of variant"> -->
+          <tr
+            *ngFor="let t of trackdocs | filter:searchText | paginate : {itemsPerPage : itemsPerPage, currentPage : p} let i = index"
+            (click)="setClickedRow(i)" [class.active]="i == selectedRow">
+            <td>{{itemsPerPage*(p-1)+i+1}}</td>
+            <!--  <td>{{i+1}}</td> 
+
+          <td *ngIf="t.vehicleNumber != ''">
+            {{t.vehicleNumber}}
+          </td>
+          
+          <td *ngIf="t.vehicleNumber == ''">
+            {{t.pinno}}
+          </td>  
+	 <td id="t1"> <a id="onNavigate" (click)="onNavigate(t.pinno,'isPinNo')"
+              style="color: inherit;">{{t.pinno}}</a></td>
+
+         -->
+            <td id="t1"> <a id="onNavigate" (click)="onNavigate(t.pinno, t.deviceModel, t.totalEngineHours,t.type)" style="color: inherit;">{{t.pinno}}</a></td>
+            <td>{{t.deviceModel}}</td>
+
+            <td>{{t.engineNumber}}</td>
+            <!-- <td>{{ ConvertToInt(t.addedSeconds) + ConvertToInt(t.totalSeconds) | enginehours}}</td>
+                 -->
+            <td>{{t.customerCode}} <br> {{t.customerMobile}}</td>
+            <td> {{ t.totalEngineHours }} </td>
+            <td>
+              <!-- Future date display issue resolved -->
+              {{t.lastDataReceivedAt | slice:8:10}}-{{t.lastDataReceivedAt| slice:5:7}}-{{t.lastDataReceivedAt|
+              slice:0:4}} <br>
+              {{t.lastDataReceivedAt | date:'h:mm:ss a':'+0000'}}
+            </td>
+
+
+            <td> {{t.totalDistance | number :'1.2-2'}}</td>
+            <td id="t2"> <a id="onEngineLastOnNavigate" (click)="onEngineLastOnNavigate(t.engineLastOn,t.pinno, t.deviceModel, t.totalEngineHours,t.type)"
+                style="color: blue;">
+                {{t.engineLastOn | slice:8:10}}-{{t.engineLastOn| slice:5:7}}-{{t.engineLastOn| slice:0:4}} <br>
+                {{t.engineLastOn | date:'h:mm:ss a':'+0000'}}</a>
+            </td>
+
+            <td>
+              <a title="Guage Meter"
+                (click)="meter(t.totalEngineHours,t.totalDistance,t.vehicleNumber,t.pinno,t.deviceModel,t.engineLastOn,'isMeter')">
+                <i class="fas fa-tachometer-alt fa-2x" data-toggle="modal" data-target="#meter"></i>
+              </a>
+
+            </td>
+            <td>
+              <a title="Vehicle Map">
+                <div *ngIf="loading == true && i == mapIconInd" class="loader"></div>
+                <div [hidden]="loading" (click)="mapDate(t.pinno,'isMapPath', i)"><i class="far fa-map fa-2x"></i></div>
+              </a>
+            </td>
+            <td> <a id="onAlert" (click)="onAlert(t.pinno)"><i class="fa fa-exclamation-triangle fa-2x"></i></a></td>
+            <td>
+              <div class="dropdown">
+                <button class="btn btn-muted dropdown-toggle btn-drop-down" type="button" id="dropdownMenuButton"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                  (click)="trackVehicleLastLocation(t.pinno,false)">
+                  <i class="fa fa-ellipsis-v "></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <button class="dropdown-item" style="background-color: rgb(168, 161, 161);"
+                    (click)="trackVehicleLastLocation(t.pinno, true)"><i class="fa fa-map-marker"></i>
+                    Vehicle Last Location ( {{t.pinno}} ):<br> {{address}}</button>
+                  <!-- <a class="dropdown-item"><i class="fa fa-share-square"></i> Share</a> -->
+                </div>
+              </div>
+              <!-- <ul class="actions">
+                          <a>
+                              <li class="actions-item"><i class="fa fa-share-square"></i></li>
+                          </a>
+                          <a>
+                              <li class="actions-item"><i class="fa fa-clock-o"></i></li>
+                          </a>
+                          <a>
+                              <li class="actions-item"><i class="fa fa-map-marker"
+                                      (click)="trackVehicleLastLocation(t.pinno)"></i></li>
+                          </a>
+                          <a>
+                              <li class="actions-item"><i class="fa fa-ellipsis-v "></i></li>
+                          </a>
+  
+                      </ul> -->
+            </td>
+            <!-- <td> <a title="Summary" (click)="onSummary(t.pinno)"><i class="far fa-list-alt fa-2x"></i></a> </td> -->
+            <td *ngIf="(t.deviceID | slice:0:4) == '3529'">AT_{{t.deviceID}}
+              <p *ngIf="t.type == 'Advance'">Advanced</p>
+              <p *ngIf="t.type == 'advance'">Advanced</p>
+              <p *ngIf="t.type == 'dvmap'">Advanced</p>
+              <p *ngIf="t.type == 'dvmapb'">Basic</p>
+              <p *ngIf="t.type == 'bs4'">Bs4</p>
+              <p *ngIf="t.type == 'bs5'">Bs5</p>
+
+            </td>
+            <td *ngIf="(t.deviceID | slice:0:4) != '3529'">{{t.deviceID}}
+              <p *ngIf="t.type == 'Advance'">Advanced</p>
+              <p *ngIf="t.type == 'advance'">Advanced</p>
+              <p *ngIf="t.type == 'dvmap'">Advanced</p>
+              <p *ngIf="t.type == 'dvmapb'">Basic</p>
+              <p *ngIf="t.type == 'bs4'">Bs4</p>
+              <p *ngIf="t.type == 'bs5'">Bs5</p>
+            </td>
+            <td> {{t.createdDate | slice:8:10}}-{{t.createdDate| slice:5:7}}-{{t.createdDate| slice:0:4}}
+            </td>
+
+          </tr>
+          <tr *ngIf="!track">
+            <td colspan="20" class="text-center">
+              <span class="spinner-border spinner-border-lg align-center"></span>
+            </td>
+          </tr>
+          <!-- <tr><td colspan="13">*If customer has not provided the vehicle number while creating the machine then vehicle number is taking as same as pin number</td></tr> -->
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="input-group-icon input-group-icon-right text-center mt-2 col-md-12">
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="vehicleLocationModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><span style="font-size:19px;">Vehicle Path Map(Pin No:
+            {{mappinno}} From: {{fromDt | date:'dd-MM-yyyy'}} To: {{toDt | date:'dd-MM-yyyy'}})</span></h5>
+        <button type="button" class="close" id="vehicleLocationModalclose" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- animation="BOUNCE" -->
+        <button class="btn btn-primary" (click)="this.viewType= 'terrain'"
+          style="padding: 2px 10px; margin-right: 4px;">Terrain</button>
+        <button class="btn btn-danger" (click)="this.viewType= 'satellite'"
+          style="padding: 2px 10px;">Satellite</button>
+        <!-- &nbsp;&nbsp;
+<input type="checkbox"[(ngModel)]="isChecked"(change)="alldevicesRecords(isChecked)" /> Show  Off Data Also -->
+
+        <agm-map [latitude]='maplat' [longitude]='maplng' [zoom]='12' [fullscreenControl]='true' [mapTypeControl]='true' [streetViewControl]="true" [mapTypeId]="this.viewType">
+          <agm-marker *ngFor='let marker of coordinatedata'
+            [iconUrl]="{url: markerPath, scaledSize: {height: 25,width: 15}}" [latitude]='marker.lat'
+            [longitude]='marker.lng' [opacity]='opacity' [markerDraggable]='true' [agmFitBounds]="true">
+            <agm-info-window>
+              <Strong>{{pinNo}} : {{marker.pinno}}</Strong>
+              <br>
+              <Strong>Device-Model. : {{marker.deviceModel}}</Strong>
+              <br>
+              <strong>Date Time : {{marker.time | date:'dd-MM-yyyy h:mm:ss a':'+0000'}}</strong>
+              <br>
+              <!--
+                <strong>Time : {{marker.time | date:'h:mm:ss a':'+0000'}}</strong>
+                <br>    -->
+              <Strong>Lat : {{marker.lat}}</Strong>
+              <br>
+              <Strong>Lng : {{marker.lng}}</Strong>
+              <br>
+              <Strong>Engine Status : {{marker.engineStatus}}</Strong>
+              <br>
+              <Strong>Distance(kms) : {{marker.rangedistance | number :'1.2-4'}}</Strong>
+              <br>
+              <Strong>Speed : {{marker.travelspeed}}</Strong>
+            </agm-info-window>
+          </agm-marker>
+          <agm-polyline [visible]="true" [strokeWeight]="2" [strokeColor]="'#57eaff'">
+            <agm-polyline-point *ngFor="let coordinate of coordinatedata; let i=index" [latitude]="coordinate.lat"
+              [longitude]="coordinate.lng">
+            </agm-polyline-point>
+          </agm-polyline>
+
+          <agm-marker *ngFor="let coordinate of end_marker; let i=index" animation="BOUNCE"
+            [iconUrl]="{url: endMark, scaledSize: {height: 50,width: 33}}" [latitude]="coordinate.lat"
+            [longitude]="coordinate.lng" [agmFitBounds]="true">
+            <agm-info-window>
+              <strong>Start</strong>
+              <hr>
+              <Strong>{{pinNo}} : {{coordinate.pinno}}</Strong>
+              <br>
+              <Strong>Device-Model. : {{coordinate.deviceModel}}</Strong>
+              <br>
+
+              <strong>Date Time : {{coordinate.time | date:'dd-MM-yyyy h:mm:ss a':'+0000'}}</strong>
+              <br>
+              <!-- 
+	            <strong>Date : {{coordinate.time | date:'dd-MM-yyyy'}}</strong>
+              <br>
+              <strong>Time : {{coordinate.time | date:'h:mm:ss a':'+0000'}}</strong>
+              <br>  -->
+              <Strong>Lat : {{coordinate.lat}}</Strong>
+              <br>
+              <Strong>Lng : {{coordinate.lng}}</Strong>
+              <br>
+              <Strong>Engine Status : {{coordinate.engineStatus}}</Strong>
+            </agm-info-window>
+          </agm-marker>
+
+          <agm-marker *ngFor="let coordinate of start_marker; let i=index" animation="BOUNCE"
+            [iconUrl]="{url: startMarker, scaledSize: {height: 50,width: 34}}" [latitude]="coordinate.lat"
+            [longitude]="coordinate.lng" [agmFitBounds]="true">
+            <agm-info-window>
+              <strong>End</strong>
+              <br>
+              <Strong>{{pinNo}} : {{coordinate.pinno}}</Strong>
+              <br>
+              <Strong>Device-Model. : {{coordinate.deviceModel}}</Strong>
+              <br>
+              <strong>Date Time : {{coordinate.time | date:'dd-MM-yyyy h:mm:ss a':'+0000'}}</strong>
+              <br>
+              <!--  
+              <strong>Time : {{coordinate.time | date:'h:mm:ss a':'+0000'}}</strong>
+              <br>  -->
+              <Strong>Lat : {{coordinate.lat}}</Strong>
+              <br>
+              <Strong>Lng : {{coordinate.lng}}</Strong>
+              <br>
+              <Strong>Engine Status : {{coordinate.engineStatus}}</Strong>
+              <br>
+              <Strong>Distance(kms) : {{coordinate.rangedistance | number :'1.2-4'}}</Strong>
+              <br>
+              <Strong>Speed : {{coordinate.travelspeed}}</Strong>
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Last Location -->
+<div class="modal fade" id="vehicleLastLocationModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Vehicle Last Location</h5>
+        <button type="button" class="close" id="vehicleLastLocationModalClose" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <agm-map [latitude]='lastLocationlat' [longitude]='lastLocationlng' [zoom]='8' [fullscreenControl]='true' [mapTypeControl]='true' [streetViewControl]="false">
+          <agm-marker [latitude]='lastLocationlat' [longitude]='lastLocationlng' [opacity]='opacity' [markerDraggable]='false' [agmFitBounds]="true">
+            <agm-info-window>
+              <strong>{{pinNo}} : {{lastLocPinNo}}</strong>
+              <br>
+              <strong>Device Model : {{lastLocdeviceModel}}</strong>
+              <br>
+              <strong>Date : {{lastLocdeviceTime | date:'dd-MM-yyyy'}}</strong>
+              <br>
+              <strong>Time : {{lastLocdeviceTime | date:'h:mm:ss a':'+0000'}}</strong>
+              <br>
+              <strong>lat : {{lastLocationlat}}</strong>
+              <br>
+              <strong>lng : {{lastLocationlng}}</strong>
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

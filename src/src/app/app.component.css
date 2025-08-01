@@ -1,0 +1,30 @@
+
+img.icon{
+    margin:auto; 
+    display: block; 
+    width:25px;
+    margin-bottom:30px; 
+    float: left;
+}
+.icon:hover {
+    -webkit-transform :scale(1.25);
+}
+
+.dropdown:active .dropdown-menu {
+    display: block;
+    margin-top: 0; 
+ }
+
+.container:hover{
+    background-color: #8483c9;
+    padding: 2px 2px;
+}
+.menu{
+    color: white;
+    font-size: small;
+    text-decoration: none;
+}
+.menu:hover{
+    color: black;
+    background-color: white;
+}

@@ -1,0 +1,273 @@
+<div *ngIf="!devices  || inActive == false ">
+    <span class="spinner-border spinner-border-lg align-center"></span>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-6">
+        <a onclick="goBack()"><i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Device
+        </span>
+    </div>
+    <div class="col-md-6 mob-date dashdate">
+        <div ng-app ng-controller="Ctrl" style="text-align: right; margin-top: 10px;">
+            <b style="margin-bottom: 0px;">
+                {{date | date:'dd.MM.yyyy'}}
+            </b>
+        </div>
+        <div style="text-align: right;">
+            {{date | date:'EEEE'}}
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="qrCode" tabindex="-1" aria-labelledby="example1lLabel" aria-hidden="true"
+    [style.display]='showModal1? "block":"none"'>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="example1Label">QR Code</h5>
+                <button type="button" id="closeBtn2" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body section-to-print">
+                <qrcode [qrdata]="qrData" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IOT Device No : &nbsp; <b>{{deviceID}} </b>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="window.print()">&#9113;</button>
+                <button type="button" id="closeBtn2" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade preview-modal" data-backdrop="static" id="exampleModal7" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true" [style.display]='showModal? "block":"none"'>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">NEW DEVICE</h5>
+                <button type="button" #closeButton id='closeBtn' class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <!-- <app-add></app-add>  add.component.ts -->
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12">
+                            <label><span class="required-asterisk">*</span>IOT Device No</label><br>
+                            <input type="text" formControlName="deviceID" [pattern]="noSpacePattern"
+                                class="form-control" [ngClass]="{ 'is-invalid': submitted && f.deviceID?.errors }" />
+                            <div *ngIf="submitted && f.deviceID?.errors" class="invalid-feedback">
+                                <div *ngIf="f.deviceID?.errors.required">Device No is required</div>
+                                <div *ngIf="f.deviceID?.errors.pattern">Enter device number with no space</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12">
+                            <label><span class="required-asterisk">*</span>Sim No</label><br>
+                            <input type="text" formControlName="devicesim" [pattern]="noSpacePattern"
+                                class="form-control" [ngClass]="{ 'is-invalid': submitted && f.devicesim?.errors }" />
+                            <div *ngIf="submitted && f.devicesim?.errors" class="invalid-feedback">
+                                <div *ngIf="f.devicesim?.errors.required">Sim No is required</div>
+                                <div *ngIf="f.devicesim?.errors.pattern">Enter device sim number with no space</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12">
+                            <label><span class="required-asterisk">*</span>Device Category</label><br>
+                            <select class="form-control" formControlName="category" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.category.errors }">
+                                <option></option>
+                                <option value="basic">basic</option>
+                                <option value="advance">advance</option>
+                                <option value="bs4">bs4</option>
+                            </select>
+                            <div *ngIf="submitted && f.category.errors" class="invalid-feedback">
+                                <div *ngIf="f.category.errors.required">Category is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12">
+                            <label><span class="required-asterisk">*</span>Recpt. Date at Plant</label><br>
+                            <input type="date" formControlName="devicereceiptDate" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.devicereceiptDate.errors }"
+                                [max]="getToday()" />
+                            <div *ngIf="submitted && f.devicereceiptDate.errors" class="invalid-feedback">
+                                <div *ngIf="f.devicereceiptDate.errors.required">Recpt. Date is required</div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-6">
+                            <label><span class="required-asterisk">*</span>Device Installation Date</label><br>
+                            <input type="date" formControlName="deviceinstallationDate" value="deviceinstallationDate"
+                                class="form-control"
+                                [ngClass]="{'is-invalid': submitted && f.deviceinstallationDate.errors }"
+                                [max]="getToday()" />
+                            <div *ngIf="submitted && f.deviceinstallationDate.errors" class="invalid-feedback">
+                                <div *ngIf="f.deviceinstallationDate.errors.required">Device installation Date is
+                                    required</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label><span class="required-asterisk">*</span>Activation QC Check Date</label><br>
+                            <input type="date" formControlName="deviceactivationqcDate" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && f.deviceactivationqcDate.errors }"
+                                [max]="getToday()" />
+                            <div *ngIf="submitted && f.deviceactivationqcDate.errors" class="invalid-feedback">
+                                <div *ngIf="f.deviceactivationqcDate.errors.required">QC Date is required</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="form-group" style="text-align: center;">
+                        <button [disabled]="loading" type="submit" class="btn btn-primary" id="closeModel">
+                            Save
+                        </button>&nbsp;
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <a routerLink="add" class="btn btn-sm btn-success mb-2">Add User</a> -->
+<div class="card">
+    <div class="row card-top-padding">
+        <div class="col-md-4 col-xs-12">
+            <div class="input-group-icon input-group-icon-left">
+                <form class="form-inline">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input class="form-control form-control-sm ml-3 w-87 m-mb-1" id="key-search" type="text"
+                        name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="Search"
+                        style="background-color: #d9d9d9; ">
+                </form>
+            </div>
+        </div>
+        <div class="col-md-8 col-xs-12">
+            <div class="row">
+                <div class="col-md-4 col-xs-10">
+                    <input type="checkbox" [(ngModel)]="isChecked" (change)="inactiveRecords(isChecked)"
+                        style="margin-right: 10px;"> Show Inactive Devices
+                </div>
+                <div class="col-md-1 col-xs-2 m-mb-1">
+                    <button (click)="downloadDeviceMaster()" class="btn btn-success mr-1" title="Download Sample File (for data update)"
+                        style="float: left; padding: 3px 10px;"><i class="fas fa-file-download"></i></button>
+                </div>
+                <div class="col-md-4 col-xs-12 m-mb-1">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-10">
+                            <input type="file" #fileInput (change)="onFileSelect($event)" />
+                        </div>
+                        <div class="col-md-6 col-xs-2">
+                            <button type="button" class="btn btn-success" title="Upload Bulk Excel File"
+                                (click)="uploadFile()" style="float: right; padding: 3px 10px;">
+                                <i class="fas fa-file-upload">
+                                </i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button type="button" (click)="addDevice()" [hidden]="showAddDevice" class="btn btn-primary"
+                        data-toggle="modal" data-target="#exampleModal7" style="padding: 2px 10px; float: right;">
+                        <i class="fa fa-plus" aria-hidden="true"
+                            style="width: 30px; -webkit-text-stroke: 0.05px white;">
+                        </i>
+                        NEW DEVICE
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tableFixHead">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr class="head">
+                    <th style="width: 5%;">#</th>
+                    <th style="width: 5%;">QR Code</th>
+                    <th style="width: 10%">IOT Device Number</th>
+                    <th style="width: 10%"> Sim No.</th>
+                    <th style="width: 10%">Recpt. Date Plant</th>
+                    <th style="width: 10%">Device Installation Date </th>
+                    <th style="width: 10%">Activation QC Check Date</th>
+                    <th style="width: 10%">Category</th>
+                    <th style="width: 10%">Created On</th>
+                    <th style="width: 10%">Status</th>
+                    <th style="width: 10%" [hidden]="showButton">Actions</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr *ngFor="let device of devices | filter:searchText | paginate : {itemsPerPage :itemsPerPage, currentPage : p} let i = index"
+                    (click)="setClickedRow(i)" [class.active]="i == selectedRow">
+                    <td>{{itemsPerPage *(p-1)+i+1}}</td>
+                    <td style="white-space: nowrap">
+                        <button (click)="qrCodeGen(device.deviceID, device.devicereceiptDate,device.category)"
+                            class="btn btn-sm btn-info" data-toggle="modal" data-target="#qrCode"><i
+                                class="fa fa-qrcode"></i></button>
+                    </td>
+                    <td>{{device.deviceID}}</td>
+                    <td>{{device.devicesim}}</td>
+                    <td>{{device.devicereceiptDate | date:'dd-MM-yyyy'}}</td>
+                    <td>
+                        {{device.deviceinstallationDate == "Invalid Date" || device.deviceinstallationDate == "" ?
+                        ("date not available")
+                        : (device.deviceinstallationDate | date:'dd-MM-yyyy')}}</td>
+                    <td>
+                        {{device.deviceactivationqcDate == "Invalid Date" || device.deviceactivationqcDate == "" ?
+                        ("date not available")
+                        : (device.deviceactivationqcDate | date:'dd-MM-yyyy')}}
+                    </td>
+                    <td>{{device.category}}</td>
+                    <td>{{device.createdDate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{device.status}}</td>
+                    <td style="white-space: nowrap" [hidden]="showButton">
+                        <button type="button" [hidden]="showEditDevice" (click)="update($event,i,device.id)"
+                            id="closeModel" [hidden]="showedit" class="btn btn-sm btn-primary mr-1" data-toggle="modal"
+                            data-target="#exampleModal7">
+                            <i class="far fa-edit"></i>
+
+                        </button>
+                        <!-- <button (click)="deleteDevice(device.id)" [hidden]="showDeleteDevice"
+                            class="btn btn-sm btn-danger" [hidden]="showdelete">
+                            <i class="far fa-trash-alt"></i>
+                        </button> -->
+                        <button [hidden]="showDeleteMachine" (click)="deleteDevice(device.id, device.deviceID)"
+                            class="btn btn-sm btn-danger" [hidden]="showdelete">
+                            <!-- <span *ngIf="machine.isDeleting" class="spinner-border spinner-border-sm"></span> -->
+                            <span> <i class="far fa-trash-alt"></i></span>
+                        </button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="input-group-icon input-group-icon-left mt-3 text-center">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+    </div>
+</div>

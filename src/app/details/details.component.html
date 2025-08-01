@@ -1,0 +1,778 @@
+<div class="row">
+    <div class="col-md-10 banner-sec" style="margin-top: 15px;">
+        <a routerLink="/track"> <i class="fas fa-chevron-left"></i></a> <span class="page-heading"> Vehicle {{selected}}
+        </span>
+    </div>
+    <div class="col-md-2 mob-date dashdate">
+        <div ng-app ng-controller="Ctrl" style="text-align: right; margin-top: 10px;">
+            <b style="margin-bottom: 0px;">
+                {{date | date:'dd.MM.yyyy'}}
+            </b>
+        </div>
+        <div style="text-align: right;">
+            {{date | date:'EEEE'}}
+        </div>
+    </div>
+</div>
+
+<div class="row rounded" style="margin-left: 0px; margin-right: 0px; margin-bottom: 10px;">
+    <div class="container" style="margin-top:10px; margin-bottom: 20px; padding: 0; max-width: 100%;">
+        <div class="card card-style" style="padding: 1%;">
+            <div class="row">
+                <div class="col-md-3 track-1 m-mb-1">
+                    <h6>{{pin}}</h6>
+                    <!-- <img src="assets/img/Truck 1.png" style="width: 90%; margin-top: 12%;"> -->
+                    <img src="assets/img/{{deviceModel}}.png" onerror="this.onerror=null; this.src='assets/img/default.png'" style="width: 90%; margin-top: 12%;">                    
+                </div>
+                <div class="col-md-4 track-2 m-mb-1" style="font-size: small;">
+                    <ul>
+                        <li>
+                            Machine has run {{engineHours}} hrs in last 7 days.
+                        </li>
+                        <li>
+                            Avg run hours is {{averageHours}} hrs /per Day in last 7 days.
+                        </li>
+
+                        <li>
+                            Total distance travelled {{distanceTravelled | number :'1.2-2'}} kms in last 7 days.
+                        </li>
+                        <li>
+                            Average Distance travelled {{averageDistance | number :'1.2-2'}} kms per day in last 7 days.
+                        </li>
+                        <li>
+                            Machine Engine Last operated at {{lastOperatedOn| date:'h:mm a':'+0000'}}
+                            {{lastOperatedOn| slice: 8:10}}-{{lastOperatedOn| slice: 5:7}}-{{lastOperatedOn| slice:
+                            0:4}}
+                        </li>
+                        <br>
+                        <li>
+                            Above Data updated on {{updatedOn | date:'h:mm a':'+0000'}} on
+                            {{updatedOn | slice: 8:10}}-{{updatedOn | slice: 5:7}}-{{updatedOn | slice: 0:4}}
+
+                        </li>
+
+                    </ul>
+                </div>
+
+                <div class="col-md-4 track-3 m-mb-1" style="border-left: 1px solid #dfdfdf;">
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-md-5 rounded track-live">
+                            <i class="fa fa-circle" style="color: #fff;"></i> Last Engine ON DATA
+                        </div>
+                        <div class="col-md-12" style="font-size: 11px;">
+                            *Showing data for last engine on.
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <button class="btn mr-1" title="Click to see location" (click)="geocodeLatLng(lat,lng)"
+                                    style="float:right; padding: 0px 0px 0 15px;">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </button>
+                                <span *ngIf="loading" class="spinner-border spinner-border-lg align-center"></span>
+                                <span style="font-size: 14px; margin-left: 10px; margin-top: 3px;"> {{address}} </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: -25px;">
+                        <div class="col-md-2 col-xs-2">
+                            <img class="iconl" title="Vehicle Speed" src="assets/img/engine-hours.png">
+                        </div>
+
+                        <div class="col-md-4 col-xs-4">
+                            <small class="track-labels">Engine Hours</small> <br>
+                            <!-- <h6>{{summeryReportExtras?.travelSpeed | number :'1.2-2'}}</h6> -->
+                            <h6>{{ totalEngineHours }}</h6>
+                        </div>
+
+
+                        <div class="col-md-2 col-xs-2">
+                            <img class="iconl" title="Last Engine ON Time" src="assets/img/Engine.png">
+                        </div>
+
+                        <div class="col-md-4 col-xs-4">
+                            <small class="track-labels">Date & Time</small> <br>
+                            <h6>
+                                {{EngineOnDatadocs[0]?.devicePublishTime |
+                                slice:8:10}}-{{EngineOnDatadocs[0]?.devicePublishTime |
+                                slice:5:7}}-{{EngineOnDatadocs[0]?.devicePublishTime | slice:0:4}}
+                                {{EngineOnDatadocs[0]?.devicePublishTime | date:'h:mm:ss a':'+0000'}}
+                            </h6>
+                            <br>
+                        </div>
+
+                    </div>
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-md-2 col-xs-2">
+                            <img class="iconl" title="Battery Voltage" src="assets/img/Battery.png">
+                        </div>
+
+                        <div class="col-md-4 col-xs-4">
+                            <small class="track-labels">Battery</small> <br>
+                            <h6>
+                                {{EngineOnDatadocs[0]?.extras[0].batteryLevel | number :'1.2-2'}} V
+                            </h6>
+                        </div>
+
+                        <div class="col-md-2 col-xs-2">
+                            <img class="iconl" title="Fuel" src="assets/img/Fuel Pump.png">
+                        </div>
+
+                        <div class="col-md-4 col-xs-4">
+                            <small class="track-labels">Fuel</small> <br>
+                            <h6>
+                                {{EngineOnDatadocs[0]?.extras[0].fuelLevel}}
+                               
+                            </h6>
+                        </div>
+
+                    </div>
+                    <div class="row" style="margin-top: 20px;">
+
+                        <div class="col-md-2 col-xs-2">
+                            <img class="iconl" title="Coolant Temperature" src="assets/img/Group 473.png">
+                        </div>
+
+                        <div class="col-md-4 col-xs-4">
+                            <small class="track-labels">Coolant Temp.</small> <br>
+                            <h6>
+                                {{EngineOnDatadocs[0]?.extras[0].coolantTemp}} &#8451;
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="font-size: 12px; margin: -20px 0 5px 0;">
+    <div class="col-md-2 offset-md-10">
+        <span style="float: right;"><i class="fa fa-circle text-danger"></i> Critical</span>
+        <span style="float: right;"><i class="fa fa-circle text-warning"></i> Warning &nbsp;</span>
+    </div>
+</div>
+
+<div class="card" *ngIf="selected == 'Report'">
+    <div class="row" style="padding: 4px 10px;">
+        <div class="col-md-6">
+            <button class="btn btn-sm bg-white" (click)="refresh()" title="Click for Refresh"><i
+                    class="fas fa-sync"></i></button>
+            <input type="checkbox" [checked]="isChecked" (click)="getalertEngineData($event)"
+                style="margin-left: 10px;">
+            Show Alert values
+
+            <select class="rounded m-f-left" id="report" style="border: 1px solid #f2f2f2; margin: 0 10px 0 10px;"
+                (change)="select($event)">
+                <option selected value="Report">
+                    Report
+                </option>
+                <option value="Consumption">
+                    Consumption
+                </option>
+                <option value="Batch">
+                    Batch
+                </option>
+                <option value="Engine">
+                    Engine Hours
+                </option>
+            </select>
+            <select class="rounded" id="select2" style="border: 1px solid #f2f2f2; margin: 0 10px 0 10px;"
+                (change)="select2($event)">
+                <option selected value="on">
+                    Engine On
+                </option>
+                <option value="off">
+                    Engine Off
+                </option>
+            </select>
+            <button class="btn btn-sm btn-success" *ngIf="selected2 == 'on'" title="Download Excel File"
+                (click)="exportEngineOnXLSX()" style="margin-left: 5px;"><i class="fas fa-file-export"></i>
+            </button>
+        </div>
+        <div class="col-md-6">
+            <form class="form-inline" [formGroup]="dtform" (ngSubmit)="onSubmit()" style="float: right;">
+                <label class="mob-footer-hide f-12">From</label> &nbsp;
+                <input type="date" class="form-control m-w-35 h-30" [ngModel]="stdate"
+                    max="{{today}}" formControlName="stdate" style="padding: 0px 10px;">
+                <label style="margin: 0 5px;" class="f-12">To</label> &nbsp;
+                <input type="date" class="form-control m-w-35 h-30" [ngModel]="endate"
+                    max="{{today}}" formControlName="endate" placeholder="To Date" style="padding: 0px 10px;">
+                <button class="btn btn-primary" type="button" type="submit"
+                    style="padding: 3px 7px; float: right; border: none; margin-left: 5px;">GO!</button>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="tableFixHead" *ngIf="selected2 == 'on'">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th style="padding: 5px 45px;">Date & Time</th>
+                    <th style="width: 9%" [hidden]="showFuel">Fuel Level</th>
+                    <th style="width: 9%" [hidden] = "showOnColumns">Fuel %</th>
+                  <!--  <th style="width: 9%">Fuel %</th> -->
+                    <th style="width: 9%">Coolant &#8451;</th>
+                    <th style="width: 9%" [hidden]="showOnColumns">Oil Pressure (Bar)</th>
+                    <th style="width: 9%">Engine</th>
+                    <th style="width: 10%;" [hidden]="showOnCANData">Engine Hours</th>
+                    <th style="width: 5%">RPM</th>
+
+                    <th style="width: 9%">Battery Level (volt)</th>
+
+                    <th style="width: 9%" [hidden]="showOnColumns">Parking Switch</th>
+                    <th style="width: 9%" [hidden]="showOnColumns">Hydraulic Oil Filter Choke</th>
+                    <th style="width: 9%">Travel Speed (Km/h)</th>
+
+                    <th style="width: 9%">Distance (kms)</th>
+
+
+                    <th style="width: 10%;" [hidden]="showOnCANData">WaterIn Fuel Level</th>
+                    <th style="width: 13%;" [hidden]="showOnCANData">Cold Start Lamp</th>
+                    <th style="width: 13%;" [hidden]="showOnCANData">MI Lamp</th>
+                    <th style="width: 10%;" [hidden]="showOnCANData">System Lamp</th>
+                    <!-- <th style="width: 10%;" [hidden]="showOnCANData">Oil Pressure (Bar)</th> 
+                        <th style="width: 10%;" [hidden]="showOnCANData">Coolant &#8451;</th> 
+                        <th style="width: 10%;" [hidden]="showOnCANData">Battery Voltage</th>
+                        <th style="width: 10%;" [hidden]="showOnCANData">Engine Speed</th> 
+                    <th style="width: 10%;" [hidden]="showOnCANData">Actual Engine %Torque</th>
+                    <th style="width: 10%;" [hidden]="showOnCANData">Nominal Friction Torque</th>
+                    <th style="width: 10%;" [hidden]="showOnCANData">Fuel Cons. /Hr</th>  -->
+                    <th style="width: 10%;" [hidden]="showOnCANData">Diesel Exhaust fluid1</th>
+                    <th style="width: 10%;" [hidden]="showOnCANData">Diesel Exhaust fluid2</th>
+                    <th style="width: 10%;" [hidden]="showOnBs5ExtraData">Dpf Lamp</th>
+                    <th style="width: 10%;" [hidden]="showOnBs5ExtraData">Engine Exhaust Temp</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item1 of EngineOnDatadocs | paginate : {itemsPerPage : 100, currentPage : p} let i = index"
+                    (click)="setClickedRow(i)" [class.active]="i == selectedRow" style="text-align: center;">
+                    <td>{{100*(p-1)+i+1}}</td>
+                    <td style="width:18%;">
+                        {{item1.devicePublishTime | slice:8:10}}-{{item1.devicePublishTime |
+                        slice:5:7}}-{{item1.devicePublishTime | slice:0:4}}
+                        {{item1.devicePublishTime | date:'h:mm:ss a':'+0000' }}</td>
+
+
+                    <td [hidden]="showFuel"
+                        [ngClass]="{'warning': item1.extras[0].fuelLevel == this.alertValues[0].fuelLevelw1, 'critical': item1.extras[0].fuelLevel == this.alertValues[0].fuelLevelc}">
+                        {{item1.extras[0].fuelLevel}}</td>
+                    <td [hidden] = "showOnColumns"
+                        [ngClass]="{'warning': item1.extras[0].fuelLevel == this.alertValues[0].fuelLevelw1, 'critical': item1.extras[0].fuelLevel == this.alertValues[0].fuelLevelc}">
+                        {{item1.extras[0].fuelPercentage}}</td>
+                    <td
+                        [ngClass]="{'critical': item1.extras[0].coolantTemp >=this.alertValues[0].coolantTempc, 'warning': item1.extras[0].coolantTemp >= this.alertValues[0].coolantTempw1 && item1.extras[0].coolantTemp <= this.alertValues[0].coolantTempw2 }">
+                        {{item1.extras[0].coolantTemp}}</td>
+                    <td [hidden]="showOnColumns"
+                        [ngClass]="{'critical':item1.extras[0].oilpressure == this.alertValues[0].oilpressurec}">
+                        {{item1.extras[0].oilpressure | number :'1.2-2'}}</td>
+                    <td>{{item1.engineStatus}}</td>
+                    <td [hidden]="showOnCANData">{{ item1.extras[0]["engineHours"] | number :'1.2-2' }}</td>
+                    <td> {{item1.extras[0].rpm | number : '1.0-0'}} </td>
+
+                    <td
+                        [ngClass]="{'warning': item1.extras[0].batteryLevel <= this.alertValues[0].batteryLevelw1 && item1.extras[0].batteryLevel >= this.alertValues[0].batteryLevelc, 'critical': item1.extras[0].batteryLevel <= this.alertValues[0].batteryLevelc}">
+                        {{item1.extras[0].batteryLevel | number :'1.2-2'}}</td>
+
+                    <td [hidden]="showOnColumns">{{item1.extras[0].parkingSwitch}}</td>
+                    <td [hidden]="showOnColumns"
+                        [ngClass]="{'critical':item1.extras[0].hydralicOilFilterChoke == this.alertValues[0].hydralicOilFilterChokec}">
+                        {{item1.extras[0].hydralicOilFilterChoke}}</td>
+
+                    <td [ngClass] = "{'warning':item1.extras[0].travelSpeed >= this.alertValues[0].travelspeedw && item1.extras[0].travelSpeed < this.alertValues[0].travelspeedc, 'critical': item1.extras[0].travelSpeed >= this.alertValues[0].travelspeedc }"> {{item1.extras[0].travelSpeed}} </td>
+                    <td>{{item1.extras[0].distance | number: '1.2-5'}}</td>
+
+
+                    <td [hidden]="showOnCANData" [ngClass]="{'critical': item1.extras[0]['waterinFuelLevel'] == this.alertValues[0].waterinFuelLevel}">{{ item1.extras[0]["waterinFuelLevel"] }}</td>
+                    <td [hidden]="showOnCANData">{{ item1.extras[0]["coldStartLamp"] }}</td>
+                    <td [hidden]="showOnCANData" [ngClass]="{'critical': item1.extras[0]['MalfunctionIndLamp'] == this.alertValues[0].miLamp}">{{ item1.extras[0]["MalfunctionIndLamp"] }}</td>
+                    <td [hidden]="showOnCANData" [ngClass]="{'success': item1.extras[0]['systemLamp'] == this.alertValues[0].systemLamp}">{{ item1.extras[0]["systemLamp"] }}</td>
+                    <!-- <td [hidden]="showOnCANData">{{ item1.extras[0]["engineOilPressure"] }}</td>
+                        <td [hidden]="showOnCANData">{{ item1.extras[0]["engineCoolantTemperature"] }}</td> 
+                        <td [hidden]="showOnCANData">{{ item1.extras[0]["batteryVoltage"] }}</td>
+                        <td [hidden]="showOnCANData">{{ item1.extras[0]["engineSpeed"] }}</td>   
+                    <td [hidden]="showOnCANData">{{ item1.extras[0]["actualEnginePercentageTorque"] }}</td>
+                    <td [hidden]="showOnCANData">{{ item1.extras[0]["nominalFrictionTorque"] }}</td>
+                    <td [hidden]="showOnCANData">{{ item1.extras[0]["liquidFuelEconomy"] | number : '1.1-1'}}</td> -->
+                    <td [hidden]="showOnCANData">{{ item1.extras[0]["dieselExhaustfluid1"] | number : '1.1-1' }}</td>
+                    <td [hidden]="showOnCANData">{{ item1.extras[0]["dieselExhaustfluid2"] | number : '1.1-1' }}</td>
+                    <td [hidden]="showOnBs5ExtraData">{{ item1.extras[0]["dpfLamp"] }}</td>
+                    <td [hidden]="showOnBs5ExtraData">{{ item1.extras[0]["EngineExhaustTemp"] }}</td>
+                </tr>
+                <tr *ngIf="EngineOnDatadocs == '' ">
+                    <td colspan="22" class="text-center">
+                        <span class="spinner-border spinner-border-lg align-center"></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="tableFixHead" *ngIf="selected2 == 'off'">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th style="padding: 10px 35px;">Date & Time</th>
+
+                    <th style="width: 9%" [hidden]="showFuel">Fuel Level</th>
+                    <th style="width: 9%" [hidden] = "showOnColumns">Fuel %</th>
+                    <th style="width: 9%">Engine</th>
+                    <th style="width: 9%">RPM</th>
+                    <th style="width: 9%">Coolant &#8451;</th>
+                    <th style="width: 9%">Battery Level (volt) </th>
+                    <th style="width: 9%">Travel Speed (Km/h)</th>
+                    <th style="width: 9%" [hidden]="showOffColumns">Parking Switch</th>
+                    <th style="width: 9%" [hidden]="showOffColumns">Hydraulic Oil Filter Choke</th>
+                    <th style="width: 9%" [hidden]="showOffColumns">Oil Pressure (Bar)</th>
+
+                    <th style="width: 10%;" [hidden]="showOffCANData">Water in Fuel Level</th>
+                    <th style="width: 10%;" [hidden]="showOffCANData">Cold Start Lamp</th>
+                    <th style="width: 10%;" [hidden]="showOffCANData">System Lamp</th>
+                    <th style="width: 10%;" [hidden]="showOffCANData">Engine Oil Pressure</th>
+                    <th style="width: 10%;" [hidden]="showOffCANData">Engine Coolant Temp.</th>
+                    <th style="width: 10%;" [hidden]="showOffCANData">Battery Voltage</th>
+                    <th style="width: 10%;" [hidden]="showOffCANData">Engine Speed</th>
+                    <th style="width: 10%;" [hidden]="showOffCANData">Actual Engine % Torque</th>
+                    <th style="width: 10%;" [hidden]="showOffCANData">Nominal Friction Torque</th>
+                    <th style="width: 10%;" [hidden]="showOffCANData">Engine Hours</th>
+                    <th style="width: 10%;" [hidden]="showOffCANData">Liquid Fuel Economy</th>
+                    <th style="width: 10%;" [hidden]="showOffCANData">Diesel Exhaust fluid1</th>
+                    <th style="width: 10%;" [hidden]="showOffCANData">Diesel Exhaust fluid2</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of EngineOffDatadocs | paginate : {itemsPerPage : 100, currentPage : p} let i = index"
+                    (click)="setClickedRow(i)" [class.active]="i == selectedRow" style="text-align: center;">
+                    <td>{{100*(p-1)+i+1}}</td>
+                    <td style="width:18%;">
+                        {{item.devicePublishTime | slice:8:10}}-{{item.devicePublishTime |
+                        slice:5:7}}-{{item.devicePublishTime | slice:0:4}}
+                        {{item.devicePublishTime | date:'h:mm:ss a':'+0000' }}
+                    </td>
+
+                    <td [hidden]="showFuel"
+                        [ngClass]="{'warning': item.extras[0].fuelLevel == this.alertValues[0].fuelLevelw1, 'critical': item.extras[0].fuelLevel == this.alertValues[0].fuelLevelc}">
+                        {{item.extras[0].fuelLevel}}</td>
+                    <td [hidden] = "showOnColumns"
+                        [ngClass]="{'warning': item.extras[0].fuelLevel == this.alertValues[0].fuelLevelw1, 'critical': item.extras[0].fuelLevel == this.alertValues[0].fuelLevelc}">
+                        {{item.extras[0].fuelPercentage}}</td>
+                    <td>{{item.engineStatus}}</td>
+                    <td>{{item.extras[0].rpm | number : '1.0-0'}}</td>
+                    <td>--</td>
+                    <td
+                        [ngClass]="{'warning': item.extras[0].batteryLevel <= this.alertValues[0].batteryLevelw1 && item.extras[0].batteryLevel >= this.alertValues[0].batteryLevelc, 'critical': item.extras[0].batteryLevel <= this.alertValues[0].batteryLevelc}">
+                        {{item.extras[0].batteryLevel | number : '1.1-1'}}</td>
+                    <td>{{item.extras[0].travelSpeed}}</td>
+                    <td [hidden]="showOffColumns">--</td>
+                    <td [hidden]="showOffColumns">--</td>
+                    <td [hidden]="showOffColumns">--</td>
+
+
+                    <!--  <td [hidden]="showOffCANData">{{ item1.extras[0]["waterinFuelLevel"] }}</td>
+                        <td [hidden]="showOffCANData">{{ item1.extras[0]["coldStartLamp"] }}</td>
+                        <td [hidden]="showOffCANData">{{ item1.extras[0]["systemLamp"] }}</td>
+                        <td [hidden]="showOffCANData">{{ item1.extras[0]["engineOilPressure"] }}</td>
+                        <td [hidden]="showOffCANData">{{ item1.extras[0]["engineCoolantTemperature"] }}</td>
+                        <td [hidden]="showOffCANData">{{ item1.extras[0]["batteryVoltage"] }}</td>
+                        <td [hidden]="showOffCANData">{{ item1.extras[0]["engineSpeed"] }}</td>
+                        <td [hidden]="showOffCANData">{{ item1.extras[0]["actualEnginePercentageTorque"] }}</td>
+                        <td [hidden]="showOffCANData">{{ item1.extras[0]["nominalFrictionTorque"] }}</td>
+                        <td [hidden]="showOffCANData">{{ item1.extras[0]["engineHours"] }}</td>
+                        <td [hidden]="showOffCANData">{{ item1.extras[0]["liquidFuelEconomy"] }}</td>
+                        <td [hidden]="showOffCANData">{{ item1.extras[0]["dieselExhaustfluid1"] }}</td>
+                        <td [hidden]="showOffCANData">{{ item1.extras[0]["dieselExhaustfluid2"] }}</td>   -->
+
+                </tr>
+                <tr *ngIf="loading">
+                    <td colspan="11" class="text-center">
+                        <span class="spinner-border spinner-border-lg align-center"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+<div class="card" *ngIf="selected == 'Consumption'">
+    <div class="row" style="padding: 4px 10px;">
+        <div class="col-md-6">
+            <button class="btn btn-sm bg-white" (click)="refresh()" title="Click for Refresh"><i
+                    class="fas fa-sync"></i></button>
+            <!-- <input type="checkbox" [checked]="isChecked" (click)="getalertEngineData($event)"
+                style="margin-left: 10px;">
+            Show Alert values -->
+
+            <select class="rounded m-f-left" id="report" style="border: 1px solid #f2f2f2; margin: 0 10px 0 10px;"
+                (change)="select($event)">
+                <option value="Report">
+                    Report
+                </option>
+                <option selected value="Consumption">
+                    Consumption
+                </option>
+                <option value="Batch">
+                    Batch
+                </option>
+                <option value="Engine">
+                    Engine Hours
+                </option>
+            </select>
+            <!-- <select class="rounded" id="select2" style="border: 1px solid #f2f2f2; margin: 0 10px 0 10px;" (change)="select2($event)">
+                <option selected value="on">
+                    Engine On
+                </option>
+                <option value="off">
+                    Engine Off
+                </option>
+            </select> -->
+            
+        </div>
+        <div class="col-md-6">
+            <form class="form-inline" [formGroup]="dtform" (ngSubmit)="onSubmit()" style="float: right;">
+                <label class="mob-footer-hide f-12">From</label> &nbsp;
+                <input type="date" class="form-control m-w-35 h-30" [ngModel]="stdate"
+                    max="{{today}}" formControlName="stdate" style="padding: 0px 10px;">
+                <label style="margin: 0 5px;" class="f-12">To</label> &nbsp;
+                <input type="date" class="form-control m-w-35 h-30" [ngModel]="endate"
+                    max="{{today}}" formControlName="endate" placeholder="To Date" style="padding: 0px 10px;">
+                <button class="btn btn-primary" type="button" type="submit"
+                    style="padding: 3px 7px; float: right; border: none; margin-left: 5px;">GO!</button>
+
+            </form>
+        </div>
+    </div>
+    <div class="tableFixHead">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th style="width: 8%">Batch_Count</th>
+                    <th style="width: 8%">AGGT10mm</th>
+                    <th style="width: 8%">AGGT20mm</th>
+                    <th style="width: 8%">AGGT30mm</th>
+                    <th style="width: 8%">CEMT01</th>
+                    <th style="width: 8%">CEMT02</th>
+                    <th style="width: 8%">SAND01</th>
+                    <th style="width: 8%">SAND02</th>
+                    <th style="width: 5%">Water</th>
+                    <th style="width: 5%">Total WT</th>
+                    <th style="width: 10%">Pin No</th>
+                    <th style="width: 6%">Additive</th>
+                    <th style="width:10%">CuM</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of consumptionDatadocs | paginate : {itemsPerPage : 10, currentPage : p} let i = index"
+                    (click)="setClickedRow(i)" [class.active]="i == selectedRow" style="text-align: center;">
+                    <td>{{10*(p-1)+i+1}}</td>
+                    <td>{{item.BatchCount}}</td>
+                    <td>{{item.aggt10mm}}</td>
+                    <td>{{item.aggt20mm}}</td>
+                    <td>{{item.aggt30mm}}</td>
+                    <td>{{item.cement01mm}}</td>
+                    <td>{{item.cement02mm}}</td>
+                    <td>{{item.sand01mm}}</td>
+                    <td>{{item.sand02mm}}</td>
+                    <td>{{item.water}}</td>
+                    <td>{{item.totalWT}}</td>
+                    <td>{{item.pinno}}</td>
+                    <td>{{item.additive1}}</td>
+                    <td>{{item.cum}}</td>
+                </tr>
+                <tr *ngIf="loading">
+                    <td colspan="14" class="text-center">
+                        <span class="spinner-border spinner-border-lg align-center"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="14">
+                        UOM: Water in litres,other values are in kgs. Cumulative Consumption data for the Date Range
+                        selected.</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+<div class="card" *ngIf="selected == 'Batch'">
+    <div class="row" style="padding: 4px 10px;">
+        <div class="col-md-5 col-xs-10">
+            <button class="btn btn-sm bg-white" (click)="refresh()" title="Click for Refresh"><i
+                    class="fas fa-sync"></i></button>
+            <select class="rounded m-f-left" id="report" style="border: 1px solid #f2f2f2; margin: 0 10px 0 10px;" (change)="select($event)">
+                <option value="Report"> Report </option>
+                <option value="Consumption">Consumption</option>
+                <option selected value="Batch">Batch</option>
+                <option value="Engine">Engine Hours</option>
+            </select>
+            <div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown">
+                <button id="btnGroupDrop1" type="button" (click)="getSharelinkData()"
+                    class="btn btn-success dropdown-toggle" aria-haspopup="true" aria-expanded="false"
+                    data-toggle="dropdown">
+                    Share
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <a class="dropdown-item" href="mailto:?subject=Batch report for Mc. No : {{pinnum}}, From Date : {{fromDate}}, To Date : {{toDate}} &body=Link : {{url}} This link will expire after 24 hours."><b>Email</b>&nbsp;&nbsp;<i class="fas fa-envelope"></i></a>
+                    <a class="dropdown-item"
+                        href="https://web.whatsapp.com/send?text=Batch report for Mc. No : {{pinnum}}, From Date : {{fromDate}}, To Date : {{toDate}} Link : {{url}} This link will expire after 24 hours."
+                        data-action="share/whatsapp/share" target="_blank">
+                        <b>Whatsapp</b>&nbsp;&nbsp;<i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-1 col-xs-2" *ngIf="selected == 'Batch' || selected == 'Engine'">
+            <button class="btn btn-success mr-1" title="Download Excel File" (click)="exportAsXLSX()"
+                style="float:right;"><i class="fas fa-file-excel"></i>
+            </button>
+        </div>
+        <div class="col-md-6 m-mt-5">
+            <form class="form-inline" [formGroup]="dtform" (ngSubmit)="onSubmit()" style="float: right;">
+                <label class="mob-footer-hide f-12">From</label> &nbsp;
+                <input type="date" class="form-control m-w-35 h-30" [ngModel]="stdate"
+                    max="{{today}}" formControlName="stdate" style="padding: 0px 10px;">
+                <label style="margin: 0 5px;" class="f-12">To</label> &nbsp;
+                <input type="date" class="form-control m-w-35 h-30" [ngModel]="endate"
+                    max="{{today}}" formControlName="endate" placeholder="To Date" style="padding: 0px 10px;">
+                <button class="btn btn-primary" type="button" type="submit"
+                    style="padding: 3px 7px; float: right; border: none; margin-left: 5px;">GO!</button>
+            </form>
+        </div>
+    </div>
+    <div class="tableFixHead">
+        <table class="table table-striped table-bordered table-hover" style="overflow-x:visible;overflow-y: visible;">
+            <thead class="thead-dark"  style="white-space: nowrap;">
+                <tr>
+                    <th style="width:5%">#</th>
+                    <th style="width:3%">Batch No</th>
+                    <th style="width:3%">{{ pinNo }}</th>
+                    <th style="width:10%">Machine ID</th>
+                    <th style="padding: 10px 36px;">Batch Date</th>
+                    <th style="width: 9%" [hidden]="smartBatch">Customer</th>
+                    <th style="width: 9%" [hidden]="smartBatch">Project</th>
+                    <th style="width: 9%" [hidden]="smartBatch">Location</th>
+                    <th style="width: 9%" [hidden]="smartBatch">Operator</th>
+                    <th style="width:5%">AGGT10mm</th>
+                    <th style="width:3%">AGGT20mm</th>
+                    <th style="width:5%">AGGT30mm</th>
+                    <th style="width:5%">CEMT01</th>
+                    <th style="width:5%">CEMT02</th>
+                    <th style="width:5%">SAND01</th>
+                    <th style="width:5%">SAND02</th>
+                    <th style="width:5%">Water</th>
+                    <th style="width:5%">Additive</th>
+                    <th style="width:10%">Total WT</th>
+                    <th style="width:10%">CuM</th>
+                    
+                    <th style="width:5%" [hidden]="smartBatch">Customer Name</th>
+                    <th style="width:5%" [hidden]="smartBatch">Project</th>
+                    <th style="width:5%" [hidden]="smartBatch">Location</th>
+                    <th style="width:5%" [hidden]="smartBatch">Operator</th>
+                    <th style="width:5%" [hidden]="smartBatch">Print Date</th>
+                    <th style="width:5%" [hidden]="smartBatch">Recipe</th>
+                    <th style="width:5%" [hidden]="smartBatch">Concrete Grade</th>
+                </tr>
+
+            </thead>
+            <tbody style="white-space: nowrap;">
+                <tr *ngFor="let item of batchDatadocs | paginate : {itemsPerPage : 10, currentPage : p} let i = index"
+                    (click)="setClickedRow(i)" [class.active]="i == selectedRow" style="text-align: center;">
+                    <td style="width:5%">{{10*(p-1)+i+1}}</td>
+                    <td style="width:3%"> {{item.batchNo}}</td>
+                    <td style="width:3%"> {{pin}}</td>
+                    <td style="width:10%">{{item.machineID}}</td>
+                    <td style="width:14%">{{item.batchDate | date : 'dd-MM-yyyy'}} {{item.batchTime}}</td>
+                    <td style="width:5%" [hidden]="smartBatch">{{item.customer}}</td>
+                    <td style="width:5%" [hidden]="smartBatch">{{item.project}}</td>
+                    <td style="width:5%" [hidden]="smartBatch">{{item.location}}</td>
+                    <td style="width:5%" [hidden]="smartBatch">{{item.operator}}</td>
+
+                    <td style="width:5%" [hidden]="noSmartBatch">{{item.aggt10mm}}</td>
+                    <!-- <td style="width:3%" [hidden]="smartBatch">{{item.aggt10mm}}/{{item.aggt10mmplan}}</td> -->
+                    <td style="width:5%" [hidden]="smartBatch">
+                        {{item.aggt10mm}}
+                        <ng-container *ngIf="item.smartBatch !== 'true'">
+                            {{item.aggt10mmplan}}
+                        </ng-container>
+                    </td>
+                    <td style="width:3%" [hidden]="noSmartBatch">{{item.aggt20mm}}</td>
+                    <!-- <td style="width:3%" [hidden]="smartBatch">{{item.aggt20mm}}/{{item.aggt20mmplan}}</td> -->
+                    <td style="width:5%" [hidden]="smartBatch">
+                        {{item.aggt20mm}}
+                        <ng-container *ngIf="item.smartBatch !== 'true'">
+                            {{item.aggt20mmplan}}
+                        </ng-container>
+                    </td>
+
+                    <td style="width:5%">{{item.aggt30mm}}</td>
+
+                    <td style="width:5%" [hidden]="noSmartBatch">{{item.cement01mm}}</td>
+                    <!-- <td style="width:5%" [hidden]="smartBatch">{{item.cement01mm}}/{{item.cement01mmplan}}</td> -->
+                    <td style="width:5%" [hidden]="smartBatch">
+                        {{item.cement01mm}}
+                        <ng-container *ngIf="item.smartBatch !== 'true'">
+                            {{item.cement01mmplan}}
+                        </ng-container>
+                    </td>
+                    
+                    <td style="width:5%" [hidden]="noSmartBatch">{{item.cement02mm}}</td>
+                    <!-- <td style="width:5%" [hidden]="smartBatch">{{item.cement02mm}}/{{item.cement02mmplan}} </td> -->
+                    <td style="width:5%" [hidden]="smartBatch">
+                        {{item.cement02mm}}
+                        <ng-container *ngIf="item.smartBatch !== 'true'">
+                            {{item.cement02mmplan}}
+                        </ng-container>
+                    </td>
+
+                    <td style="width:5%" [hidden]="noSmartBatch">{{item.sand01mm}}</td>
+                    <!-- <td style="width:5%" [hidden]="smartBatch">{{item.sand01mm}}/{{item.sand01mmplan}}</td> -->
+                    <td style="width:5%" [hidden]="smartBatch">
+                        {{item.sand01mm}}
+                        <ng-container *ngIf="item.smartBatch !== 'true'">
+                            {{item.sand01mmplan}}
+                        </ng-container>
+                    </td>
+                    <td style="width:5%" [hidden]="noSmartBatch">{{item.sand02mm}}</td>
+                    <!-- <td style="width:5%" [hidden]="smartBatch">{{item.sand02mm}}/{{item.sand02mmplan}}</td> -->
+                    <td style="width:5%" [hidden]="smartBatch">
+                        {{item.sand02mm}}
+                        <ng-container *ngIf="item.smartBatch !== 'true'">
+                            {{item.sand02mmplan}}
+                        </ng-container>
+                    </td>
+
+                    <td style="width:5%">{{item.water}}</td>
+                    <td style="width:5%">{{item.additive1}}</td>
+                    <td style="width:10%">{{item.totalWT}}</td>
+                    <td style="width:10%">{{item.cum}}</td>
+
+                    <td style="width:5%" [hidden]="smartBatch">{{item.customer}}</td>
+                    <td style="width:5%" [hidden]="smartBatch">{{item.project}}</td>
+                    <td style="width:5%" [hidden]="smartBatch">{{item.location}}</td>
+                    <td style="width:5%" [hidden]="smartBatch">{{item.operator}}</td>
+                    <td style="width:5%" [hidden]="smartBatch">{{item.printDate}}</td>
+                    <td style="width:5%" [hidden]="smartBatch">{{item.recipe}}</td>
+                    <td style="width:5%" [hidden]="smartBatch">{{item.concreteGrade}}</td>
+                </tr>
+                <tr *ngIf="loading">
+                    <td colspan="30" class="text-center">
+                        <span class="spinner-border spinner-border-lg align-center"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="30">
+                        UOM: Water in litres, CuM in cubic metres, other values are in kgs</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="card" *ngIf="selected == 'Engine'">
+    <div class="row" style="padding: 4px 10px;">
+        <div class="col-md-5 col-xs-10">
+            <button class="btn btn-sm bg-white" (click)="refresh()" title="Click for Refresh"><i
+                    class="fas fa-sync"></i></button>
+            <!-- <input type="checkbox" [checked]="isChecked" (click)="getalertEngineData($event)"
+                style="margin-left: 10px;">
+            Show Alert values -->
+
+            <select class="rounded m-f-left" id="report" style="border: 1px solid #f2f2f2; margin: 0 10px 0 10px;"
+                (change)="select($event)">
+                <option value="Report">
+                    Report
+                </option>
+                <option value="Consumption">
+                    Consumption
+                </option>
+                <option value="Batch">
+                    Batch
+                </option>
+                <option selected value="Engine">
+                    Engine Hours
+                </option>
+            </select>
+            <!-- <select class="rounded" id="select2" style="border: 1px solid #f2f2f2; margin: 0 10px 0 10px;" (change)="select2($event)">
+                <option selected value="on">
+                    Engine On
+                </option>
+                <option value="off">
+                    Engine Off
+                </option>
+            </select> -->
+            <!-- <button class="btn btn-sm btn-success" *ngIf="selected2 == 'on'" title="Download Excel File"
+                (click)="exportEngineOnXLSX()" style="margin-left: 5px;"><i class="fas fa-file-export"></i>
+            </button> -->
+        </div>
+        <div class="col-md-1 col-xs-2" *ngIf="selected == 'Batch' || selected == 'Engine'">
+            <button class="btn btn-success mr-1" title="Download Excel File" (click)="exportAsXLSX()"
+                style="float:right;"><i class="fas fa-file-excel"></i>
+            </button>
+        </div>
+        <div class="col-md-6 m-mt-5">
+            <form class="form-inline" [formGroup]="dtform" (ngSubmit)="onSubmit()" style="float: right;">
+                <label class="mob-footer-hide f-12">From</label> &nbsp;
+                <input type="date" class="form-control m-w-35 h-30" [ngModel]="stdate"
+                    max="{{today}}" formControlName="stdate" style="padding: 0px 10px;">
+                <label style="margin: 0 5px;" class="f-12">To</label> &nbsp;
+                <input type="date" class="form-control m-w-35 h-30" [ngModel]="endate"
+                    max="{{today}}" formControlName="endate" placeholder="To Date" style="padding: 0px 10px;">
+                <button class="btn btn-primary" type="button" type="submit"
+                    style="padding: 3px 7px; float: right; border: none; margin-left: 5px;">GO!</button>
+
+            </form>
+        </div>
+    </div>
+    <div class="tableFixHead">
+
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Engine OnTime</th>
+                    <th>Engine OffTime</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let engine of engineDatadocs | paginate : {itemsPerPage : 10, currentPage : p} let i = index"
+                    (click)="setClickedRow(i)" [class.active]="i == selectedRow">
+                    <td> {{10*(p-1)+i+1}}</td>
+                    <td>
+                        {{engine.onTimestamp | slice:8:10}}-{{engine.onTimestamp | slice:5:7}}-{{engine.onTimestamp |
+                        slice:0:4}}
+                        {{engine.onTimestamp | date:'h:mm:ss a':'+0000'}} </td>
+                    <td> {{engine.offTimestamp | slice:8:10}}-{{engine.offTimestamp | slice:5:7}}-{{engine.offTimestamp
+                        |
+                        slice:0:4}}
+                        {{engine.offTimestamp | date:'h:mm:ss a':'+0000'}} </td>
+                    <td>{{engine.engineHours}}</td>
+                </tr>
+                <tr *ngIf="loading">
+                    <td colspan="11" class="text-center">
+                        <span class="spinner-border spinner-border-lg align-center"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="input-group-icon input-group-icon-left text-center mt-3">
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+      </div>
+</div>

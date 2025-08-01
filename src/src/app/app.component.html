@@ -1,0 +1,34 @@
+﻿<!-- nav -->
+<div class="row" *ngIf="user" style="z-index: 9999; 
+width: 100%; 
+height: 100%; 
+position:sticky; 
+   ">
+
+    <div class="col-md-1" *ngIf="(router.url != '/login')"  >
+
+        <div class="position-fixed" style="bottom: 0; top:0">
+        <div class="row" style="position:absolute; bottom: 0; top:0" >
+            <div class="col-md-10" style="background: #454397; " >
+                <app-sidenav></app-sidenav>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="col-md-11" style="background:#f2f2f2;position: relative; right: 0px;">
+        <app-header></app-header>
+
+        <alert></alert>
+
+        <router-outlet></router-outlet>
+
+        <app-footer></app-footer>
+    </div>
+</div>
+
+<div *ngIf="!user" style="position: fixed;">
+    <alert></alert>
+    <router-outlet></router-outlet>
+
+</div>
