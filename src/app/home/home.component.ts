@@ -11,7 +11,7 @@ import { Monitor } from "./index";
 import { ActivatedRoute } from "@angular/router";
 import * as moment from "moment";
 import * as _ from "lodash";
-import { stringify } from "@angular/compiler/src/util";
+// import { stringify } from "@angular/compiler/src/util";
 import { environment } from "@environments/environment";
 import { ToastrService } from "ngx-toastr";
 
