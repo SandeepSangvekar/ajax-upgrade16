@@ -20,7 +20,8 @@ import { FooterComponent } from './footer/footer.component'
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-import { AgmCoreModule } from '@agm/core';
+// import { AgmCoreModule } from '@agm/core';
+import { AgmCoreModule } from 'ng-agm-core-lib';
 import { NewTrackVehicleComponent } from './newTrackVehicle/new-track-vehicle.component'
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgxPaginationModule } from 'ngx-pagination';

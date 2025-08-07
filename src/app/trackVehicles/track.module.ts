@@ -11,7 +11,9 @@ import { LayoutComponent } from './layout.component';
 import { TrackComponent } from './track.component';
 import { dateFilter } from './dateFilter/dateFilter.pipe';
 import { DatePipe } from '@angular/common';
-import { AgmCoreModule } from '@agm/core';
+// import { AgmCoreModule } from '@agm/core';
+import { AgmCoreModule } from 'ng-agm-core-lib';
+
 import { TrackSummaryComponent } from './track-summary/track-summary.component';
 
 @NgModule({
